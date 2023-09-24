@@ -1,37 +1,24 @@
-package io.github.tanguygab.armenu.actions.messages;
+package io.github.tanguygab.conditionalactions.actions.messages;
 
-import io.github.tanguygab.armenu.Utils;
-import io.github.tanguygab.armenu.actions.Action;
-import me.neznamy.tab.api.TabAPI;
-import me.neznamy.tab.api.TabPlayer;
-import org.bukkit.Bukkit;
+import io.github.tanguygab.conditionalactions.actions.Action;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-
-import java.util.regex.Pattern;
 
 public class MessageAction extends Action {
 
-    private final Pattern pattern = Pattern.compile("(?i)(message|msg|tell):( )?");
-
-    @Override
-    public Pattern getPattern() {
-        return pattern;
+    public MessageAction() {
+        super("(?i)(message|msg|tell):( )?");
     }
 
     @Override
     public String getSuggestion() {
-        return "message: <text>";
+        return "message: <message>";
     }
 
     @Override
-    public boolean replaceMatch() {
-        return true;
-    }
-
-    @Override
-    public void execute(String match, TabPlayer p) {
-        match = Utils.parsePlaceholders(match,p);
-        if (p == null) TabAPI.getInstance().sendConsoleMessage(match,true);
-        else p.sendMessage(match,true);
+    public void execute(OfflinePlayer player, String match) {
+        match = parsePlaceholders(player,match);
+        if (player instanceof Player p) p.sendMessage(match);
+        else getPlugin().getServer().getConsoleSender().sendMessage(match);
     }
 }

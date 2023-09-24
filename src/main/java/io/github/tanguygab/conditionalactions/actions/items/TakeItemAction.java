@@ -1,70 +1,68 @@
-package io.github.tanguygab.armenu.actions.items;
+package io.github.tanguygab.conditionalactions.actions.items;
 
-import io.github.tanguygab.armenu.Utils;
-import io.github.tanguygab.armenu.actions.Action;
-import me.neznamy.tab.api.TabPlayer;
+import io.github.tanguygab.conditionalactions.actions.Action;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class TakeItemAction extends Action {
 
-    private final Pattern pattern = Pattern.compile("(i?)take-item:( )?");
-
-    @Override
-    public Pattern getPattern() {
-        return pattern;
+    public TakeItemAction() {
+        super("(i?)take-item:( )?");
     }
 
     @Override
     public String getSuggestion() {
-        return "take-item: <material>||<amount>||<name>||<lore>";
+        return "take-item: <material> <amount> <name> <lore>";
     }
 
     @Override
-    public boolean replaceMatch() {
-        return true;
-    }
+    public void execute(OfflinePlayer player, String match) {
+        if (!(player instanceof Player p)) return;
 
-    @Override
-    public void execute(String match, TabPlayer p) {
-        if (p == null) return;
-        String[] args = match.split("\\|\\|");
-        String material = args[0].toUpperCase().replace(" ", "_");
+        String[] args = match.split(" ");
+        String material = args[0].toUpperCase();
 
         Material mat = Material.getMaterial(material);
         if (mat == null) return;
 
-        int amt = Utils.parseInt(Utils.parsePlaceholders(args[1],p),1);
+        int amt = args.length > 1 ? parseInt(parsePlaceholders(p,args[1]),1) : 99999;
+        if (amt <= 0) return;
 
-        String name = args.length > 2 ? Utils.parsePlaceholders(args[2],p) : null;
-
+        String name = null;
         List<String> lore = new ArrayList<>();
-        if (args.length > 3)
-            for (String line : args[3].split("\\\\n"))
-                lore.add(Utils.parsePlaceholders(line,p));
 
-        PlayerInventory inv = ((Player)p.getPlayer()).getInventory();
+        if (args.length > 2) {
+            args = Arrays.copyOfRange(args,2,args.length);
+            args = String.join(" ",args).split("\\n");
+            name = parsePlaceholders(p,args[0]);
+
+            if (args.length > 1)
+                for (String line : Arrays.copyOfRange(args,1,args.length))
+                    lore.add(parsePlaceholders(p, line));
+        }
+
+        PlayerInventory inv = p.getInventory();
         ItemStack[] items = inv.getContents();
         for (int i = 0; i < items.length; i++) {
             if (amt <= 0) break;
-
-            if (check(items[i],mat,name,lore)) {
-                ItemStack found = items[i];
-                if (found.getAmount() <= amt) {
-                    inv.setItem(i,null);
-                    amt = amt-found.getAmount();
-                }
-                else if (found.getAmount() > amt) {
-                    found.setAmount(found.getAmount()-amt);
-                    amt = 0;
-                }
+            if (!check(items[i],mat,name,lore)) continue;
+            ItemStack found = items[i];
+            if (found.getAmount() <= amt) {
+                inv.setItem(i,null);
+                amt = amt-found.getAmount();
+                continue;
+            }
+            if (found.getAmount() > amt) {
+                found.setAmount(found.getAmount()-amt);
+                amt = 0;
             }
         }
     }

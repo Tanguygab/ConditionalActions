@@ -1,21 +1,15 @@
-package io.github.tanguygab.armenu.actions.bungee;
+package io.github.tanguygab.conditionalactions.actions.bungee;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import io.github.tanguygab.armenu.ARMenu;
-import io.github.tanguygab.armenu.actions.Action;
-import me.neznamy.tab.api.TabPlayer;
+import io.github.tanguygab.conditionalactions.actions.Action;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-
-import java.util.regex.Pattern;
 
 public class ServerAction extends Action {
 
-    private final Pattern pattern = Pattern.compile("(?i)server:( )?");
-
-    @Override
-    public Pattern getPattern() {
-        return pattern;
+    public ServerAction() {
+        super("(?i)server:( )?");
     }
 
     @Override
@@ -24,16 +18,12 @@ public class ServerAction extends Action {
     }
 
     @Override
-    public boolean replaceMatch() {
-        return true;
-    }
-
-    @Override
-    public void execute(String match, TabPlayer p) {
-        if (p == null) return;
+    @SuppressWarnings("UnstableApiUsage")
+    public void execute(OfflinePlayer player, String match) {
+        if (!(player instanceof Player p)) return;
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(match);
-        ((Player)p.getPlayer()).sendPluginMessage(ARMenu.get(),"BungeeCord",out.toByteArray());
+        p.sendPluginMessage(getPlugin(),"BungeeCord",out.toByteArray());
     }
 }

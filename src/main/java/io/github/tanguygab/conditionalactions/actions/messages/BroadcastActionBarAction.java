@@ -1,40 +1,26 @@
-package io.github.tanguygab.armenu.actions.messages;
+package io.github.tanguygab.conditionalactions.actions.messages;
 
-import io.github.tanguygab.armenu.ARMenu;
-import io.github.tanguygab.armenu.Utils;
-import io.github.tanguygab.armenu.actions.Action;
-import me.neznamy.tab.api.TabAPI;
-import me.neznamy.tab.api.TabPlayer;
-import me.neznamy.tab.api.protocol.PacketPlayOutChat;
-import me.neznamy.tab.api.protocol.TabPacket;
-
-import java.util.regex.Pattern;
+import io.github.tanguygab.conditionalactions.actions.Action;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.OfflinePlayer;
 
 public class BroadcastActionBarAction extends Action {
 
-    private final Pattern pattern = Pattern.compile("(?i)((broadcast|bc)-actionbar):( )?");
-
-    @Override
-    public Pattern getPattern() {
-        return pattern;
+    public BroadcastActionBarAction() {
+        super("(?i)((broadcast|bc)-actionbar):( )?");
     }
 
     @Override
     public String getSuggestion() {
-        return "broadcast-actionbar: <text>";
+        return "broadcast-actionbar: <message>";
     }
 
     @Override
-    public boolean replaceMatch() {
-        return true;
-    }
-
-    @Override
-    public void execute(String match, TabPlayer p) {
-        match = Utils.parsePlaceholders(match,p);
-        TabPacket packet = new PacketPlayOutChat(Utils.newComp(match), PacketPlayOutChat.ChatMessageType.GAME_INFO);
-        for (TabPlayer all : TabAPI.getInstance().getOnlinePlayers()) {
-            all.sendCustomPacket(packet, ARMenu.get().getMenuManager());
-        }
+    public void execute(OfflinePlayer player, String match) {
+        match = parsePlaceholders(player,match);
+        BaseComponent[] components = TextComponent.fromLegacyText(match);
+        getPlugin().getServer().getOnlinePlayers().forEach(p->p.spigot().sendMessage(ChatMessageType.ACTION_BAR,components));
     }
 }

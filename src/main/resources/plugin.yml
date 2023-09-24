@@ -1,4 +1,12 @@
 name: ConditionalActions
 version: '${version}'
 main: io.github.tanguygab.conditionalactions.ConditionalActions
-api-version: '1.20'
+api-version: 1.20
+author: Tanguygab
+depend: [PlaceholderAPI]
+softdepend: [LuckPerms]
+
+commands:
+  conditionalactions:
+    aliases: [ca]
+    permission: conditionalactions.admin

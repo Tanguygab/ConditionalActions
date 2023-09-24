@@ -1,56 +1,40 @@
-package io.github.tanguygab.armenu.actions.messages;
+package io.github.tanguygab.conditionalactions.actions.messages;
 
-import io.github.tanguygab.armenu.Utils;
-import io.github.tanguygab.armenu.actions.Action;
-import me.neznamy.tab.api.TabPlayer;
+import io.github.tanguygab.conditionalactions.actions.Action;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-
-import java.util.regex.Pattern;
 
 public class TitleAction extends Action {
 
-    private final Pattern pattern = Pattern.compile("(?i)title:( )?");
-
-    @Override
-    public Pattern getPattern() {
-        return pattern;
+    public TitleAction() {
+        super("(?i)title:( )?");
     }
 
     @Override
     public String getSuggestion() {
-        return "title: <title>;<subtitle>;<fadein>;<stay>;<fadeout>";
+        return getSuggestionWithArgs("title: <title>","<subtitle>","<fadein>","<stay>","<fadeout>");
     }
 
     @Override
-    public boolean replaceMatch() {
-        return true;
-    }
-
-    @Override
-    public void execute(String match, TabPlayer p) {
-        if (p == null) return;
-        match = Utils.parsePlaceholders(match,p);
-        String[] matches = match.split(";");
+    public void execute(OfflinePlayer player, String match) {
+        if (!(player instanceof Player p)) return;
+        match = parsePlaceholders(p,match);
+        String[] matches = split(match);
 
         String title = matches[0];
         String subtitle = "";
         int fadein = 5;
         int stay = 5;
         int fadeout = 5;
-        if (matches.length > 1)
-            subtitle = matches[1];
-        if (matches.length > 2)
-            fadein = parseInt(matches[2]);
-        if (matches.length > 3)
-            stay = parseInt(matches[3]);
-        if (matches.length > 4)
-            fadeout = parseInt(matches[4]);
+        if (matches.length > 1) subtitle = matches[1];
+        if (matches.length > 2) fadein = parseInt(matches[2]);
+        if (matches.length > 3) stay = parseInt(matches[3]);
+        if (matches.length > 4) fadeout = parseInt(matches[4]);
 
-        ((Player)p.getPlayer()).sendTitle(title,subtitle,fadein,stay,fadeout);
+        p.sendTitle(title,subtitle,fadein,stay,fadeout);
     }
 
     private int parseInt(String str) {
-        try {return Integer.parseInt(str);}
-        catch (Exception e) {return 5;}
+        return parseInt(str,5);
     }
 }

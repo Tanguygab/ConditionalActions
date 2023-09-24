@@ -1,36 +1,22 @@
-package io.github.tanguygab.armenu.actions.messages;
+package io.github.tanguygab.conditionalactions.actions.messages;
 
-import io.github.tanguygab.armenu.Utils;
-import io.github.tanguygab.armenu.actions.Action;
-import me.neznamy.tab.api.TabAPI;
-import me.neznamy.tab.api.TabPlayer;
-
-import java.util.regex.Pattern;
+import io.github.tanguygab.conditionalactions.actions.Action;
+import org.bukkit.OfflinePlayer;
 
 public class BroadcastAction extends Action {
 
-    private final Pattern pattern = Pattern.compile("(?i)(broadcast|bc):( )?");
-
-    @Override
-    public Pattern getPattern() {
-        return pattern;
+    public BroadcastAction() {
+        super("(?i)(broadcast|bc):( )?");
     }
 
     @Override
     public String getSuggestion() {
-        return "broadcast: <text>";
+        return "broadcast: <message>";
     }
 
     @Override
-    public boolean replaceMatch() {
-        return true;
-    }
-
-    @Override
-    public void execute(String match, TabPlayer p) {
-        match = Utils.parsePlaceholders(match,p);
-        for (TabPlayer all : TabAPI.getInstance().getOnlinePlayers()) {
-            all.sendMessage(match, true);
-        }
+    public void execute(OfflinePlayer player, String match) {
+        String message = parsePlaceholders(player,match);
+        getPlugin().getServer().getOnlinePlayers().forEach(p->p.sendMessage(message));
     }
 }

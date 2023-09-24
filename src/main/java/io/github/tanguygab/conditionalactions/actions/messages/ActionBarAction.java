@@ -1,36 +1,26 @@
-package io.github.tanguygab.armenu.actions.messages;
+package io.github.tanguygab.conditionalactions.actions.messages;
 
-import io.github.tanguygab.armenu.ARMenu;
-import io.github.tanguygab.armenu.Utils;
-import io.github.tanguygab.armenu.actions.Action;
-import me.neznamy.tab.api.TabPlayer;
-import me.neznamy.tab.api.protocol.PacketPlayOutChat;
-
-import java.util.regex.Pattern;
+import io.github.tanguygab.conditionalactions.actions.Action;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 
 public class ActionBarAction extends Action {
 
-    private final Pattern pattern = Pattern.compile("(?i)(actionbar):( )?");
-
-    @Override
-    public Pattern getPattern() {
-        return pattern;
+    public ActionBarAction() {
+        super("(?i)(actionbar):( )?");
     }
 
     @Override
     public String getSuggestion() {
-        return "actionbar: <text>";
+        return "actionbar: <message>";
     }
 
     @Override
-    public boolean replaceMatch() {
-        return true;
-    }
-
-    @Override
-    public void execute(String match, TabPlayer p) {
-        if (p == null) return;
-        match = Utils.parsePlaceholders(match,p);
-        p.sendCustomPacket(new PacketPlayOutChat(Utils.newComp(match), PacketPlayOutChat.ChatMessageType.GAME_INFO), ARMenu.get().getMenuManager());
+    public void execute(OfflinePlayer player, String match) {
+        if (!(player instanceof Player p)) return;
+        match = parsePlaceholders(p,match);
+        p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(match));
     }
 }

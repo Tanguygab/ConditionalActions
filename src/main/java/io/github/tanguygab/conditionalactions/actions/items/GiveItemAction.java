@@ -1,42 +1,33 @@
-package io.github.tanguygab.armenu.actions.items;
+package io.github.tanguygab.conditionalactions.actions.items;
 
-import io.github.tanguygab.armenu.Utils;
-import io.github.tanguygab.armenu.actions.Action;
-import me.neznamy.tab.api.TabPlayer;
+import io.github.tanguygab.conditionalactions.actions.Action;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 public class GiveItemAction extends Action {
 
-    private final Pattern pattern = Pattern.compile("(i?)give-item:( )?");
-
-    @Override
-    public Pattern getPattern() {
-        return pattern;
+    public GiveItemAction() {
+        super("(i?)give-item:( )?");
     }
 
     @Override
     public String getSuggestion() {
-        return "give-item: <material>||<amount>||<name>||<lore>";
+        return "give-item: <material> <amount> <name\\nlore>";
     }
 
     @Override
-    public boolean replaceMatch() {
-        return true;
-    }
+    public void execute(OfflinePlayer player,String match) {
+        if (!(player instanceof Player p)) return;
+        String[] args = match.split(" ");
 
-    @Override
-    public void execute(String match, TabPlayer p) {
-        if (p == null) return;
-        String[] args = match.split("\\|\\|");
-        String material = args[0].toUpperCase().replace(" ", "_");
-
+        String material = args[0].toUpperCase();
         Material mat = Material.getMaterial(material);
         if (mat == null) return;
         ItemStack item = new ItemStack(mat);
@@ -44,19 +35,20 @@ public class GiveItemAction extends Action {
         ItemMeta meta = item.getItemMeta();
         assert meta != null;
 
-        switch (args.length) {
-            default:
-            case 4: {
+        if (args.length > 1) item.setAmount(parseInt(parsePlaceholders(p,args[1]),1));
+        if (args.length > 2) {
+            args = Arrays.copyOfRange(args,2,args.length);
+            args = String.join(" ",args).split("\\n");
+            meta.setDisplayName(parsePlaceholders(p,args[0]));
+
+            if (args.length > 1) {
                 List<String> lore = new ArrayList<>();
-                for (String line : args[3].split("\\\\n"))
-                    lore.add(Utils.parsePlaceholders(line,p));
+                for (String line : Arrays.copyOfRange(args,1,args.length))
+                    lore.add(parsePlaceholders(p, line));
                 meta.setLore(lore);
             }
-            case 3: meta.setDisplayName(Utils.parsePlaceholders(args[2],p));
-            case 2: item.setAmount(Utils.parseInt(Utils.parsePlaceholders(args[1],p),1));
-            case 1:
         }
         item.setItemMeta(meta);
-        ((Player)p.getPlayer()).getInventory().addItem(item);
+        p.getInventory().addItem(item);
     }
 }

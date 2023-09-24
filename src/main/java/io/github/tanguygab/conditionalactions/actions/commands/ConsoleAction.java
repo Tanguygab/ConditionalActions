@@ -3,23 +3,21 @@ package io.github.tanguygab.conditionalactions.actions.commands;
 import io.github.tanguygab.conditionalactions.actions.Action;
 import org.bukkit.OfflinePlayer;
 
-public class PlayerAction extends Action {
+public class ConsoleAction extends Action {
 
-    public PlayerAction() {
-        super("(?i)(player|cmd|command):( )?",true);
+    public ConsoleAction() {
+        super("(?i)console:( )?");
     }
 
     @Override
-    public String getSuggestion(String match) {
-        return "player: <command>";
+    public String getSuggestion() {
+        return "console: <command>";
     }
 
     @Override
     public void execute(OfflinePlayer player, String match) {
-        if (player == null || player.getPlayer() == null) return;
-        match = parsePlaceholders(player,match);
-        String match0 = match;
-        sync(()->player.getPlayer().performCommand(match0));
+        String command = parsePlaceholders(player,match);
+        sync(()-> getPlugin().getServer().dispatchCommand(getPlugin().getServer().getConsoleSender(),command));
     }
 
 }

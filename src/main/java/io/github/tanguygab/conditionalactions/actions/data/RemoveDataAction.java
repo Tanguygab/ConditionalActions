@@ -1,36 +1,33 @@
-package io.github.tanguygab.armenu.actions.data;
+package io.github.tanguygab.conditionalactions.actions.data;
 
-import io.github.tanguygab.armenu.ARMenu;
-import io.github.tanguygab.armenu.actions.Action;
-import me.neznamy.tab.api.TabPlayer;
-
-import java.util.regex.Pattern;
+import io.github.tanguygab.conditionalactions.DataManager;
+import io.github.tanguygab.conditionalactions.Utils;
+import io.github.tanguygab.conditionalactions.actions.Action;
+import org.bukkit.OfflinePlayer;
 
 public class RemoveDataAction extends Action {
 
-    private final Pattern pattern = Pattern.compile("(?i)remove-data: ");
-
-    @Override
-    public Pattern getPattern() {
-        return pattern;
+    public RemoveDataAction() {
+        super("(?i)remove-data: ");
     }
 
     @Override
     public String getSuggestion() {
-        return "remove-data: <player|global> <data>";
+        return "remove-data: <player|--global> <data>";
     }
 
     @Override
-    public boolean replaceMatch() {
-        return true;
-    }
-
-    @Override
-    public void execute(String match, TabPlayer p) {
+    public void execute(OfflinePlayer player, String match) {
         String[] args = match.split(" ");
         if (args.length < 2) return;
         String name = args[0];
         String data = args[1];
-        ARMenu.get().data.removeData(name,data);
+        DataManager manager = getPlugin().getDataManager();
+        if (manager.isGlobal(name)) {
+            manager.removeGlobalData(data);
+            return;
+        }
+        player = Utils.getOfflinePlayer(name);
+        if (player != null) manager.removeData(player,data);
     }
 }

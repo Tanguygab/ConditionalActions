@@ -1,23 +1,27 @@
-package io.github.tanguygab.conditionalactions;
+package io.github.tanguygab.conditionalactions.actions;
 
-import io.github.tanguygab.conditionalactions.actions.Action;
+import io.github.tanguygab.conditionalactions.ConditionalActions;
 import io.github.tanguygab.conditionalactions.actions.bungee.ServerAction;
 import io.github.tanguygab.conditionalactions.actions.commands.*;
 import io.github.tanguygab.conditionalactions.actions.data.*;
 import io.github.tanguygab.conditionalactions.actions.items.*;
 import io.github.tanguygab.conditionalactions.actions.messages.*;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ActionManager {
 
+    @Getter private final String argumentSeparator;
     private final List<Action> actions = new ArrayList<>();
 
-    public ActionManager() {
+    public ActionManager(String argumentSeparator) {
+        this.argumentSeparator = argumentSeparator;
         register(
                 new PlayerAction(),
                 new ConsoleAction(),
@@ -26,16 +30,15 @@ public class ActionManager {
 
                 new RemoveDataAction(),
                 new SetDataAction(),
-                new SetTempDataAction(),
 
                 new EnchantItemAction("add"),
                 new EnchantItemAction("set"),
                 new EnchantItemAction("take"),
                 new GiveItemAction(),
-                new GiveItemStorageAction(),
+                //new GiveItemStorageAction(),
                 new RepairItemAction(),
                 new TakeItemAction(),
-                new TakeItemStorageAction(),
+                //new TakeItemStorageAction(),
 
                 new ActionBarAction(),
                 new BroadcastAction(),
