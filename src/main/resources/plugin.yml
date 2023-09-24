@@ -1,0 +1,4 @@
+name: ConditionalActions
+version: '${version}'
+main: io.github.tanguygab.conditionalactions.ConditionalActions
+api-version: '1.20'
