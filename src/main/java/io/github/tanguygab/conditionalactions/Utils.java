@@ -1,6 +1,7 @@
 package io.github.tanguygab.conditionalactions;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -14,4 +15,7 @@ public class Utils {
         return Arrays.stream(Bukkit.getServer().getOfflinePlayers()).filter(player->name.equalsIgnoreCase(player.getName())).findFirst().orElse(null);
     }
 
+    public static String colors(String string) {
+        return ChatColor.translateAlternateColorCodes('&',string);
+    }
 }

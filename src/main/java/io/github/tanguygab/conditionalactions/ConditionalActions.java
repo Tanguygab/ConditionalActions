@@ -3,10 +3,12 @@ package io.github.tanguygab.conditionalactions;
 import io.github.tanguygab.conditionalactions.actions.ActionManager;
 import io.github.tanguygab.conditionalactions.commands.CACommand;
 import io.github.tanguygab.conditionalactions.commands.ExecuteCommand;
+import io.github.tanguygab.conditionalactions.commands.ReloadCommand;
 import io.github.tanguygab.conditionalactions.conditions.ConditionManager;
 import lombok.Getter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -37,11 +39,13 @@ public final class ConditionalActions extends JavaPlugin {
         conditionManager = new ConditionManager();
 
         (expansion = new CAExpansion()).register();
-        subcommands.put("execute",new ExecuteCommand());
+        subcommands.put("execute",new ExecuteCommand(this));
+        subcommands.put("reload",new ReloadCommand(this));
     }
 
     @Override
     public void onDisable() {
+        HandlerList.unregisterAll(this);
         subcommands.clear();
         expansion.unregister();
     }
@@ -67,7 +71,7 @@ public final class ConditionalActions extends JavaPlugin {
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
         String arg = args.length > 0 ? args[0] : "";
-        if (!subcommands.containsKey(arg)) return List.of("execute","group","condition");
+        if (!subcommands.containsKey(arg)) return List.of("execute","group","condition","reload");
         args = Arrays.copyOfRange(args,1, args.length);
         return subcommands.get(arg).onTabComplete(sender,args);
     }

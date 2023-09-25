@@ -1,5 +1,6 @@
 package io.github.tanguygab.conditionalactions.commands;
 
+import io.github.tanguygab.conditionalactions.ConditionalActions;
 import io.github.tanguygab.conditionalactions.Utils;
 import io.github.tanguygab.conditionalactions.actions.Action;
 import org.bukkit.OfflinePlayer;
@@ -10,20 +11,24 @@ import java.util.List;
 
 public class ExecuteCommand extends CACommand {
 
+    public ExecuteCommand(ConditionalActions plugin) {
+        super(plugin);
+    }
+
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         if (args.length < 1) {
-            sender.sendMessage("You need to provide a player!");
+            sendMessage(sender,"&cYou need to provide a player!");
             return;
         }
         if (args.length < 2) {
-            sender.sendMessage("You need to provide an action!");
+            sendMessage(sender,"&cYou need to provide an action!");
             return;
         }
         String name = args[0];
         OfflinePlayer p = Utils.getOfflinePlayer(name);
         if (p == null && !name.equalsIgnoreCase("--console")) {
-            sender.sendMessage("Player not found");
+            sendMessage(sender,"&cPlayer not found!");
             return;
         }
 
