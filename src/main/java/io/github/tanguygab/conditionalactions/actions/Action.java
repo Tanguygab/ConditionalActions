@@ -4,6 +4,7 @@ import io.github.tanguygab.conditionalactions.ConditionalActions;
 import lombok.Getter;
 import lombok.experimental.Accessors;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.intellij.lang.annotations.Language;
 
@@ -34,7 +35,7 @@ public abstract class Action {
         getPlugin().sync(run);
     }
     protected String parsePlaceholders(OfflinePlayer player, String string) {
-        return PlaceholderAPI.setPlaceholders(player,string);
+        return ChatColor.translateAlternateColorCodes('&',PlaceholderAPI.setPlaceholders(player,string));
     }
     protected int parseInt(String str, int def) {
         try {return Integer.parseInt(str);}
