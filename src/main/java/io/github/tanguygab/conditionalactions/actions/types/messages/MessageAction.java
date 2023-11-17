@@ -1,6 +1,6 @@
-package io.github.tanguygab.conditionalactions.actions.messages;
+package io.github.tanguygab.conditionalactions.actions.types.messages;
 
-import io.github.tanguygab.conditionalactions.actions.Action;
+import io.github.tanguygab.conditionalactions.actions.types.Action;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 

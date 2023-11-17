@@ -3,6 +3,7 @@ package io.github.tanguygab.conditionalactions;
 import io.github.tanguygab.conditionalactions.actions.ActionManager;
 import io.github.tanguygab.conditionalactions.commands.CACommand;
 import io.github.tanguygab.conditionalactions.commands.ExecuteCommand;
+import io.github.tanguygab.conditionalactions.commands.GroupCommand;
 import io.github.tanguygab.conditionalactions.commands.ReloadCommand;
 import io.github.tanguygab.conditionalactions.conditions.ConditionManager;
 import lombok.Getter;
@@ -35,12 +36,13 @@ public final class ConditionalActions extends JavaPlugin {
         reloadConfig();
 
         dataManager = new DataManager();
+        conditionManager = new ConditionManager(this);
         actionManager = new ActionManager(this,getConfig().getString("argument-separator",","));
-        conditionManager = new ConditionManager();
 
         (expansion = new CAExpansion()).register();
-        subcommands.put("execute",new ExecuteCommand(this));
         subcommands.put("reload",new ReloadCommand(this));
+        subcommands.put("execute",new ExecuteCommand(this));
+        subcommands.put("group",new GroupCommand(this));
     }
 
     @Override

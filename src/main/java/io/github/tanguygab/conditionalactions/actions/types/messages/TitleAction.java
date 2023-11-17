@@ -1,24 +1,24 @@
-package io.github.tanguygab.conditionalactions.actions.messages;
+package io.github.tanguygab.conditionalactions.actions.types.messages;
 
-import io.github.tanguygab.conditionalactions.actions.Action;
-import org.bukkit.Bukkit;
+import io.github.tanguygab.conditionalactions.actions.types.Action;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-public class BroadcastTitleAction extends Action {
+public class TitleAction extends Action {
 
-    public BroadcastTitleAction() {
-        super("(?i)(broadcast|bc)-title:( )?");
+    public TitleAction() {
+        super("(?i)title:( )?");
     }
 
     @Override
     public String getSuggestion() {
-        return getSuggestionWithArgs("broadcast-title: <title>","<subtitle>","<fadein>","<stay>","<fadeout>");
+        return getSuggestionWithArgs("title: <title>","<subtitle>","<fadein>","<stay>","<fadeout>");
     }
 
     @Override
     public void execute(OfflinePlayer player, String match) {
-        match = parsePlaceholders(player,match);
+        if (!(player instanceof Player p)) return;
+        match = parsePlaceholders(p,match);
         String[] matches = split(match);
 
         String title = matches[0];
@@ -31,8 +31,7 @@ public class BroadcastTitleAction extends Action {
         if (matches.length > 3) stay = parseInt(matches[3]);
         if (matches.length > 4) fadeout = parseInt(matches[4]);
 
-        for (Player p : Bukkit.getServer().getOnlinePlayers())
-            p.sendTitle(title,subtitle,fadein,stay,fadeout);
+        p.sendTitle(title,subtitle,fadein,stay,fadeout);
     }
 
     private int parseInt(String str) {

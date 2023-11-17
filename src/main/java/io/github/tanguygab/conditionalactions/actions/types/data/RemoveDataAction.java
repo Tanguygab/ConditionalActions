@@ -1,8 +1,8 @@
-package io.github.tanguygab.conditionalactions.actions.data;
+package io.github.tanguygab.conditionalactions.actions.types.data;
 
 import io.github.tanguygab.conditionalactions.DataManager;
 import io.github.tanguygab.conditionalactions.Utils;
-import io.github.tanguygab.conditionalactions.actions.Action;
+import io.github.tanguygab.conditionalactions.actions.types.Action;
 import org.bukkit.OfflinePlayer;
 
 public class RemoveDataAction extends Action {

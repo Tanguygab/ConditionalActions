@@ -1,6 +1,6 @@
-package io.github.tanguygab.conditionalactions.actions.items;
+package io.github.tanguygab.conditionalactions.actions.types.items;
 
-import io.github.tanguygab.conditionalactions.actions.Action;
+import io.github.tanguygab.conditionalactions.actions.types.Action;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

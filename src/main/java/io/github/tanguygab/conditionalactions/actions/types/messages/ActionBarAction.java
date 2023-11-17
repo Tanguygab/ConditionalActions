@@ -1,6 +1,6 @@
-package io.github.tanguygab.conditionalactions.actions.messages;
+package io.github.tanguygab.conditionalactions.actions.types.messages;
 
-import io.github.tanguygab.conditionalactions.actions.Action;
+import io.github.tanguygab.conditionalactions.actions.types.Action;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.OfflinePlayer;

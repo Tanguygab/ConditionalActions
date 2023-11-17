@@ -1,4 +1,4 @@
-package io.github.tanguygab.conditionalactions.actions;
+package io.github.tanguygab.conditionalactions.actions.types;
 
 import io.github.tanguygab.conditionalactions.ConditionalActions;
 import io.github.tanguygab.conditionalactions.Utils;

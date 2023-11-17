@@ -1,24 +1,21 @@
 package io.github.tanguygab.conditionalactions.actions;
 
-import io.github.tanguygab.conditionalactions.ActionData;
 import io.github.tanguygab.conditionalactions.ConditionalActions;
-import io.github.tanguygab.conditionalactions.actions.commands.GroupAction;
-import io.github.tanguygab.conditionalactions.actions.bungee.ServerAction;
-import io.github.tanguygab.conditionalactions.actions.commands.*;
-import io.github.tanguygab.conditionalactions.actions.data.*;
-import io.github.tanguygab.conditionalactions.actions.items.*;
-import io.github.tanguygab.conditionalactions.actions.messages.*;
-import io.github.tanguygab.conditionalactions.actions.other.DelayAction;
+import io.github.tanguygab.conditionalactions.actions.types.Action;
+import io.github.tanguygab.conditionalactions.actions.types.commands.GroupAction;
+import io.github.tanguygab.conditionalactions.actions.types.bungee.ServerAction;
+import io.github.tanguygab.conditionalactions.actions.types.commands.*;
+import io.github.tanguygab.conditionalactions.actions.types.data.*;
+import io.github.tanguygab.conditionalactions.actions.types.items.*;
+import io.github.tanguygab.conditionalactions.actions.types.messages.*;
+import io.github.tanguygab.conditionalactions.actions.types.other.DelayAction;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 
 public class ActionManager {
@@ -70,14 +67,19 @@ public class ActionManager {
     }
 
     public void findAndExecute(OfflinePlayer player, String action, boolean group) {
-        if (group) {
-            ActionGroup g = actionGroups.get(action);
-            if (g != null) g.execute(player);
+        CAExecutable executable;
+
+        if (!group) {
+            Action ac = find(action);
+            if (ac == null) return;
+            executable = new ActionData(ac,action);
+        } else executable = actionGroups.get(action);
+        
+        if (!Bukkit.isPrimaryThread()) {
+            executable.execute(player);
             return;
         }
-        Action ac = find(action);
-        if (ac == null) return;
-        new ActionData(ac,action).execute(player);
+        ConditionalActions.getInstance().async(()->executable.execute(player));
     }
 
     public Action find(String action) {
@@ -96,4 +98,7 @@ public class ActionManager {
         return actions.stream().map(Action::getSuggestion).toList();
     }
 
+    public Set<String> getGroups() {
+        return actionGroups.keySet();
+    }
 }

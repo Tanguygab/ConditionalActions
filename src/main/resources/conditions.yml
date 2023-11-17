@@ -1,0 +1,16 @@
+conditions:
+  is_op: "%player_is_op%=yes" # simple conditions
+  is_admin: # OR checks
+    - "%player_is_op%=yes"
+    - "permission:group.admin"
+    - "permission:*"
+  has_money_and_vip: # AND checks
+    - - "%vault_eco_balance%>=1000"
+      - "permission:group.vip"
+
+conditional-outputs:
+  status:
+    "&4Operator": is_op
+    "&cAdmin": is_admin
+    "&eVIP": "permission:group.vip"
+    "&7Default": true

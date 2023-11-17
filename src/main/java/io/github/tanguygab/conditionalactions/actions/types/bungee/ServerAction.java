@@ -1,8 +1,8 @@
-package io.github.tanguygab.conditionalactions.actions.bungee;
+package io.github.tanguygab.conditionalactions.actions.types.bungee;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import io.github.tanguygab.conditionalactions.actions.Action;
+import io.github.tanguygab.conditionalactions.actions.types.Action;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 

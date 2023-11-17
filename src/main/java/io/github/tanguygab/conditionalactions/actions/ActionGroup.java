@@ -1,13 +1,15 @@
 package io.github.tanguygab.conditionalactions.actions;
 
-import io.github.tanguygab.conditionalactions.ActionData;
+import io.github.tanguygab.conditionalactions.ConditionalActions;
+import io.github.tanguygab.conditionalactions.actions.types.Action;
+import io.github.tanguygab.conditionalactions.conditions.ConditionGroup;
 import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class ActionGroup {
+public class ActionGroup implements CAExecutable {
 
     private final ActionManager manager;
     private final List<Object> actions = new ArrayList<>();
@@ -16,7 +18,7 @@ public class ActionGroup {
         this.manager = manager;
         config.forEach(action->{
             if (action instanceof Map<?,?> map) {
-                String condition = (String) map.get("condition");
+                ConditionGroup condition = ConditionalActions.getInstance().getConditionManager().getCondition((String) map.get("condition"));
                 actions.add(new ActionCondition(condition,loadConditionList(map,"success"),loadConditionList(map,"deny")));
             } else add(actions,(String) action);
         });
@@ -38,6 +40,7 @@ public class ActionGroup {
         if (ac != null) list.add(new ActionData(ac,line));
     }
 
+    @Override
     public void execute(OfflinePlayer player) {
         for (Object action : actions) {
             if (action == null) return;

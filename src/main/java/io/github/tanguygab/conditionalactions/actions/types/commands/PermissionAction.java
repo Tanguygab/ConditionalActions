@@ -1,6 +1,6 @@
-package io.github.tanguygab.conditionalactions.actions.commands;
+package io.github.tanguygab.conditionalactions.actions.types.commands;
 
-import io.github.tanguygab.conditionalactions.actions.Action;
+import io.github.tanguygab.conditionalactions.actions.types.Action;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.model.user.UserManager;
