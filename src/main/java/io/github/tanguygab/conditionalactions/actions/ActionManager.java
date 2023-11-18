@@ -9,6 +9,7 @@ import io.github.tanguygab.conditionalactions.actions.types.data.*;
 import io.github.tanguygab.conditionalactions.actions.types.items.*;
 import io.github.tanguygab.conditionalactions.actions.types.messages.*;
 import io.github.tanguygab.conditionalactions.actions.types.other.DelayAction;
+import io.github.tanguygab.conditionalactions.actions.types.storage.*;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -40,10 +41,10 @@ public class ActionManager {
                 new EnchantItemAction("set"),
                 new EnchantItemAction("take"),
                 new GiveItemAction(),
-                //new GiveItemStorageAction(),
+                new GiveItemStorageAction(),
                 new RepairItemAction(),
                 new TakeItemAction(),
-                //new TakeItemStorageAction(),
+                new TakeItemStorageAction(),
 
                 new ActionBarAction(),
                 new BroadcastAction(),
@@ -74,7 +75,7 @@ public class ActionManager {
             if (ac == null) return;
             executable = new ActionData(ac,action);
         } else executable = actionGroups.get(action);
-        
+
         if (!Bukkit.isPrimaryThread()) {
             executable.execute(player);
             return;
