@@ -3,23 +3,23 @@ package io.github.tanguygab.conditionalactions;
 import io.github.tanguygab.conditionalactions.actions.ActionManager;
 import io.github.tanguygab.conditionalactions.commands.*;
 import io.github.tanguygab.conditionalactions.conditions.ConditionManager;
+import io.github.tanguygab.conditionalactions.hooks.papi.CAExpansion;
+import io.github.tanguygab.conditionalactions.hooks.papi.PAPIExpansion;
 import lombok.Getter;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class ConditionalActions extends JavaPlugin {
 
     @Getter private static ConditionalActions instance;
     private final Map<String, CACommand> subcommands = new HashMap<>();
-    private CAExpansion expansion;
+    private final List<PAPIExpansion> expansions = new ArrayList<>();
 
     @Getter private DataManager dataManager;
     @Getter private ActionManager actionManager;
@@ -36,7 +36,15 @@ public final class ConditionalActions extends JavaPlugin {
         conditionManager = new ConditionManager(this);
         actionManager = new ActionManager(this,getConfig().getString("argument-separator",","));
 
-        (expansion = new CAExpansion()).register();
+        expansions.add(new CAExpansion(this));
+        expansions.add(new PAPIExpansion(this,"condition") {
+            @Override
+            public Object parse(OfflinePlayer player, String params) {
+                return plugin.getConditionManager().getCondition(params).isMet(player);
+            }
+        });
+        expansions.forEach(PAPIExpansion::register);
+
         subcommands.put("reload",new ReloadCommand(this));
         subcommands.put("execute",new ExecuteCommand(this));
         subcommands.put("group",new GroupCommand(this));
@@ -47,7 +55,8 @@ public final class ConditionalActions extends JavaPlugin {
     public void onDisable() {
         HandlerList.unregisterAll(this);
         subcommands.clear();
-        expansion.unregister();
+        expansions.forEach(PAPIExpansion::unregister);
+        expansions.clear();
     }
 
     public void async(Runnable run) {
