@@ -2,30 +2,31 @@ package io.github.tanguygab.conditionalactions.commands;
 
 import io.github.tanguygab.conditionalactions.ConditionalActions;
 import io.github.tanguygab.conditionalactions.Utils;
+import io.github.tanguygab.conditionalactions.conditions.ConditionGroup;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class GroupCommand extends CACommand {
+public class ConditionCommand extends CACommand {
 
-    public GroupCommand(ConditionalActions plugin) {
+    public ConditionCommand(ConditionalActions plugin) {
         super(plugin);
     }
 
     @Override
     public void onCommand(CommandSender sender, String[] args) {
         if (args.length == 0) {
-            sendMessage(sender,"&7Use either &8list &7or &8execute&7.");
+            sendMessage(sender,"&7Use either &8list &7or &8check&7.");
             return;
         }
         if (args[0].equalsIgnoreCase("list")) {
-            sendMessage(sender,"Groups:\n&7"+String.join(", ",plugin.getActionManager().getGroups()));
+            sendMessage(sender,"Conditions:\n&7"+String.join(", ",plugin.getConditionManager().getConditions()));
             return;
         }
-        if (!args[0].equalsIgnoreCase("execute")) {
-            sendMessage(sender,"&7Use either &8list &7or &8execute&7.");
+        if (!args[0].equalsIgnoreCase("check")) {
+            sendMessage(sender,"&7Use either &8list &7or &8check&7.");
             return;
         }
 
@@ -35,7 +36,7 @@ public class GroupCommand extends CACommand {
             return;
         }
         if (args.length < 2) {
-            sendMessage(sender,"&cYou need to provide an action!");
+            sendMessage(sender,"&cYou need to provide a condition!");
             return;
         }
         String name = args[0];
@@ -45,17 +46,19 @@ public class GroupCommand extends CACommand {
             return;
         }
 
-        String action = String.join(" ", args).substring(name.length()+1);
+        String condition = String.join(" ", args).substring(name.length()+1);
 
-        if (!plugin.getActionManager().findAndExecute(p,action,true))
-            sendMessage(sender,"&cGroup not found!");;
+        ConditionGroup group = plugin.getConditionManager().getCondition(condition);
+        sendMessage(sender, "&7"+name+" "+(group.isMet(p)
+                ? "&ameets the condition!"
+                : "&cdoes not meet the condition!"));
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        if (args.length == 1) return getArguments(List.of("list","execute"),args[0]);
+        if (args.length == 1) return getArguments(List.of("list","check"),args[0]);
         if (args[0].equalsIgnoreCase("list")) return List.of();
-        if (!args[0].equalsIgnoreCase("execute")) return null;
-        return args.length > 2 ? getArguments(plugin.getActionManager().getGroups(),args[2]) : null;
+        if (!args[0].equalsIgnoreCase("check")) return null;
+        return args.length > 2 ? getArguments(plugin.getConditionManager().getConditions(),args[2]) : null;
     }
 }

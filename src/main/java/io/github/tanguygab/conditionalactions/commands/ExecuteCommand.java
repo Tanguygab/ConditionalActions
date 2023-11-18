@@ -34,14 +34,15 @@ public class ExecuteCommand extends CACommand {
 
         String action = String.join(" ", args).substring(name.length()+1);
 
-        plugin.getActionManager().findAndExecute(p,action,false);
+        if (!plugin.getActionManager().findAndExecute(p,action,false))
+            sendMessage(sender,"&cAction not found!");
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
         if (args.length < 2) return null;
-        String arg = String.join(" ", Arrays.copyOfRange(args,1, args.length));
+        String arg = String.join(" ", Arrays.copyOfRange(args,2, args.length));
         Action action = plugin.getActionManager().find(arg);
-        return action == null ? plugin.getActionManager().getSuggestions() : List.of(action.getSuggestion());
+        return action == null ? getArguments(plugin.getActionManager().getSuggestions(),arg) : List.of(action.getSuggestion());
     }
 }

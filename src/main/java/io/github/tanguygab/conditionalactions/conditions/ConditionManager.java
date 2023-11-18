@@ -7,10 +7,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 
 public class ConditionManager {
@@ -85,5 +82,9 @@ public class ConditionManager {
             if (condition.contains(separator))
                 return types.get(separator).apply(condition);
         return null;
+    }
+
+    public Set<String> getConditions() {
+        return conditions.keySet();
     }
 }

@@ -1,10 +1,7 @@
 package io.github.tanguygab.conditionalactions;
 
 import io.github.tanguygab.conditionalactions.actions.ActionManager;
-import io.github.tanguygab.conditionalactions.commands.CACommand;
-import io.github.tanguygab.conditionalactions.commands.ExecuteCommand;
-import io.github.tanguygab.conditionalactions.commands.GroupCommand;
-import io.github.tanguygab.conditionalactions.commands.ReloadCommand;
+import io.github.tanguygab.conditionalactions.commands.*;
 import io.github.tanguygab.conditionalactions.conditions.ConditionManager;
 import lombok.Getter;
 import org.bukkit.command.Command;
@@ -43,6 +40,7 @@ public final class ConditionalActions extends JavaPlugin {
         subcommands.put("reload",new ReloadCommand(this));
         subcommands.put("execute",new ExecuteCommand(this));
         subcommands.put("group",new GroupCommand(this));
+        subcommands.put("condition",new ConditionCommand(this));
     }
 
     @Override

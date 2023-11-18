@@ -67,20 +67,21 @@ public class ActionManager {
         });
     }
 
-    public void findAndExecute(OfflinePlayer player, String action, boolean group) {
+    public boolean findAndExecute(OfflinePlayer player, String action, boolean group) {
         CAExecutable executable;
 
         if (!group) {
             Action ac = find(action);
-            if (ac == null) return;
-            executable = new ActionData(ac,action);
+            executable = ac == null ? null : new ActionData(ac,action);
         } else executable = actionGroups.get(action);
 
-        if (!Bukkit.isPrimaryThread()) {
-            executable.execute(player);
-            return;
-        }
-        ConditionalActions.getInstance().async(()->executable.execute(player));
+        if (executable == null) return false;
+
+        if (Bukkit.isPrimaryThread())
+            ConditionalActions.getInstance().async(()->executable.execute(player));
+        else executable.execute(player);
+
+        return true;
     }
 
     public Action find(String action) {
