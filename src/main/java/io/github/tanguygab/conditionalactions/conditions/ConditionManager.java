@@ -77,6 +77,10 @@ public class ConditionManager {
     }
 
     public ConditionType find(String condition) {
+        String condition0 = condition.startsWith("!") ? condition.substring(1) : condition;
+        if (conditions.containsKey(condition0))
+            return new GroupCondition(conditions.get(condition0),condition.startsWith("!") ? "!" : "");
+
         for (String separator : types.keySet())
             if (condition.contains(separator))
                 return types.get(separator).apply(condition);

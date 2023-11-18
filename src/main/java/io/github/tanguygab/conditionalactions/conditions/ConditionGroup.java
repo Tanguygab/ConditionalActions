@@ -35,7 +35,7 @@ public class ConditionGroup {
         for (List<ConditionType> list : conditions) { // OR
             boolean met = true;
             for (ConditionType condition : list) // AND
-                if (!condition.isMet(player))
+                if (condition.isMet(player) == condition.isInverted())
                     met = false;
             if (met) return true; // if all AND conditions are met, return true
         }

@@ -15,7 +15,7 @@ restart:
   - "console: stop"
 test:
   - "msg: Start"
-  - condition: "yes"
+  - condition: "%player_name%==Tanguygab"
     success:
       - "msg: Hi me!"
       - "msg: How's it going?"
