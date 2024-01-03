@@ -18,7 +18,6 @@ public class ServerAction extends Action {
     }
 
     @Override
-    @SuppressWarnings("UnstableApiUsage")
     public void execute(OfflinePlayer player, String match) {
         if (!(player instanceof Player p)) return;
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
