@@ -56,7 +56,8 @@ public class ConditionCommand extends CACommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, String[] args) {
-        if (args.length < 2) return getArguments(List.of("list","check"),args.length == 0 ? "" : args[0]);
+        if (args.length == 0) return null;
+        if (args.length == 1) return getArguments(List.of("list","check"),args[0]);
         if (args[0].equalsIgnoreCase("list")) return List.of();
         if (!args[0].equalsIgnoreCase("check")) return null;
         return args.length > 2 ? getArguments(plugin.getConditionManager().getConditions(),args[2]) : null;
