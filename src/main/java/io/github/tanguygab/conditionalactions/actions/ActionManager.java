@@ -64,10 +64,8 @@ public class ActionManager {
     }
 
     public void load() {
-        System.out.println("Hi, ActionsRegisterEvent");
         ActionsRegisterEvent event = new ActionsRegisterEvent();
         plugin.getServer().getPluginManager().callEvent(event);
-        System.out.println("Hi, "+event.getActions());
         registerAll(event.getActions());
 
         File file = new File(plugin.getDataFolder(),"actiongroups.yml");
