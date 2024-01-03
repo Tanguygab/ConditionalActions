@@ -10,8 +10,8 @@ import io.github.tanguygab.conditionalactions.actions.types.items.*;
 import io.github.tanguygab.conditionalactions.actions.types.messages.*;
 import io.github.tanguygab.conditionalactions.actions.types.other.DelayAction;
 import io.github.tanguygab.conditionalactions.actions.types.storage.*;
+import io.github.tanguygab.conditionalactions.events.ActionsRegisterEvent;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -22,11 +22,13 @@ import java.util.regex.Matcher;
 public class ActionManager {
 
     @Getter private final String argumentSeparator;
+    private final ConditionalActions plugin;
     private final List<Action> actions = new ArrayList<>();
     private final Map<String,ActionGroup> actionGroups = new HashMap<>();
 
     public ActionManager(ConditionalActions plugin, String argumentSeparator) {
         this.argumentSeparator = argumentSeparator;
+        this.plugin = plugin;
         register(
                 new PlayerAction(),
                 new ConsoleAction(),
@@ -56,8 +58,17 @@ public class ActionManager {
 
                 new DelayAction()
         );
-        if (Bukkit.getServer().getPluginManager().isPluginEnabled("LuckPerms"))
+        if (plugin.getServer().getPluginManager().isPluginEnabled("LuckPerms"))
             register(new PermissionAction());
+        plugin.getServer().getScheduler().runTask(plugin,this::load);
+    }
+
+    public void load() {
+        System.out.println("Hi, ActionsRegisterEvent");
+        ActionsRegisterEvent event = new ActionsRegisterEvent();
+        plugin.getServer().getPluginManager().callEvent(event);
+        System.out.println("Hi, "+event.getActions());
+        registerAll(event.getActions());
 
         File file = new File(plugin.getDataFolder(),"actiongroups.yml");
         if (!file.exists()) plugin.saveResource("actiongroups.yml",false);
@@ -77,7 +88,7 @@ public class ActionManager {
 
         if (executable == null) return false;
 
-        if (Bukkit.isPrimaryThread())
+        if (plugin.getServer().isPrimaryThread())
             ConditionalActions.getInstance().async(()->executable.execute(player));
         else executable.execute(player);
 
@@ -94,6 +105,9 @@ public class ActionManager {
 
     public void register(Action... action) {
         actions.addAll(List.of(action));
+    }
+    public void registerAll(List<Action> action) {
+        actions.addAll(action);
     }
 
     public List<String> getSuggestions() {

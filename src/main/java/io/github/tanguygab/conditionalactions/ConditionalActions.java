@@ -36,6 +36,7 @@ public final class ConditionalActions extends JavaPlugin {
         conditionManager = new ConditionManager(this);
         actionManager = new ActionManager(this,getConfig().getString("argument-separator",","));
 
+
         expansions.add(new CAExpansion(this));
         expansions.add(new PAPIExpansion(this,"condition") {
             @Override
