@@ -17,10 +17,10 @@ import java.util.Map;
 public class CustomCommand extends BukkitCommand {
 
     @Getter private final boolean force;
-    private final List<String> actionsList;
+    private final List<?> actionsList;
     private ActionGroup actions;
 
-    public CustomCommand(@NotNull String name, boolean force, List<String> aliases, List<String> actions) {
+    public CustomCommand(@NotNull String name, boolean force, List<String> aliases, List<?> actions) {
         super(name);
         this.force = force;
         if (aliases != null) setAliases(aliases);

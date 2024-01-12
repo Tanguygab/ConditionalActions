@@ -87,4 +87,10 @@ public final class ConditionalActions extends JavaPlugin {
         args = Arrays.copyOfRange(args,1, args.length);
         return subcommands.get(arg).onTabComplete(sender,args);
     }
+
+    public static String parseReplacements(String string, Map<String, String> replacements) {
+        for (String replacement : replacements.keySet())
+            string = string.replace(replacement, replacements.get(replacement));
+        return string;
+    }
 }

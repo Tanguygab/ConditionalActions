@@ -16,7 +16,7 @@ public class ActionCondition implements CAExecutable {
 
     @Override
     public void execute(@Nullable OfflinePlayer player, Map<String, String> replacements) {
-        if (condition.isMet(player)) {
+        if (condition.isMet(player,replacements)) {
             if (success != null) success.execute(player,replacements);
             return;
         }

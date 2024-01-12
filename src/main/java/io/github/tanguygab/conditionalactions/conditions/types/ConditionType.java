@@ -1,8 +1,11 @@
 package io.github.tanguygab.conditionalactions.conditions.types;
 
+import io.github.tanguygab.conditionalactions.ConditionalActions;
 import lombok.Getter;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.OfflinePlayer;
+
+import java.util.Map;
 
 public abstract class ConditionType {
 
@@ -17,17 +20,17 @@ public abstract class ConditionType {
         rightSide = input.length > 1 ? input[1] : "";
     }
 
-    protected String parse(OfflinePlayer player, String string) {
-        return PlaceholderAPI.setPlaceholders(player,string);
+    protected String parse(OfflinePlayer player, String string, Map<String, String> replacements) {
+        return PlaceholderAPI.setPlaceholders(player,ConditionalActions.parseReplacements(string,replacements));
     }
 
-    protected String parseLeft(OfflinePlayer player) {
-        return parse(player, leftSide);
+    protected String parseLeft(OfflinePlayer player, Map<String, String> replacements) {
+        return parse(player, leftSide,replacements);
     }
-    protected String parseRight(OfflinePlayer player) {
-        return parse(player, rightSide);
+    protected String parseRight(OfflinePlayer player, Map<String, String> replacements) {
+        return parse(player, rightSide,replacements);
     }
 
-    public abstract boolean isMet(OfflinePlayer player);
+    public abstract boolean isMet(OfflinePlayer player, Map<String, String> replacements);
 
 }

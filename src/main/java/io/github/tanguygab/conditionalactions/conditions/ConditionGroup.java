@@ -5,6 +5,7 @@ import org.bukkit.OfflinePlayer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ConditionGroup {
 
@@ -32,10 +33,14 @@ public class ConditionGroup {
     }
 
     public boolean isMet(OfflinePlayer player) {
+        return isMet(player,Map.of());
+    }
+
+    public boolean isMet(OfflinePlayer player, Map<String, String> replacements) {
         for (List<ConditionType> list : conditions) { // OR
             boolean met = true;
             for (ConditionType condition : list) // AND
-                if (condition.isMet(player) == condition.isInverted())
+                if (condition.isMet(player,replacements) == condition.isInverted())
                     met = false;
             if (met) return true; // if all AND conditions are met, return true
         }

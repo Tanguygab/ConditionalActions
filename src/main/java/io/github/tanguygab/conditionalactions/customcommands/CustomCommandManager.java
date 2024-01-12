@@ -18,6 +18,7 @@ import java.util.Map;
 public class CustomCommandManager {
 
     private final Map<String, CustomCommand> commands = new HashMap<>();
+    private final Map<String, String> aliases = new HashMap<>();
 
     public CustomCommandManager(ConditionalActions plugin) {
         File file = new File(plugin.getDataFolder(),"commands.yml");
@@ -28,8 +29,9 @@ public class CustomCommandManager {
             if (config instanceof ConfigurationSection section) {
                 boolean force = section.getBoolean("force",true);
                 List<String> aliases = section.getStringList("aliases");
-                List<String> actions = section.getStringList("actions");
+                List<?> actions = section.getList("actions");
                 commands.put(name,new CustomCommand(name,force,aliases,actions));
+                aliases.forEach(alias->this.aliases.put(alias,name));
             }
         });
 
@@ -42,6 +44,10 @@ public class CustomCommandManager {
             CommandMap commandMap = (CommandMap) f.get(plugin.getServer());
             Map<String, Command> map = (Map<String, Command>) mapField.get(commandMap);
             map.putAll(commands);
+            commands.forEach((name,command)->{
+                map.put(name,command);
+                command.getAliases().forEach(alias->map.put(alias,command));
+            });
         } catch (Exception e) {
             e.printStackTrace();
         }

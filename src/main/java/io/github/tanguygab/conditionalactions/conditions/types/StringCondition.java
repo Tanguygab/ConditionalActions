@@ -2,6 +2,7 @@ package io.github.tanguygab.conditionalactions.conditions.types;
 
 import org.bukkit.OfflinePlayer;
 
+import java.util.Map;
 import java.util.function.BiFunction;
 
 public class StringCondition extends ConditionType {
@@ -14,8 +15,8 @@ public class StringCondition extends ConditionType {
     }
 
     @Override
-    public boolean isMet(OfflinePlayer p) {
-        return function.apply(parseLeft(p), parseRight(p));
+    public boolean isMet(OfflinePlayer p, Map<String, String> replacements) {
+        return function.apply(parseLeft(p,replacements), parseRight(p,replacements));
     }
 
 }

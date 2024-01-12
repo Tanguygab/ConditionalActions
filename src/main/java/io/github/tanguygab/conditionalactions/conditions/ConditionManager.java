@@ -28,8 +28,9 @@ public class ConditionManager {
 
         put("permission:", input->new ConditionType(input.split("permission:")) {
             @Override
-            public boolean isMet(OfflinePlayer p) {
-                return p != null && p.getPlayer() != null && p.getPlayer().hasPermission(rightSide);
+            public boolean isMet(OfflinePlayer p, Map<String, String> replacements) {
+                String permission = ConditionalActions.parseReplacements(rightSide,replacements);
+                return p != null && p.getPlayer() != null && p.getPlayer().hasPermission(permission);
             }
         });
     }};

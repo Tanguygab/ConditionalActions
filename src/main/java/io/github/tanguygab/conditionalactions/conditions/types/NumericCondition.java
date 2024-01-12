@@ -2,6 +2,7 @@ package io.github.tanguygab.conditionalactions.conditions.types;
 
 import org.bukkit.OfflinePlayer;
 
+import java.util.Map;
 import java.util.function.BiFunction;
 
 public class NumericCondition extends ConditionType {
@@ -32,18 +33,18 @@ public class NumericCondition extends ConditionType {
         catch (Exception e) {return 0;}
     }
 
-    public double getLeft(OfflinePlayer player) {
+    public double getLeft(OfflinePlayer player, Map<String, String> replacements) {
         if (leftSideStatic) return leftSideValue;
-        return get(parseLeft(player));
+        return get(parseLeft(player,replacements));
     }
 
-    public double getRight(OfflinePlayer player) {
+    public double getRight(OfflinePlayer player, Map<String, String> replacements) {
         if (rightSideStatic) return rightSideValue;
-        return get(parseRight(player));
+        return get(parseRight(player,replacements));
     }
 
     @Override
-    public boolean isMet(OfflinePlayer p) {
-        return function.apply(getLeft(p), getRight(p));
+    public boolean isMet(OfflinePlayer p, Map<String, String> replacements) {
+        return function.apply(getLeft(p,replacements), getRight(p,replacements));
     }
 }

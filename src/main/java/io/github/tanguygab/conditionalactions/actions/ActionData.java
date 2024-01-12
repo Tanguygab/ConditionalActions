@@ -1,5 +1,6 @@
 package io.github.tanguygab.conditionalactions.actions;
 
+import io.github.tanguygab.conditionalactions.ConditionalActions;
 import io.github.tanguygab.conditionalactions.actions.types.Action;
 import lombok.AllArgsConstructor;
 import org.bukkit.OfflinePlayer;
@@ -14,9 +15,7 @@ public class ActionData implements CAExecutable {
 
     @Override
     public void execute(OfflinePlayer player, Map<String, String> replacements) {
-        String args = arguments;
-        for (String replacement : replacements.keySet())
-            args = args.replace(replacement, replacements.get(replacement));
+        String args = ConditionalActions.parseReplacements(arguments,replacements);
 
         if (action.replaceMatch())
             args = args.replaceAll(action.getPattern().pattern(),"");

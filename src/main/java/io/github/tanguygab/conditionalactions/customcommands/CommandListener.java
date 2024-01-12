@@ -20,6 +20,9 @@ public class CommandListener implements Listener {
         String[] args = e.getMessage().split(" ");
         String cmd = args[0].toLowerCase().substring(1);
         CustomCommand command = manager.getCommands().get(cmd);
+        if (command == null && manager.getAliases().containsKey(cmd))
+            command = manager.getCommands().get(manager.getAliases().get(cmd));
+
         if (command != null && command.isForce()) {
             e.setCancelled(true);
             command.execute(e.getPlayer(),cmd,Arrays.copyOfRange(args,1,args.length));
