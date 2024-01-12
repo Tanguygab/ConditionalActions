@@ -1,0 +1,7 @@
+mycoolcommand:
+  aliases:
+    - mycoolcmd
+    - coolcommand
+    - coolcmd
+  actions:
+    - "msg: &aHeya &2%player_name%&a! Cool command right?"

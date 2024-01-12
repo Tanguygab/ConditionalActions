@@ -3,9 +3,12 @@ package io.github.tanguygab.conditionalactions;
 import io.github.tanguygab.conditionalactions.actions.ActionManager;
 import io.github.tanguygab.conditionalactions.commands.*;
 import io.github.tanguygab.conditionalactions.conditions.ConditionManager;
+import io.github.tanguygab.conditionalactions.customcommands.CustomCommandManager;
 import io.github.tanguygab.conditionalactions.hooks.papi.CAExpansion;
 import io.github.tanguygab.conditionalactions.hooks.papi.PAPIExpansion;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -24,6 +27,7 @@ public final class ConditionalActions extends JavaPlugin {
     @Getter private DataManager dataManager;
     @Getter private ActionManager actionManager;
     @Getter private ConditionManager conditionManager;
+    @Getter @Setter private CustomCommandManager customCommandManager;
 
 
     @Override
@@ -35,7 +39,6 @@ public final class ConditionalActions extends JavaPlugin {
         dataManager = new DataManager();
         conditionManager = new ConditionManager(this);
         actionManager = new ActionManager(this,getConfig().getString("argument-separator",","));
-
 
         expansions.add(new CAExpansion(this));
         expansions.add(new PAPIExpansion(this,"condition") {

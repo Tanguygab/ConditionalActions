@@ -10,6 +10,7 @@ import io.github.tanguygab.conditionalactions.actions.types.items.*;
 import io.github.tanguygab.conditionalactions.actions.types.messages.*;
 import io.github.tanguygab.conditionalactions.actions.types.other.DelayAction;
 import io.github.tanguygab.conditionalactions.actions.types.storage.*;
+import io.github.tanguygab.conditionalactions.customcommands.CustomCommandManager;
 import io.github.tanguygab.conditionalactions.events.ActionsRegisterEvent;
 import lombok.Getter;
 import org.bukkit.OfflinePlayer;
@@ -74,6 +75,8 @@ public class ActionManager {
         groups.getValues(false).forEach((name,config)->{
             if (config instanceof List<?> list) actionGroups.put(name,new ActionGroup(this,list));
         });
+
+        plugin.setCustomCommandManager(new CustomCommandManager(plugin));
     }
 
     public boolean findAndExecute(OfflinePlayer player, String action, boolean group) {
