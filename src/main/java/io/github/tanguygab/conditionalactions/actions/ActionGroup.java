@@ -16,9 +16,7 @@ public class ActionGroup implements CAExecutable {
 
     public ActionGroup(ActionManager manager, List<?> config) {
         this.manager = manager;
-        System.out.println(this+",config: "+config);
         config.forEach(action->{
-            System.out.println("action: "+action);
             if (action instanceof Map<?,?> map) {
                 ConditionGroup condition = ConditionalActions.getInstance().getConditionManager().getCondition((String) map.get("condition"));
                 actions.add(new ActionCondition(condition,loadConditionList(map,"success"),loadConditionList(map,"deny")));
