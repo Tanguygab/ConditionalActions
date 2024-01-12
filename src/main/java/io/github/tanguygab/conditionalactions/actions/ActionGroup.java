@@ -12,7 +12,7 @@ import java.util.Map;
 public class ActionGroup implements CAExecutable {
 
     private final ActionManager manager;
-    private final List<Object> actions = new ArrayList<>();
+    private final List<CAExecutable> actions = new ArrayList<>();
 
     public ActionGroup(ActionManager manager, List<?> config) {
         this.manager = manager;
@@ -31,7 +31,7 @@ public class ActionGroup implements CAExecutable {
         return new ActionGroup(manager,list);
     }
 
-    private void add(List<Object> list, String line) {
+    private void add(List<CAExecutable> list, String line) {
         if (line.equalsIgnoreCase("return")) {
             list.add(null);
             return;
@@ -41,11 +41,10 @@ public class ActionGroup implements CAExecutable {
     }
 
     @Override
-    public void execute(OfflinePlayer player) {
-        for (Object action : actions) {
-            if (action == null) return;
-            if (action instanceof ActionData data) data.execute(player);
-            if (action instanceof ActionCondition condition) condition.execute(player);
+    public void execute(OfflinePlayer player, Map<String, String> replacements) {
+        for (CAExecutable executable : actions) {
+            if (executable == null) return;
+            executable.execute(player, replacements);
         }
     }
 

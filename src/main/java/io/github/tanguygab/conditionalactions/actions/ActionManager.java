@@ -76,7 +76,7 @@ public class ActionManager {
             if (config instanceof List<?> list) actionGroups.put(name,new ActionGroup(this,list));
         });
 
-        plugin.setCustomCommandManager(new CustomCommandManager(plugin));
+        plugin.getCustomCommandManager().getCommands().values().forEach(command->command.loadActions(this));
     }
 
     public boolean findAndExecute(OfflinePlayer player, String action, boolean group) {
