@@ -20,8 +20,7 @@ public class ActionData implements CAExecutable {
         if (action.replaceMatch())
             args = args.replaceAll(action.getPattern().pattern(),"");
 
-        String finalArgs = args;
-        action.execute(player,finalArgs);
+        action.execute(player,args);
         return true;
     }
 

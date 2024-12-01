@@ -17,9 +17,15 @@ public class PlayerAction extends Action {
 
     @Override
     public void execute(OfflinePlayer player, String match) {
-        if (!(player instanceof Player p)) return;
         String command = parsePlaceholders(player,match);
-        getPlugin().getScheduler().entity(p).run(()->p.performCommand(command));
+
+        if (player instanceof Player p) {
+            getPlugin().getScheduler().entity(p).run(() -> p.performCommand(command));
+            return;
+        }
+        getPlugin().getScheduler().global().run(() -> getPlugin().getServer().dispatchCommand(getPlugin().getServer().getConsoleSender(),command));
+
+
     }
 
 }
