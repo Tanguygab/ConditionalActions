@@ -61,7 +61,7 @@ public class ActionManager {
         );
         if (plugin.getServer().getPluginManager().isPluginEnabled("LuckPerms"))
             register(new PermissionAction());
-        plugin.getServer().getScheduler().runTask(plugin,this::load);
+        plugin.getScheduler().global().run(this::load);
     }
 
     public void load() {

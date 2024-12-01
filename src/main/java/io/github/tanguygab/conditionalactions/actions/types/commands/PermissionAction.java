@@ -44,7 +44,7 @@ public class PermissionAction extends Action {
         try {
             um.saveUser(user).get();
             String command = parsePlaceholders(p,match);
-            getPlugin().getServer().getScheduler().callSyncMethod(getPlugin(),()->getPlugin().getServer().dispatchCommand(p,command)).get();
+            getPlugin().getScheduler().entity(p).run(()->p.performCommand(command)).asFuture().get();
         } catch (Exception ignored) {}
         nodes.forEach(node->user.data().remove(node));
         um.saveUser(user);
