@@ -12,8 +12,10 @@ import io.github.tanguygab.conditionalactions.actions.types.other.DelayAction;
 import io.github.tanguygab.conditionalactions.actions.types.storage.*;
 import io.github.tanguygab.conditionalactions.events.ActionsRegisterEvent;
 import lombok.Getter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.util.*;
@@ -54,13 +56,18 @@ public class ActionManager {
                 new BroadcastTitleAction(),
                 new ChatAction(),
                 new MessageAction(),
-                new MiniMessageAction(),
                 new TitleAction(),
 
                 new DelayAction()
         );
         if (plugin.getServer().getPluginManager().isPluginEnabled("LuckPerms"))
             register(new PermissionAction());
+
+        try {
+            Player.class.getMethod("sendMessage", Component.class);
+            register(new MiniMessageAction());
+        } catch (NoSuchMethodException ignored) {}
+
         plugin.getScheduler().global().run(this::load);
     }
 

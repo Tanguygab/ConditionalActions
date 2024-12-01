@@ -9,7 +9,6 @@ import io.github.tanguygab.conditionalactions.customcommands.CustomCommandManage
 import io.github.tanguygab.conditionalactions.hooks.papi.CAExpansion;
 import io.github.tanguygab.conditionalactions.hooks.papi.PAPIExpansion;
 import lombok.Getter;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -24,7 +23,6 @@ public final class ConditionalActions extends JavaPlugin {
     @Getter private static ConditionalActions instance;
     private final Map<String, CACommand> subcommands = new HashMap<>();
     private final List<PAPIExpansion> expansions = new ArrayList<>();
-    @Getter private BukkitAudiences adventure;
     @Getter private ServerImplementation scheduler;
 
     @Getter private DataManager dataManager;
@@ -39,7 +37,6 @@ public final class ConditionalActions extends JavaPlugin {
         saveDefaultConfig();
         reloadConfig();
 
-        adventure = BukkitAudiences.create(this);
         scheduler = new FoliaCompatibility(this).getServerImplementation();
 
         dataManager = new DataManager();
@@ -69,9 +66,6 @@ public final class ConditionalActions extends JavaPlugin {
 
         expansions.forEach(PAPIExpansion::unregister);
         expansions.clear();
-
-        adventure.close();
-        adventure = null;
     }
 
     @Override

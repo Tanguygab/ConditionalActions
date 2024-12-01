@@ -23,7 +23,8 @@ public class MiniMessageAction extends Action {
     public void execute(OfflinePlayer player, String match) {
         match = parsePlaceholders(player, match);
         Component component = mm.deserialize(match);
-        if (player instanceof Player p) getPlugin().getAdventure().player(p).sendMessage(component);
-        else getPlugin().getAdventure().console().sendMessage(component);
+
+        if (player instanceof Player p) p.sendMessage(component);
+        else getPlugin().getServer().getConsoleSender().sendMessage(component);
     }
 }
