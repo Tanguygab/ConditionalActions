@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 public class ServerAction extends Action {
 
     public ServerAction() {
-        super("(?i)server:( )?");
+        super("^(?i)server:( )?");
     }
 
     @Override

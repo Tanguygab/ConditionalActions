@@ -11,7 +11,7 @@ public class MiniMessageAction extends Action {
     private final MiniMessage mm = MiniMessage.miniMessage();
 
     public MiniMessageAction() {
-        super("(?i)(minimessage|mm):( )?");
+        super("^(?i)(minimessage|mm):( )?");
     }
 
     @Override
@@ -21,7 +21,7 @@ public class MiniMessageAction extends Action {
 
     @Override
     public void execute(OfflinePlayer player, String match) {
-        match = parsePlaceholders(player, match, false);
+        match = parsePlaceholders(player, match);
         Component component = mm.deserialize(match);
         if (player instanceof Player p) getPlugin().getAdventure().player(p).sendMessage(component);
         else getPlugin().getAdventure().console().sendMessage(component);

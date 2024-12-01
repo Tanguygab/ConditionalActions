@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public class MessageAction extends Action {
 
     public MessageAction() {
-        super("(?i)(message|msg|tell):( )?");
+        super("^(?i)(message|msg|tell):( )?");
     }
 
     @Override
@@ -17,7 +17,7 @@ public class MessageAction extends Action {
 
     @Override
     public void execute(OfflinePlayer player, String match) {
-        match = parsePlaceholders(player,match);
+        match = parsePlaceholders(player, match, true);
         if (player instanceof Player p) p.sendMessage(match);
         else getPlugin().getServer().getConsoleSender().sendMessage(match);
     }

@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public class TitleAction extends Action {
 
     public TitleAction() {
-        super("(?i)title:( )?");
+        super("^(?i)title:( )?");
     }
 
     @Override
@@ -18,7 +18,7 @@ public class TitleAction extends Action {
     @Override
     public void execute(OfflinePlayer player, String match) {
         if (!(player instanceof Player p)) return;
-        match = parsePlaceholders(p,match);
+        match = parsePlaceholders(p, match, true);
         String[] matches = split(match);
 
         String title = matches[0];

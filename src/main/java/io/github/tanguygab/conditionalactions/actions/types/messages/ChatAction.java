@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public class ChatAction extends Action {
 
     public ChatAction() {
-        super("(?i)chat:( )?");
+        super("^(?i)chat:( )?");
     }
 
     @Override

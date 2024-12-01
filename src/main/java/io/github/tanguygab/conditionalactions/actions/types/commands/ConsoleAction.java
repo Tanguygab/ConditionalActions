@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer;
 public class ConsoleAction extends Action {
 
     public ConsoleAction() {
-        super("(?i)console:( )?");
+        super("^(?i)console:( )?");
     }
 
     @Override

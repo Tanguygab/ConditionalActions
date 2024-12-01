@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer;
 public class DelayAction extends Action {
 
     public DelayAction() {
-        super("(?i)delay:( )?");
+        super("^(?i)delay:( )?");
     }
 
     @Override

@@ -8,7 +8,7 @@ import org.bukkit.OfflinePlayer;
 public class RemoveDataAction extends Action {
 
     public RemoveDataAction() {
-        super("(?i)remove-data: ");
+        super("^(?i)remove-data: ");
     }
 
     @Override

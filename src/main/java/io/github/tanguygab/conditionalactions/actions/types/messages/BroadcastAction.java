@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer;
 public class BroadcastAction extends Action {
 
     public BroadcastAction() {
-        super("(?i)(broadcast|bc):( )?");
+        super("^(?i)(broadcast|bc):( )?");
     }
 
     @Override
@@ -16,7 +16,7 @@ public class BroadcastAction extends Action {
 
     @Override
     public void execute(OfflinePlayer player, String match) {
-        String message = parsePlaceholders(player,match);
+        String message = parsePlaceholders(player, match, true);
         getPlugin().getServer().getOnlinePlayers().forEach(p->p.sendMessage(message));
     }
 }

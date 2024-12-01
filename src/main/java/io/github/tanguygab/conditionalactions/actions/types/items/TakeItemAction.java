@@ -15,7 +15,7 @@ import java.util.List;
 public class TakeItemAction extends Action {
 
     public TakeItemAction() {
-        super("(i?)take-item:( )?");
+        super("^(i?)take-item:( )?");
     }
 
     @Override
@@ -33,7 +33,7 @@ public class TakeItemAction extends Action {
         Material mat = Material.getMaterial(material);
         if (mat == null) return;
 
-        int amt = args.length > 1 ? parseInt(parsePlaceholders(p,args[1]),1) : 99999;
+        int amt = args.length > 1 ? parseInt(parsePlaceholders(p, args[1]),1) : 99999;
         if (amt <= 0) return;
 
         String name = null;
@@ -42,11 +42,11 @@ public class TakeItemAction extends Action {
         if (args.length > 2) {
             args = Arrays.copyOfRange(args,2,args.length);
             args = String.join(" ",args).split("\\n");
-            name = parsePlaceholders(p,args[0]);
+            name = parsePlaceholders(p, args[0], true);
 
             if (args.length > 1)
                 for (String line : Arrays.copyOfRange(args,1,args.length))
-                    lore.add(parsePlaceholders(p, line));
+                    lore.add(parsePlaceholders(p, line, true));
         }
 
         PlayerInventory inv = p.getInventory();

@@ -5,7 +5,7 @@ import org.bukkit.OfflinePlayer;
 
 public class GroupAction extends Action {
     public GroupAction() {
-        super("(?i)group:( )?");
+        super("^(?i)group:( )?");
     }
 
     @Override

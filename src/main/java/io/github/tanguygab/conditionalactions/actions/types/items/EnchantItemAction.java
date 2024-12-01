@@ -14,7 +14,7 @@ public class EnchantItemAction extends Action {
     @Getter private final String suggestion;
 
     public EnchantItemAction(String type) {
-        super("(i?)"+type+"-enchant-item:( )?");
+        super("^(i?)"+type+"-enchant-item:( )?");
         this.type = type;
 
         suggestion = type+"-enchant-item: <slot> <enchant> "+(type.equals("set") ? "<level>" : "[level]");

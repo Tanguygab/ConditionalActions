@@ -8,7 +8,7 @@ import org.bukkit.OfflinePlayer;
 public class SetDataAction extends Action {
 
     public SetDataAction() {
-        super("(?i)set-data: ");
+        super("^(?i)set-data: ");
     }
 
     @Override

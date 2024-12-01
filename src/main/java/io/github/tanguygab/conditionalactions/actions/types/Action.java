@@ -33,7 +33,7 @@ public abstract class Action {
     }
 
     protected String parsePlaceholders(OfflinePlayer player, String string) {
-        return parsePlaceholders(player, string, true);
+        return parsePlaceholders(player, string, false);
     }
     protected String parsePlaceholders(OfflinePlayer player, String string, boolean colors) {
         string = PlaceholderAPI.setPlaceholders(player, string);

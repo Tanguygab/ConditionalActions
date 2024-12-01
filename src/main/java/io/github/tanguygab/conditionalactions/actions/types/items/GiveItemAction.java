@@ -14,7 +14,7 @@ import java.util.List;
 public class GiveItemAction extends Action {
 
     public GiveItemAction() {
-        super("(i?)give-item:( )?");
+        super("^(i?)give-item:( )?");
     }
 
     @Override
@@ -35,16 +35,16 @@ public class GiveItemAction extends Action {
         ItemMeta meta = item.getItemMeta();
         assert meta != null;
 
-        if (args.length > 1) item.setAmount(parseInt(parsePlaceholders(p,args[1]),1));
+        if (args.length > 1) item.setAmount(parseInt(parsePlaceholders(p, args[1]),1));
         if (args.length > 2) {
             args = Arrays.copyOfRange(args,2,args.length);
             args = String.join(" ",args).split("\\n");
-            meta.setDisplayName(parsePlaceholders(p,args[0]));
+            meta.setDisplayName(parsePlaceholders(p, args[0], true));
 
             if (args.length > 1) {
                 List<String> lore = new ArrayList<>();
                 for (String line : Arrays.copyOfRange(args,1,args.length))
-                    lore.add(parsePlaceholders(p, line));
+                    lore.add(parsePlaceholders(p, line, true));
                 meta.setLore(lore);
             }
         }

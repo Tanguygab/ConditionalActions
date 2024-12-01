@@ -10,7 +10,7 @@ import org.bukkit.inventory.meta.Damageable;
 public class RepairItemAction extends Action {
 
     public RepairItemAction() {
-        super("(i?)repair-item:( )?");
+        super("^(i?)repair-item:( )?");
     }
 
     @Override

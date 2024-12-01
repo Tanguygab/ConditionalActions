@@ -8,7 +8,7 @@ import org.bukkit.entity.Player;
 public class BroadcastTitleAction extends Action {
 
     public BroadcastTitleAction() {
-        super("(?i)(broadcast|bc)-title:( )?");
+        super("^(?i)(broadcast|bc)-title:( )?");
     }
 
     @Override
@@ -18,7 +18,7 @@ public class BroadcastTitleAction extends Action {
 
     @Override
     public void execute(OfflinePlayer player, String match) {
-        match = parsePlaceholders(player,match);
+        match = parsePlaceholders(player, match, true);
         String[] matches = split(match);
 
         String title = matches[0];

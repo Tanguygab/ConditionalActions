@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 public class PlayerAction extends Action {
 
     public PlayerAction() {
-        super("(?i)(player|cmd|command):( )?");
+        super("^(?i)(player|cmd|command):( )?");
     }
 
     @Override

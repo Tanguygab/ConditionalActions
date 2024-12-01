@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 public class ActionBarAction extends Action {
 
     public ActionBarAction() {
-        super("(?i)(actionbar):( )?");
+        super("^(?i)(actionbar):( )?");
     }
 
     @Override
@@ -20,7 +20,7 @@ public class ActionBarAction extends Action {
     @Override
     public void execute(OfflinePlayer player, String match) {
         if (!(player instanceof Player p)) return;
-        match = parsePlaceholders(p,match);
+        match = parsePlaceholders(p, match, true);
         p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(match));
     }
 }

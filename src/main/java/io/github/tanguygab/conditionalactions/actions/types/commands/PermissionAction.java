@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
 public class PermissionAction extends Action {
 
     public PermissionAction() {
-        super("(?i)(permission|perm):(?<permission>[a-zA-Z0-9.*_\\- \",]+):( )?",false);
+        super("^(?i)(permission|perm):(?<permission>[a-zA-Z0-9.*_\\- \",]+):( )?",false);
     }
 
     @Override

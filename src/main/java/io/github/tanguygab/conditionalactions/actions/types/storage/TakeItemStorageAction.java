@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 public class TakeItemStorageAction extends Action {
 
     public TakeItemStorageAction() {
-        super("(i?)take-item-storage:( )?");
+        super("^(i?)take-item-storage:( )?");
     }
 
     @Override

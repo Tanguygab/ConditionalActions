@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 public class GiveItemStorageAction extends Action {
 
     public GiveItemStorageAction() {
-        super("(i?)give-item-storage:( )?");
+        super("^(i?)give-item-storage:( )?");
     }
 
     @Override

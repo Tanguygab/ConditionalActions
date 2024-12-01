@@ -9,7 +9,7 @@ import org.bukkit.OfflinePlayer;
 public class BroadcastActionBarAction extends Action {
 
     public BroadcastActionBarAction() {
-        super("(?i)((broadcast|bc)-actionbar):( )?");
+        super("^(?i)((broadcast|bc)-actionbar):( )?");
     }
 
     @Override
@@ -19,7 +19,7 @@ public class BroadcastActionBarAction extends Action {
 
     @Override
     public void execute(OfflinePlayer player, String match) {
-        match = parsePlaceholders(player,match);
+        match = parsePlaceholders(player, match, true);
         BaseComponent[] components = TextComponent.fromLegacyText(match);
         getPlugin().getServer().getOnlinePlayers().forEach(p->p.spigot().sendMessage(ChatMessageType.ACTION_BAR,components));
     }
