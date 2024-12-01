@@ -1,6 +1,7 @@
 package io.github.tanguygab.conditionalactions.actions.types.commands;
 
 import io.github.tanguygab.conditionalactions.actions.types.Action;
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.model.user.UserManager;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 
 public class PermissionAction extends Action {
@@ -44,7 +46,16 @@ public class PermissionAction extends Action {
         try {
             um.saveUser(user).get();
             String command = parsePlaceholders(p,match);
-            getPlugin().getScheduler().entity(p).run(()->p.performCommand(command)).asFuture().get();
+            try {
+                CompletableFuture<ScheduledTask> future = new CompletableFuture<>();
+                p.getScheduler().run(getPlugin(), task -> {
+                    p.performCommand(command);
+                    future.complete(task);
+                }, null);
+                future.get();
+            } catch (NoSuchMethodError e) {
+                getPlugin().getServer().getScheduler().callSyncMethod(getPlugin(), () -> p.performCommand(command)).get();
+            }
         } catch (Exception ignored) {}
         nodes.forEach(node->user.data().remove(node));
         um.saveUser(user);

@@ -20,10 +20,10 @@ public class PlayerAction extends Action {
         String command = parsePlaceholders(player,match);
 
         if (player instanceof Player p) {
-            getPlugin().getScheduler().entity(p).run(() -> p.performCommand(command));
+            getPlugin().sync(p, () -> p.performCommand(command));
             return;
         }
-        getPlugin().getScheduler().global().run(() -> getPlugin().getServer().dispatchCommand(getPlugin().getServer().getConsoleSender(),command));
+        getPlugin().sync(null, () -> getPlugin().getServer().dispatchCommand(getPlugin().getServer().getConsoleSender(),command));
 
 
     }

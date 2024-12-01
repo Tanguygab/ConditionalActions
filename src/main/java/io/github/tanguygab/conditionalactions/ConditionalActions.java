@@ -1,7 +1,5 @@
 package io.github.tanguygab.conditionalactions;
 
-import com.cjcrafter.foliascheduler.FoliaCompatibility;
-import com.cjcrafter.foliascheduler.ServerImplementation;
 import io.github.tanguygab.conditionalactions.actions.ActionManager;
 import io.github.tanguygab.conditionalactions.commands.*;
 import io.github.tanguygab.conditionalactions.conditions.ConditionManager;
@@ -12,6 +10,7 @@ import lombok.Getter;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +22,6 @@ public final class ConditionalActions extends JavaPlugin {
     @Getter private static ConditionalActions instance;
     private final Map<String, CACommand> subcommands = new HashMap<>();
     private final List<PAPIExpansion> expansions = new ArrayList<>();
-    @Getter private ServerImplementation scheduler;
 
     @Getter private DataManager dataManager;
     @Getter private ActionManager actionManager;
@@ -36,8 +34,6 @@ public final class ConditionalActions extends JavaPlugin {
         instance = this;
         saveDefaultConfig();
         reloadConfig();
-
-        scheduler = new FoliaCompatibility(this).getServerImplementation();
 
         dataManager = new DataManager();
         conditionManager = new ConditionManager(this);
@@ -62,10 +58,34 @@ public final class ConditionalActions extends JavaPlugin {
     @Override
     public void onDisable() {
         HandlerList.unregisterAll(this);
+        try {
+            getServer().getAsyncScheduler().cancelTasks(this);
+            getServer().getGlobalRegionScheduler().cancelTasks(this);
+        } catch (NoSuchMethodError e) {
+            getServer().getScheduler().cancelTasks(this);
+        }
+
         subcommands.clear();
 
         expansions.forEach(PAPIExpansion::unregister);
         expansions.clear();
+    }
+
+    public void async(Runnable run) {
+        try {
+            getServer().getAsyncScheduler().runNow(this, task -> run.run());
+        } catch (NoSuchMethodError e) {
+            getServer().getScheduler().runTaskAsynchronously(this, run);
+        }
+    }
+
+    public void sync(Player player, Runnable run) {
+        try {
+            if (player == null) getServer().getGlobalRegionScheduler().run(this, task -> run.run());
+            else player.getScheduler().run(this, task -> run.run(), null);
+        } catch (NoSuchMethodError e) {
+            getServer().getScheduler().runTask(this, run);
+        }
     }
 
     @Override

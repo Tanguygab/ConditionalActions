@@ -68,7 +68,7 @@ public class ActionManager {
             register(new MiniMessageAction());
         } catch (NoSuchMethodException ignored) {}
 
-        plugin.getScheduler().global().run(this::load);
+        plugin.sync(null, this::load);
     }
 
     public void load() {
@@ -97,7 +97,7 @@ public class ActionManager {
         if (executable == null) return false;
 
         if (plugin.getServer().isPrimaryThread())
-            ConditionalActions.getInstance().getScheduler().async().runNow(()->executable.execute(player));
+            ConditionalActions.getInstance().async(()->executable.execute(player));
         else executable.execute(player);
 
         return true;

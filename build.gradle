@@ -1,7 +1,6 @@
 plugins {
     id 'java'
     id 'maven-publish'
-    id("io.github.goooler.shadow") version "8.1.7"
 }
 
 group = 'io.github.tanguygab'
@@ -28,8 +27,6 @@ dependencies {
     compileOnly 'org.jetbrains:annotations:15.0'
     compileOnly 'org.projectlombok:lombok:1.18.36'
     annotationProcessor 'org.projectlombok:lombok:1.18.36'
-
-    implementation("com.cjcrafter:foliascheduler:0.6.0")
 }
 
 processResources {
@@ -39,11 +36,6 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
-}
-
-shadowJar {
-    setArchiveClassifier("");
-    relocate("com.cjcrafter", "io.github.tanguygab.conditionalactions.libs.cjcrafter")
 }
 
 publishing {

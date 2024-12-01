@@ -17,7 +17,7 @@ public class ConsoleAction extends Action {
     @Override
     public void execute(OfflinePlayer player, String match) {
         String command = parsePlaceholders(player,match);
-        getPlugin().getScheduler().global().run(()-> getPlugin().getServer().dispatchCommand(getPlugin().getServer().getConsoleSender(),command));
+        getPlugin().sync(null, ()-> getPlugin().getServer().dispatchCommand(getPlugin().getServer().getConsoleSender(),command));
     }
 
 }

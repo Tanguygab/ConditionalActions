@@ -19,6 +19,6 @@ public class ChatAction extends Action {
     public void execute(OfflinePlayer player, String match) {
         if (!(player instanceof Player p)) return;
         String message = parsePlaceholders(p,match);
-        getPlugin().getScheduler().entity(p).run(()->p.chat(message));
+        getPlugin().sync(p, ()->p.chat(message));
     }
 }
