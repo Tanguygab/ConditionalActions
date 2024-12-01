@@ -54,6 +54,7 @@ public class ActionManager {
                 new BroadcastTitleAction(),
                 new ChatAction(),
                 new MessageAction(),
+                new MiniMessageAction(),
                 new TitleAction(),
 
                 new DelayAction()
@@ -89,7 +90,7 @@ public class ActionManager {
         if (executable == null) return false;
 
         if (plugin.getServer().isPrimaryThread())
-            ConditionalActions.getInstance().async(()->executable.execute(player));
+            ConditionalActions.getInstance().getScheduler().async().runNow(()->executable.execute(player));
         else executable.execute(player);
 
         return true;

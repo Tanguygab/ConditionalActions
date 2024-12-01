@@ -31,11 +31,13 @@ public abstract class Action {
     protected ConditionalActions getPlugin() {
         return ConditionalActions.getInstance();
     }
-    protected void sync(Runnable run) {
-        getPlugin().sync(run);
-    }
+
     protected String parsePlaceholders(OfflinePlayer player, String string) {
-        return Utils.colors(PlaceholderAPI.setPlaceholders(player, string));
+        return parsePlaceholders(player, string, true);
+    }
+    protected String parsePlaceholders(OfflinePlayer player, String string, boolean colors) {
+        string = PlaceholderAPI.setPlaceholders(player, string);
+        return colors ? Utils.colors(string) : string;
     }
     protected int parseInt(String str, int def) {
         try {return Integer.parseInt(str);}

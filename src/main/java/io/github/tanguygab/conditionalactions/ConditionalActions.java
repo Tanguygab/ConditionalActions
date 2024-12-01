@@ -1,5 +1,7 @@
 package io.github.tanguygab.conditionalactions;
 
+import com.cjcrafter.foliascheduler.FoliaCompatibility;
+import com.cjcrafter.foliascheduler.ServerImplementation;
 import io.github.tanguygab.conditionalactions.actions.ActionManager;
 import io.github.tanguygab.conditionalactions.commands.*;
 import io.github.tanguygab.conditionalactions.conditions.ConditionManager;
@@ -7,6 +9,7 @@ import io.github.tanguygab.conditionalactions.customcommands.CustomCommandManage
 import io.github.tanguygab.conditionalactions.hooks.papi.CAExpansion;
 import io.github.tanguygab.conditionalactions.hooks.papi.PAPIExpansion;
 import lombok.Getter;
+import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -21,6 +24,8 @@ public final class ConditionalActions extends JavaPlugin {
     @Getter private static ConditionalActions instance;
     private final Map<String, CACommand> subcommands = new HashMap<>();
     private final List<PAPIExpansion> expansions = new ArrayList<>();
+    @Getter private BukkitAudiences adventure;
+    @Getter private ServerImplementation scheduler;
 
     @Getter private DataManager dataManager;
     @Getter private ActionManager actionManager;
@@ -33,6 +38,9 @@ public final class ConditionalActions extends JavaPlugin {
         instance = this;
         saveDefaultConfig();
         reloadConfig();
+
+        adventure = BukkitAudiences.create(this);
+        scheduler = new FoliaCompatibility(this).getServerImplementation();
 
         dataManager = new DataManager();
         conditionManager = new ConditionManager(this);
@@ -58,15 +66,12 @@ public final class ConditionalActions extends JavaPlugin {
     public void onDisable() {
         HandlerList.unregisterAll(this);
         subcommands.clear();
+
         expansions.forEach(PAPIExpansion::unregister);
         expansions.clear();
-    }
 
-    public void async(Runnable run) {
-        getServer().getScheduler().runTaskAsynchronously(this,run);
-    }
-    public void sync(Runnable run) {
-        getServer().getScheduler().runTask(this,run);
+        adventure.close();
+        adventure = null;
     }
 
     @Override

@@ -19,7 +19,7 @@ public class PlayerAction extends Action {
     public void execute(OfflinePlayer player, String match) {
         if (!(player instanceof Player p)) return;
         String command = parsePlaceholders(player,match);
-        sync(()->p.performCommand(command));
+        getPlugin().getScheduler().entity(p).run(()->p.performCommand(command));
     }
 
 }

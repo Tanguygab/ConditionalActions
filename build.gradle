@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'maven-publish'
+    id("io.github.goooler.shadow") version "8.1.7"
 }
 
 group = 'io.github.tanguygab'
@@ -16,6 +17,7 @@ repositories {
         name = 'papi-repo'
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
+    mavenCentral()
 }
 
 dependencies {
@@ -26,6 +28,11 @@ dependencies {
     compileOnly 'org.jetbrains:annotations:15.0'
     compileOnly 'org.projectlombok:lombok:1.18.28'
     annotationProcessor 'org.projectlombok:lombok:1.18.28'
+
+    implementation "net.kyori:adventure-platform-bukkit:4.3.4"
+    implementation 'net.kyori:adventure-text-minimessage:4.17.0'
+
+    implementation("com.cjcrafter:foliascheduler:0.6.0")
 }
 
 processResources {
@@ -35,6 +42,12 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+shadowJar {
+    setArchiveClassifier("");
+    relocate("net.kyori", "io.github.tanguygab.conditionalactions.libs.kyori")
+    relocate("com.cjcrafter", "io.github.tanguygab.conditionalactions.libs.cjcrafter")
 }
 
 publishing {

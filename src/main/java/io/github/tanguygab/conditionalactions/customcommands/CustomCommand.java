@@ -33,7 +33,7 @@ public class CustomCommand extends BukkitCommand {
 
     @Override
     public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
-        if (actions != null) ConditionalActions.getInstance().async(()-> {
+        if (actions != null) ConditionalActions.getInstance().getScheduler().async().runNow(()-> {
             Map<String,String> replacements = new HashMap<>();
             for (int i = 0; i < args.length; i++) replacements.put("%arg-"+i+"%",args[i]);
             replacements.put("%arg-length%",args.length+"");
