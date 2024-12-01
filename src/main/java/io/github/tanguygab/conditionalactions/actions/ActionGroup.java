@@ -41,11 +41,11 @@ public class ActionGroup implements CAExecutable {
     }
 
     @Override
-    public void execute(OfflinePlayer player, Map<String, String> replacements) {
+    public boolean execute(OfflinePlayer player, Map<String, String> replacements) {
         for (CAExecutable executable : actions) {
-            if (executable == null) return;
-            executable.execute(player, replacements);
+            if (executable == null || !executable.execute(player, replacements)) return false;
         }
+        return true;
     }
 
 }

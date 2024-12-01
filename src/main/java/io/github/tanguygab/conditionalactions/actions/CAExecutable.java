@@ -7,10 +7,10 @@ import java.util.Map;
 
 public interface CAExecutable {
 
-    default void execute(@Nullable OfflinePlayer player) {
-        execute(player, Map.of());
+    default boolean execute(@Nullable OfflinePlayer player) {
+        return execute(player, Map.of());
     }
 
-    void execute(@Nullable OfflinePlayer player, Map<String,String> replacements);
+    boolean execute(@Nullable OfflinePlayer player, Map<String,String> replacements);
 
 }

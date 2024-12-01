@@ -14,7 +14,7 @@ public class ActionData implements CAExecutable {
     private final String arguments;
 
     @Override
-    public void execute(OfflinePlayer player, Map<String, String> replacements) {
+    public boolean execute(OfflinePlayer player, Map<String, String> replacements) {
         String args = ConditionalActions.parseReplacements(arguments,replacements);
 
         if (action.replaceMatch())
@@ -22,6 +22,7 @@ public class ActionData implements CAExecutable {
 
         String finalArgs = args;
         action.execute(player,finalArgs);
+        return true;
     }
 
 }

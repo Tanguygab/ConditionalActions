@@ -15,12 +15,13 @@ public class ActionCondition implements CAExecutable {
     private final ActionGroup deny;
 
     @Override
-    public void execute(@Nullable OfflinePlayer player, Map<String, String> replacements) {
+    public boolean execute(@Nullable OfflinePlayer player, Map<String, String> replacements) {
         if (condition.isMet(player,replacements)) {
-            if (success != null) success.execute(player,replacements);
-            return;
+            if (success != null) return success.execute(player,replacements);
+            return true;
         }
-        if (deny != null) deny.execute(player,replacements);
+        if (deny != null) return deny.execute(player,replacements);
+        return true;
     }
 
 }
