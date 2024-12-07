@@ -1,12 +1,11 @@
 package io.github.tanguygab.conditionalactions.conditions;
 
 import io.github.tanguygab.conditionalactions.ConditionalActions;
+import io.github.tanguygab.conditionalactions.Utils;
 import io.github.tanguygab.conditionalactions.conditions.types.*;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
 import java.util.*;
 import java.util.function.Function;
 
@@ -37,32 +36,35 @@ public class ConditionManager {
 
     @SuppressWarnings("unchecked")
     public ConditionManager(ConditionalActions plugin) {
-        File file = new File(plugin.getDataFolder(),"conditions.yml");
-        if (!file.exists()) plugin.saveResource("conditions.yml",false);
-        YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+        Utils.updateFiles(plugin, "conditions.yml","conditions/default-conditions.yml");
 
-        ConfigurationSection conditionsSection = config.getConfigurationSection("conditions");
-        if (conditionsSection != null) conditionsSection.getValues(false).forEach((name,cfg)->{
-            StringBuilder builder = new StringBuilder();
-            if (cfg instanceof List<?> list) {
-                list.forEach(obj -> {
-                    if (obj instanceof List<?> andConditions)
-                        builder.append(String.join("&&", (List<String>) andConditions));
-                    else builder.append(obj);
-                    builder.append("||");
+        Utils.loadFiles("conditions", (key, value) -> {
+            if (!(value instanceof ConfigurationSection section)) return;
+
+            if (key.equalsIgnoreCase("conditions")) {
+                section.getValues(false).forEach((name,cfg)->{
+                    StringBuilder builder = new StringBuilder();
+                    if (cfg instanceof List<?> list) {
+                        list.forEach(obj -> {
+                            if (obj instanceof List<?> andConditions)
+                                builder.append(String.join("&&", (List<String>) andConditions));
+                            else builder.append(obj);
+                            builder.append("||");
+                        });
+                    } else builder.append(cfg);
+                    if (builder.length() >= 2 && builder.substring(builder.length()-2).equals("||"))
+                        builder.delete(builder.length()-2, builder.length());
+
+                    conditions.put(name, new ConditionGroup(this, builder.toString()));
                 });
-            } else builder.append(cfg);
-            if (builder.length() >= 2 && builder.substring(builder.length()-2).equals("||"))
-                builder.delete(builder.length()-2,builder.length());
-
-            conditions.put(name,new ConditionGroup(this,builder.toString()));
-        });
-
-
-        ConfigurationSection outputsSection = config.getConfigurationSection("conditional-outputs");
-        if (outputsSection != null) outputsSection.getValues(false).forEach((name,cfg)->{
-            if (cfg instanceof ConfigurationSection section)
-                conditionalOutputs.put(name,new ConditionalOutput(this,section));
+                return;
+            }
+            if (key.equalsIgnoreCase("conditional-outputs")) {
+                section.getValues(false).forEach((name,cfg)->{
+                    if (cfg instanceof ConfigurationSection subsection)
+                        conditionalOutputs.put(name, new ConditionalOutput(this, subsection));
+                });
+            }
         });
     }
 

@@ -1,6 +1,7 @@
 package io.github.tanguygab.conditionalactions.actions;
 
 import io.github.tanguygab.conditionalactions.ConditionalActions;
+import io.github.tanguygab.conditionalactions.Utils;
 import io.github.tanguygab.conditionalactions.actions.types.Action;
 import io.github.tanguygab.conditionalactions.actions.types.commands.GroupAction;
 import io.github.tanguygab.conditionalactions.actions.types.bungee.ServerAction;
@@ -14,10 +15,8 @@ import io.github.tanguygab.conditionalactions.events.ActionsRegisterEvent;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import java.io.File;
 import java.util.*;
 import java.util.regex.Matcher;
 
@@ -76,11 +75,9 @@ public class ActionManager {
         plugin.getServer().getPluginManager().callEvent(event);
         registerAll(event.getActions());
 
-        File file = new File(plugin.getDataFolder(),"actiongroups.yml");
-        if (!file.exists()) plugin.saveResource("actiongroups.yml",false);
-        YamlConfiguration groups = YamlConfiguration.loadConfiguration(file);
-        groups.getValues(false).forEach((name,config)->{
-            if (config instanceof List<?> list) actionGroups.put(name,new ActionGroup(this,list));
+        Utils.updateFiles(plugin, "actiongroups.yml", "actiongroups/default-groups.yml");
+        Utils.loadFiles("actiongroups", (name, obj) -> {
+            if (obj instanceof List<?> list) actionGroups.put(name, new ActionGroup(this,list));
         });
 
         plugin.getCustomCommandManager().getCommands().values().forEach(command->command.loadActions(this));
