@@ -76,7 +76,7 @@ public class ActionManager {
         registerAll(event.getActions());
 
         Utils.updateFiles(plugin, "actiongroups.yml", "actiongroups/default-groups.yml");
-        Utils.loadFiles("actiongroups", (name, obj) -> {
+        Utils.loadFiles(plugin, "actiongroups", (name, obj) -> {
             if (obj instanceof List<?> list) actionGroups.put(name, new ActionGroup(this,list));
         });
 

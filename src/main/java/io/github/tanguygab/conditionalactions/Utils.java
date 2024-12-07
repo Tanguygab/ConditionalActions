@@ -34,13 +34,12 @@ public class Utils {
 
     }
 
-    public static void loadFiles(String path, BiConsumer<String, Object> callable) {
-        File folder = new File(path);
-        if (!folder.exists()) folder.mkdir();
+    public static void loadFiles(ConditionalActions plugin, String path, BiConsumer<String, Object> callable) {
+        File folder = new File(plugin.getDataFolder(), path);
 
         for (File file : folder.listFiles()) {
             if (file.isDirectory()) {
-                loadFiles(path + "/" + file.getName(), callable);
+                loadFiles(plugin, path + "/" + file.getName(), callable);
                 continue;
             }
             if (!file.getName().endsWith(".yml")) return;

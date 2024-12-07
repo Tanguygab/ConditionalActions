@@ -38,7 +38,7 @@ public class ConditionManager {
     public ConditionManager(ConditionalActions plugin) {
         Utils.updateFiles(plugin, "conditions.yml","conditions/default-conditions.yml");
 
-        Utils.loadFiles("conditions", (key, value) -> {
+        Utils.loadFiles(plugin, "conditions", (key, value) -> {
             if (!(value instanceof ConfigurationSection section)) return;
 
             if (key.equalsIgnoreCase("conditions")) {

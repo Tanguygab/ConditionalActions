@@ -22,7 +22,7 @@ public class CustomCommandManager {
     public CustomCommandManager(ConditionalActions plugin) {
         Utils.updateFiles(plugin, "commands.yml","commands/default-commands.yml");
 
-        Utils.loadFiles("commands", (name, obj) -> {
+        Utils.loadFiles(plugin, "commands", (name, obj) -> {
             if (!(obj instanceof ConfigurationSection section)) return;
 
             boolean register = section.getBoolean("register", true);
