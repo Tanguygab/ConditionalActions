@@ -16,12 +16,14 @@ import java.util.Map;
 
 public class CustomCommand extends BukkitCommand {
 
+    @Getter private final boolean register;
     @Getter private final boolean force;
     private final List<?> actionsList;
     private ActionGroup actions;
 
-    public CustomCommand(@NotNull String name, boolean force, List<String> aliases, List<?> actions) {
+    public CustomCommand(@NotNull String name, boolean register, boolean force, List<String> aliases, List<?> actions) {
         super(name);
+        this.register = register;
         this.force = force;
         if (aliases != null) setAliases(aliases);
         actionsList = actions;

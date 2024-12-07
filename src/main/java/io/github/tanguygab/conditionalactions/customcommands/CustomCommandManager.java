@@ -27,10 +27,11 @@ public class CustomCommandManager {
 
         commandsFile.getValues(false).forEach((name,config)->{
             if (config instanceof ConfigurationSection section) {
+                boolean register = section.getBoolean("register",true);
                 boolean force = section.getBoolean("force",true);
                 List<String> aliases = section.getStringList("aliases");
                 List<?> actions = section.getList("actions");
-                commands.put(name,new CustomCommand(name,force,aliases,actions));
+                commands.put(name,new CustomCommand(name,register,force,aliases,actions));
                 aliases.forEach(alias->this.aliases.put(alias,name));
             }
         });
@@ -43,8 +44,8 @@ public class CustomCommandManager {
 
             CommandMap commandMap = (CommandMap) f.get(plugin.getServer());
             Map<String, Command> map = (Map<String, Command>) mapField.get(commandMap);
-            map.putAll(commands);
             commands.forEach((name,command)->{
+                if (!command.isRegister()) return;
                 map.put(name,command);
                 command.getAliases().forEach(alias->map.put(alias,command));
             });
