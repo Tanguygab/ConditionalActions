@@ -16,7 +16,6 @@ repositories {
         name = 'papi-repo'
         url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/'
     }
-    mavenCentral()
 }
 
 dependencies {
