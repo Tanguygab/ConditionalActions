@@ -38,6 +38,7 @@ public class CustomCommand extends BukkitCommand {
         if (actions != null) ConditionalActions.getInstance().async(()-> {
             Map<String,String> replacements = new HashMap<>();
             for (int i = 0; i < args.length; i++) replacements.put("%arg-"+i+"%",args[i]);
+            replacements.put("%args%", String.join(" ", args));
             replacements.put("%arg-length%",args.length+"");
             actions.execute(sender instanceof OfflinePlayer player ? player : null,replacements);
         });
