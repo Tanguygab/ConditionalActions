@@ -4,7 +4,6 @@ import io.github.tanguygab.conditionalactions.ConditionalActions;
 import io.github.tanguygab.conditionalactions.actions.ActionGroup;
 import io.github.tanguygab.conditionalactions.actions.ActionManager;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;

@@ -48,7 +48,7 @@ public class GroupCommand extends CACommand {
         String action = String.join(" ", args).substring(name.length()+1);
 
         if (!plugin.getActionManager().findAndExecute(p,action,true))
-            sendMessage(sender,"&cGroup not found!");;
+            sendMessage(sender,"&cGroup not found!");
     }
 
     @Override

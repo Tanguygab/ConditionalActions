@@ -41,6 +41,7 @@ public class CustomCommandManager {
             mapField.setAccessible(true);
 
             CommandMap commandMap = (CommandMap) f.get(plugin.getServer());
+            @SuppressWarnings("unchecked")
             Map<String, Command> map = (Map<String, Command>) mapField.get(commandMap);
             commands.forEach((name,command)->{
                 if (!command.isRegister()) return;

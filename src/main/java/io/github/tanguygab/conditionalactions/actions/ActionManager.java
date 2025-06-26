@@ -3,7 +3,6 @@ package io.github.tanguygab.conditionalactions.actions;
 import io.github.tanguygab.conditionalactions.ConditionalActions;
 import io.github.tanguygab.conditionalactions.Utils;
 import io.github.tanguygab.conditionalactions.actions.types.Action;
-import io.github.tanguygab.conditionalactions.actions.types.commands.GroupAction;
 import io.github.tanguygab.conditionalactions.actions.types.bungee.ServerAction;
 import io.github.tanguygab.conditionalactions.actions.types.commands.*;
 import io.github.tanguygab.conditionalactions.actions.types.data.*;
