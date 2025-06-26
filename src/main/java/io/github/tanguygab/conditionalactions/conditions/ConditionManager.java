@@ -15,17 +15,17 @@ public class ConditionManager {
     private final Map<String, ConditionalOutput> conditionalOutputs = new HashMap<>();
 
     private final Map<String, Function<String,ConditionType>> types = new LinkedHashMap<>() {{
-        put(">=", input -> new NumericCondition(input.split(">="), (left, right) -> left >= right));
-        put(">", input -> new NumericCondition(input.split(">"), (left, right) -> left > right));
-        put("<=", input -> new NumericCondition(input.split("<="), (left, right) -> left <= right));
+        put(">=", input -> new NumericCondition(input.split(" *>= *", 2), (left, right) -> left >= right));
+        put(">", input -> new NumericCondition(input.split(" *> *", 2), (left, right) -> left > right));
+        put("<=", input -> new NumericCondition(input.split(" *<= *", 2), (left, right) -> left <= right));
 
-        put("<-", input -> new StringCondition(input.split("<-"), String::contains));
-        put("-|", input->new StringCondition(input.split("-\\|"), String::endsWith));
-        put("|-", input->new StringCondition(input.split("\\|-"), String::startsWith));
-        put("==", input->new StringCondition(input.split("=="), String::equals));
-        put("=", input->new StringCondition(input.split("="), String::equalsIgnoreCase));
+        put("<-", input -> new StringCondition(input.split(" *<- *", 2), String::contains));
+        put("-|", input->new StringCondition(input.split(" *-\\| *", 2), String::endsWith));
+        put("|-", input->new StringCondition(input.split(" *\\|- *", 2), String::startsWith));
+        put("==", input->new StringCondition(input.split(" *== *", 2), String::equals));
+        put("=", input->new StringCondition(input.split(" *= *", 2), String::equalsIgnoreCase));
 
-        put("permission:", input->new ConditionType(input.split("permission:")) {
+        put("permission:", input->new ConditionType(input.split("permission: *", 2)) {
             @Override
             public boolean isMet(OfflinePlayer p, Map<String, String> replacements) {
                 String permission = ConditionalActions.parseReplacements(rightSide,replacements);

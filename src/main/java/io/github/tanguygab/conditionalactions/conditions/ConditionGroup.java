@@ -15,11 +15,11 @@ public class ConditionGroup {
 
     public ConditionGroup(ConditionManager manager, String args) {
         this.manager = manager;
-        for (String arg : args.split("\\|\\|")) {
+        for (String arg : args.split(" *\\|\\| *")) {
             List<ConditionType> list = new ArrayList<>();
 
             if (arg.contains("&&"))
-                for (String condition : args.split("&&"))
+                for (String condition : args.split(" +&& +"))
                     add(list,condition);
             else add(list,arg);
 
