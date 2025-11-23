@@ -104,7 +104,7 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
 
     fun registerAll(action: List<Action>) = actions.addAll(action)
 
-    fun getSuggestions() = actions.map { it.suggestion }
+    fun getSuggestions() = actions.map { it.getSuggestion() }
 
     fun getGroups() = actionGroups.keys
 }

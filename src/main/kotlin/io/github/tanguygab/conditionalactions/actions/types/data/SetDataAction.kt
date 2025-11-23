@@ -5,7 +5,7 @@ import io.github.tanguygab.conditionalactions.actions.Action
 import org.bukkit.OfflinePlayer
 
 class SetDataAction : Action("^(?i)set-data: ") {
-    override val suggestion = "set-data: <player|--global> <data> <value>"
+    override fun getSuggestion() = "set-data: <player|--global> <data> <value>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         val args = match.split(" ")

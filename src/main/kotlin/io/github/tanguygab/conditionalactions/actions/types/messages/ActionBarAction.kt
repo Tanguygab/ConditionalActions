@@ -7,7 +7,7 @@ import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.entity.Player
 
 class ActionBarAction : Action("^(?i)(actionbar):( )?") {
-    override val suggestion = "actionbar: <message>"
+    override fun getSuggestion() = "actionbar: <message>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         if (player !is Player) return

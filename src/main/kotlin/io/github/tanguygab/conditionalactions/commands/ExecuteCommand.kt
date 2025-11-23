@@ -31,6 +31,6 @@ class ExecuteCommand(plugin: ConditionalActions) : CACommand(plugin) {
         val arg = args.subList(2, args.size).joinToString(" ")
         val action = plugin.actionManager.find(arg)
         return if (action == null) getArguments(plugin.actionManager.getSuggestions(), arg)
-        else listOf(action.suggestion)
+        else listOf(action.getSuggestion())
     }
 }

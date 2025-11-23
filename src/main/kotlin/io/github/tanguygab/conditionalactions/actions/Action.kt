@@ -10,7 +10,7 @@ import java.util.regex.Pattern
 abstract class Action @JvmOverloads constructor(@Language("RegExp") regex: String, val replaceMatch: Boolean = true) {
     val pattern: Pattern = Pattern.compile(regex)
     protected val plugin = ConditionalActions.INSTANCE
-    abstract val suggestion: String
+    abstract fun getSuggestion(): String
 
     abstract fun execute(player: OfflinePlayer?, match: String)
 

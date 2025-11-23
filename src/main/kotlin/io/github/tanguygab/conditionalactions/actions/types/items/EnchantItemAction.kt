@@ -9,7 +9,8 @@ import org.bukkit.inventory.ItemStack
 
 
 class EnchantItemAction(private val type: String) : Action("^(i?)$type-enchant-item:( )?") {
-    override val suggestion = "$type-enchant-item: <slot> <enchant> " + (if (type == "set") "<level>" else "[level]")
+    override fun getSuggestion() =
+        "$type-enchant-item: <slot> <enchant> " + (if (type == "set") "<level>" else "[level]")
 
     override fun execute(player: OfflinePlayer?, match: String) {
         if (player !is Player) return

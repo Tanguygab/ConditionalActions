@@ -4,7 +4,7 @@ import io.github.tanguygab.conditionalactions.actions.Action
 import org.bukkit.OfflinePlayer
 
 class DelayAction : Action("^(?i)delay:( )?") {
-    override val suggestion = "delay: <ms>"
+    override fun getSuggestion() = "delay: <ms>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         val match = parsePlaceholders(player, match)

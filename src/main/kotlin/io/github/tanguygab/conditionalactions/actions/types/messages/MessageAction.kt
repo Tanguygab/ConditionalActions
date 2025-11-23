@@ -5,7 +5,7 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
 class MessageAction : Action("^(?i)(message|msg|tell):( )?") {
-    override val suggestion = "message: <message>"
+    override fun getSuggestion() = "message: <message>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         val match = parsePlaceholders(player, match, true)

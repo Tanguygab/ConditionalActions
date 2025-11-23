@@ -5,7 +5,7 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
 class PlayerAction : Action("^(?i)(player|cmd|command):( )?") {
-    override val suggestion = "player: <command>"
+    override fun getSuggestion() = "player: <command>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         val command = parsePlaceholders(player, match)

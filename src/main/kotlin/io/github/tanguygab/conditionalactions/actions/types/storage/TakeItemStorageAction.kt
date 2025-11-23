@@ -7,7 +7,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 class TakeItemStorageAction : Action("^(i?)take-item-storage:( )?") {
-    override val suggestion = "take-item-storage: <name>"
+    override fun getSuggestion() = "take-item-storage: <name>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         if (player !is Player) return

@@ -6,7 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.Damageable
 
 class RepairItemAction : Action("^(i?)repair-item:( )?") {
-    override val suggestion = "repair-item: <slot>"
+    override fun getSuggestion() = "repair-item: <slot>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         if (player !is Player) return

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player
 import java.util.concurrent.CompletableFuture
 
 class PermissionAction : Action("^(?i)(permission|perm):(?<permission>[a-zA-Z0-9.*_\\- \",]+):( )?", false) {
-    override val suggestion = "permission:<permission>: <command>"
+    override fun getSuggestion() = "permission:<permission>: <command>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         if (player !is Player) return

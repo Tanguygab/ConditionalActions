@@ -4,7 +4,7 @@ import io.github.tanguygab.conditionalactions.actions.Action
 import org.bukkit.OfflinePlayer
 
 class BroadcastTitleAction : Action("^(?i)(broadcast|bc)-title:( )?") {
-    override val suggestion = getSuggestionWithArgs("broadcast-title: <title>", "<subtitle>", "<fadein>", "<stay>", "<fadeout>")
+    override fun getSuggestion() = getSuggestionWithArgs("broadcast-title: <title>", "<subtitle>", "<fadein>", "<stay>", "<fadeout>")
 
     override fun execute(player: OfflinePlayer?, match: String) {
         var match = match

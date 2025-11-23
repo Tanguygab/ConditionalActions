@@ -5,7 +5,8 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
 class TitleAction : Action("^(?i)title:( )?") {
-    override val suggestion = getSuggestionWithArgs("title: <title>", "<subtitle>", "<fadein>", "<stay>", "<fadeout>")
+    override fun getSuggestion() =
+        getSuggestionWithArgs("title: <title>", "<subtitle>", "<fadein>", "<stay>", "<fadeout>")
 
     override fun execute(player: OfflinePlayer?, match: String) {
         if (player !is Player) return

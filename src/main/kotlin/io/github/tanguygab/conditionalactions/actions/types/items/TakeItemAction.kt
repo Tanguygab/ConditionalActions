@@ -7,7 +7,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 class TakeItemAction : Action("^(i?)take-item:( )?") {
-    override val suggestion = "take-item: <material> <amount> <name> <lore>"
+    override fun getSuggestion() = "take-item: <material> <amount> <name> <lore>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         if (player !is Player) return

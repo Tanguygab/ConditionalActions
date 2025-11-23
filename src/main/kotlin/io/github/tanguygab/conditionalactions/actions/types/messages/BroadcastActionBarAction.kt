@@ -6,7 +6,7 @@ import net.md_5.bungee.api.ChatMessageType
 import net.md_5.bungee.api.chat.TextComponent
 
 class BroadcastActionBarAction : Action("^(?i)((broadcast|bc)-actionbar):( )?") {
-    override val suggestion = "broadcast-actionbar: <message>"
+    override fun getSuggestion() = "broadcast-actionbar: <message>"
 
     @Suppress("DEPRECATION")
     override fun execute(player: OfflinePlayer?, match: String) {

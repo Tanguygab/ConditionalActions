@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
 class ServerAction : Action("^(?i)server:( )?") {
-    override val suggestion = "server: <server>"
+    override fun getSuggestion() = "server: <server>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         if (player !is Player) return

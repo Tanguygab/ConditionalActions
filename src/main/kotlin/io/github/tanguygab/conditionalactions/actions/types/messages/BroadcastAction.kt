@@ -4,7 +4,7 @@ import io.github.tanguygab.conditionalactions.actions.Action
 import org.bukkit.OfflinePlayer
 
 class BroadcastAction : Action("^(?i)(broadcast|bc):( )?") {
-    override val suggestion = "broadcast: <message>"
+    override fun getSuggestion() = "broadcast: <message>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         val message = parsePlaceholders(player, match, true)

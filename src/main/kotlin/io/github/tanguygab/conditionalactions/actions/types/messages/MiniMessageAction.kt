@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 class MiniMessageAction : Action("^(?i)(minimessage|mm):( )?") {
     private val mm = MiniMessage.miniMessage()
 
-    override val suggestion = "minimessage: <formatted message>"
+    override fun getSuggestion() = "minimessage: <formatted message>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         val match = parsePlaceholders(player, match)

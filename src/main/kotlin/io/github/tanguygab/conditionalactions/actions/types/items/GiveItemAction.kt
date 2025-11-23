@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack
 
 
 class GiveItemAction : Action("^(i?)give-item:( )?") {
-    override val suggestion = "give-item: <material> <amount> <name\\nlore>"
+    override fun getSuggestion() = "give-item: <material> <amount> <name\\nlore>"
 
     @Suppress("DEPRECATION")
     override fun execute(player: OfflinePlayer?, match: String) {
