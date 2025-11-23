@@ -58,7 +58,8 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
         try {
             Player::class.java.getMethod("sendMessage", Component::class.java)
             register(MiniMessageAction())
-        } catch (_: NoSuchMethodException) {}
+        } catch (_: NoSuchMethodException) {
+        } catch (_: NoClassDefFoundError) {}
 
         plugin.sync(null) { load() }
     }

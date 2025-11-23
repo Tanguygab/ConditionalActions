@@ -2,6 +2,9 @@ package io.github.tanguygab.conditionalactions.customcommands
 
 import io.github.tanguygab.conditionalactions.ConditionalActions
 import io.github.tanguygab.conditionalactions.Utils
+import org.bukkit.command.Command
+import org.bukkit.command.CommandMap
+import org.bukkit.command.SimpleCommandMap
 import org.bukkit.configuration.ConfigurationSection
 
 class CustomCommandManager(plugin: ConditionalActions) {
@@ -23,7 +26,15 @@ class CustomCommandManager(plugin: ConditionalActions) {
         }
 
         try {
-            val map = plugin.server.commandMap.knownCommands
+            val f = plugin.server.javaClass.getDeclaredField("commandMap")
+            f.isAccessible = true
+            val commandMap = (f.get(plugin.server) as CommandMap)
+
+            val f0 = SimpleCommandMap::class.java.getDeclaredField("knownCommands")
+            f0.isAccessible = true
+            @Suppress("UNCHECKED_CAST")
+            val map = f0.get(commandMap) as MutableMap<String, Command>
+
             commands.forEach { (name: String, command: CustomCommand) ->
                 if (!command.register) return@forEach
                 map[name] = command
