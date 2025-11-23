@@ -1,0 +1,41 @@
+plugins {
+    kotlin("jvm") version libs.versions.kotlin
+    id("maven-publish")
+}
+
+group = "io.github.tanguygab"
+version = "1.3.0"
+
+repositories {
+    mavenCentral()
+    maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+}
+
+dependencies {
+    compileOnly(libs.paper)
+    compileOnly(libs.papi)
+    compileOnly(libs.luckperms)
+}
+
+tasks {
+    processResources {
+        filesMatching("plugin.yml") {
+            expand(
+                "version" to rootProject.version,
+                "kotlinVersion" to libs.versions.kotlin.get()
+            )
+        }
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("kotlinMultiplatform") {
+            from(components["kotlin"])
+        }
+    }
+}
+kotlin {
+    jvmToolchain(21)
+}

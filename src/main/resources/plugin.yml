@@ -6,6 +6,8 @@ author: Tanguygab
 depend: [PlaceholderAPI]
 softdepend: [LuckPerms]
 folia-supported: true
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}
 
 commands:
   conditionalactions:

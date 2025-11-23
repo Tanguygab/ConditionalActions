@@ -1,0 +1,37 @@
+package io.github.tanguygab.conditionalactions.customcommands
+
+import io.github.tanguygab.conditionalactions.ConditionalActions
+import io.github.tanguygab.conditionalactions.actions.ActionGroup
+import io.github.tanguygab.conditionalactions.actions.ActionManager
+import org.bukkit.OfflinePlayer
+import org.bukkit.command.CommandSender
+import org.bukkit.command.defaults.BukkitCommand
+
+class CustomCommand(
+    name: String,
+    val register: Boolean,
+    val force: Boolean,
+    aliases: List<String>,
+    private val actionList: List<*>
+) : BukkitCommand(name) {
+    private lateinit var actions: ActionGroup
+
+    init {
+        setAliases(aliases)
+    }
+
+    fun loadActions(actionManager: ActionManager) {
+        actions = ActionGroup(actionManager, actionList)
+    }
+
+    override fun execute(sender: CommandSender, commandLabel: String, args: Array<String>): Boolean {
+        ConditionalActions.INSTANCE.async {
+            val replacements = args.indices.associate { "%arg-$it%" to args[it] }.toMutableMap()
+
+            replacements["%args%"] = args.joinToString(" ")
+            replacements["%arg-length%"] = args.size.toString()
+            actions.execute(sender as? OfflinePlayer, replacements)
+        }
+        return true
+    }
+}
