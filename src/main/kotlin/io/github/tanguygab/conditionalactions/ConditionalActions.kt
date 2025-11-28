@@ -47,12 +47,8 @@ class ConditionalActions : JavaPlugin() {
 
     override fun onDisable() {
         HandlerList.unregisterAll(this)
-        try {
-            server.asyncScheduler.cancelTasks(this)
-            server.globalRegionScheduler.cancelTasks(this)
-        } catch (_: NoSuchMethodError) {
-            server.scheduler.cancelTasks(this)
-        }
+        server.asyncScheduler.cancelTasks(this)
+        server.globalRegionScheduler.cancelTasks(this)
 
         subcommands.clear()
 
@@ -61,20 +57,12 @@ class ConditionalActions : JavaPlugin() {
     }
 
     fun async(run: Runnable) {
-        try {
-            server.asyncScheduler.runNow(this) { run.run() }
-        } catch (_: NoSuchMethodError) {
-            server.scheduler.runTaskAsynchronously(this, run)
-        }
+        server.asyncScheduler.runNow(this) { run.run() }
     }
 
     fun sync(player: Player?, run: Runnable) {
-        try {
-            if (player == null) server.globalRegionScheduler.run(this) { run.run() }
-            else player.scheduler.run(this, { run.run() }, null)
-        } catch (_: NoSuchMethodError) {
-            server.scheduler.runTask(this, run)
-        }
+        if (player == null) server.globalRegionScheduler.run(this) { run.run() }
+        else player.scheduler.run(this, { run.run() }, null)
     }
 
     override fun onCommand(

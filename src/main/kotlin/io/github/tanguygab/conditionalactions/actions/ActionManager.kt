@@ -49,17 +49,12 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
             BroadcastTitleAction(),
             ChatAction(),
             MessageAction(),
+            MiniMessageAction(),
             TitleAction(),
 
             DelayAction()
         )
         if (plugin.server.pluginManager.isPluginEnabled("LuckPerms")) register(PermissionAction())
-
-        try {
-            Player::class.java.getMethod("sendMessage", Component::class.java)
-            register(MiniMessageAction())
-        } catch (_: NoSuchMethodException) {
-        } catch (_: NoClassDefFoundError) {}
 
         plugin.sync(null) { load() }
     }

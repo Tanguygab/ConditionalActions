@@ -33,16 +33,12 @@ class PermissionAction : Action("^(?i)(permission|perm):(?<permission>[a-zA-Z0-9
         try {
             um.saveUser(user).get()
             val command = parsePlaceholders(player, match)
-            try {
-                val future = CompletableFuture<ScheduledTask>()
-                player.scheduler.run(plugin, {
-                    player.performCommand(command)
-                    future.complete(it)
-                }, null)
-                future.get()
-            } catch (_: NoSuchMethodError) {
-                plugin.server.scheduler.callSyncMethod(plugin) { player.performCommand(command) }.get()
-            }
+            val future = CompletableFuture<ScheduledTask>()
+            player.scheduler.run(plugin, {
+                player.performCommand(command)
+                future.complete(it)
+            }, null)
+            future.get()
         } catch (_: Exception) {}
         nodes.forEach { user.data().remove(it) }
         um.saveUser(user)

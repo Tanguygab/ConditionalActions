@@ -10,12 +10,8 @@ import java.io.File
 object Utils {
     fun getOfflinePlayer(name: String): OfflinePlayer? {
         val p = Bukkit.getServer().getPlayerExact(name)
-        if (p != null) return p
-        return try {
-            Bukkit.getServer().getOfflinePlayerIfCached(name)
-        } catch (_: NoSuchMethodError) {
-            Bukkit.getServer().offlinePlayers.find { name.equals(it.name, ignoreCase = true) }
-       }
+        return p ?: Bukkit.getServer().getOfflinePlayerIfCached(name)
+
     }
 
     fun colors(string: String) = ChatColor.translateAlternateColorCodes('&', string)
