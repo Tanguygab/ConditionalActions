@@ -8,8 +8,8 @@ class NumericCondition(input: List<String>, private val function: (Double, Doubl
 
     private fun get(value: String) = value.replace(",", "").toDoubleOrNull() ?: 0.0
 
-    fun getLeft(player: OfflinePlayer?, replacements: Map<String, String>) = leftSideValue ?: get(parseLeft(player, replacements))
-    fun getRight(player: OfflinePlayer?, replacements: Map<String, String>) = rightSideValue ?: get(parseRight(player, replacements))
+    fun getLeft(player: OfflinePlayer?) = leftSideValue ?: get(parseLeft(player))
+    fun getRight(player: OfflinePlayer?) = rightSideValue ?: get(parseRight(player))
 
-    override fun isMet(player: OfflinePlayer?, replacements: Map<String, String>) = function(getLeft(player, replacements), getRight(player, replacements))
+    override fun isMet(player: OfflinePlayer?) = function(getLeft(player), getRight(player))
 }

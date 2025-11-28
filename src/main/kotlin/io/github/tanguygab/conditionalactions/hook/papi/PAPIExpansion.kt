@@ -12,7 +12,7 @@ abstract class PAPIExpansion(protected val plugin: ConditionalActions, private v
     override fun getVersion() = plugin.description.version
 
     override fun onRequest(player: OfflinePlayer?, params: String): String? {
-        val output = parse(player, params)
+        val output = parse(player, params) ?: return null
         if (output is Boolean) {
             return if (output)
                 PlaceholderAPIPlugin.booleanTrue()

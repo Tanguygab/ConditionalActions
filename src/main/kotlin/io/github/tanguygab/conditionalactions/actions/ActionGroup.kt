@@ -41,9 +41,9 @@ class ActionGroup(
         if (ac != null) list.add(ActionData(ac, line))
     }
 
-    override fun execute(player: OfflinePlayer?, replacements: Map<String, String>): Boolean {
+    override fun execute(player: OfflinePlayer?): Boolean {
         for (executable in actions) {
-            if (executable == null || !executable.execute(player, replacements)) return false
+            if (executable == null || !executable.execute(player)) return false
         }
         return true
     }

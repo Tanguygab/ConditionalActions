@@ -28,8 +28,8 @@ class ConditionManager(plugin: ConditionalActions) {
         put("=") { StringCondition(it.split(" *= *".toRegex(), limit = 2)) { left: String, right: String -> left.equals(right, ignoreCase = true) } }
 
         put("permission:") { object : ConditionType(it.split("permission: *".toRegex(), limit = 2)) {
-                override fun isMet(player: OfflinePlayer?, replacements: Map<String, String>): Boolean {
-                    val permission = ConditionalActions.parseReplacements(rightSide, replacements)
+                override fun isMet(player: OfflinePlayer?): Boolean {
+                    val permission = rightSide
                     return player is Player && player.hasPermission(permission)
                 }
             }

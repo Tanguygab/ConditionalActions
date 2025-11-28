@@ -9,9 +9,9 @@ data class ActionCondition(
     private val deny: ActionGroup? = null
 ) : CAExecutable {
 
-    override fun execute(player: OfflinePlayer?, replacements: Map<String, String>): Boolean {
-        if (condition.isMet(player, replacements))
-            return success?.execute(player, replacements) == true
-        return deny?.execute(player, replacements) == true
+    override fun execute(player: OfflinePlayer?): Boolean {
+        if (condition.isMet(player))
+            return success?.execute(player) == true
+        return deny?.execute(player) == true
     }
 }

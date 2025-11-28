@@ -106,11 +106,5 @@ class ConditionalActions : JavaPlugin() {
 
     companion object {
         lateinit var INSTANCE: ConditionalActions
-
-        fun parseReplacements(string: String, replacements: Map<String, String>): String {
-            var string = string
-            for (replacement in replacements.keys) string = string.replace(replacement, replacements[replacement]!!)
-            return string
-        }
     }
 }

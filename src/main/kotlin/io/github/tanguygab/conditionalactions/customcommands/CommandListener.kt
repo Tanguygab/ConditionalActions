@@ -17,7 +17,7 @@ class CommandListener(private val manager: CustomCommandManager) : Listener {
 
         if (command != null && command.force) {
             e.isCancelled = true
-            command.execute(e.player, cmd, args.subList(1, args.size - 1).toTypedArray())
+            command.execute(e.player, cmd, args.subList(1, args.size).toTypedArray())
         }
     }
 }

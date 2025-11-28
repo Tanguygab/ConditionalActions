@@ -23,13 +23,11 @@ class ConditionGroup(private val manager: ConditionManager, args: String) {
         if (type != null) list.add(type)
     }
 
-    fun isMet(player: OfflinePlayer?) = isMet(player, mapOf())
-
-    fun isMet(player: OfflinePlayer?, replacements: Map<String, String>): Boolean {
+    fun isMet(player: OfflinePlayer?): Boolean {
         for (list in conditions) { // OR
             var met = true
             for (condition in list)  // AND
-                if (condition.isMet(player, replacements) == condition.inverted)
+                if (condition.isMet(player) == condition.inverted)
                     met = false
             if (met) return true // if all AND conditions are met, return true
         }

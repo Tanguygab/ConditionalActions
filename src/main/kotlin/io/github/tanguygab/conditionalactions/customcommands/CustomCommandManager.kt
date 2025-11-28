@@ -6,10 +6,13 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandMap
 import org.bukkit.command.SimpleCommandMap
 import org.bukkit.configuration.ConfigurationSection
+import java.util.concurrent.ConcurrentHashMap
 
 class CustomCommandManager(plugin: ConditionalActions) {
     val commands = mutableMapOf<String, CustomCommand>()
     val aliases = mutableMapOf<String, String>()
+
+    internal val runningCommandsArguments = ConcurrentHashMap<Thread, Array<String>>()
 
     init {
         Utils.updateFiles(plugin, "commands.yml", "commands/default-commands.yml")
@@ -28,7 +31,7 @@ class CustomCommandManager(plugin: ConditionalActions) {
         try {
             val f = plugin.server.javaClass.getDeclaredField("commandMap")
             f.isAccessible = true
-            val commandMap = (f.get(plugin.server) as CommandMap)
+            val commandMap = f.get(plugin.server) as CommandMap
 
             val f0 = SimpleCommandMap::class.java.getDeclaredField("knownCommands")
             f0.isAccessible = true
@@ -44,4 +47,6 @@ class CustomCommandManager(plugin: ConditionalActions) {
 
         plugin.server.pluginManager.registerEvents(CommandListener(this), plugin)
     }
+
+    fun getCurrentArgs() = runningCommandsArguments[Thread.currentThread()]
 }

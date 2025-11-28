@@ -26,11 +26,9 @@ class CustomCommand(
 
     override fun execute(sender: CommandSender, commandLabel: String, args: Array<String>): Boolean {
         ConditionalActions.INSTANCE.async {
-            val replacements = args.indices.associate { "%arg-$it%" to args[it] }.toMutableMap()
-
-            replacements["%args%"] = args.joinToString(" ")
-            replacements["%arg-length%"] = args.size.toString()
-            actions.execute(sender as? OfflinePlayer, replacements)
+            ConditionalActions.INSTANCE.customCommandManager.runningCommandsArguments[Thread.currentThread()] = args
+            actions.execute(sender as? OfflinePlayer)
+            ConditionalActions.INSTANCE.customCommandManager.runningCommandsArguments.remove(Thread.currentThread())
         }
         return true
     }
