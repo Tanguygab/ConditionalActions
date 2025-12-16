@@ -9,9 +9,10 @@ class ActionsRegisterEvent : Event() {
 
     fun addActions(vararg actions: Action) = this.actions.addAll(actions)
 
-    override fun getHandlers() = Companion.handlers
+    override fun getHandlers() = handlerList
 
     companion object {
-        val handlers = HandlerList()
+        @JvmStatic
+        val handlerList = HandlerList()
     }
 }
