@@ -27,7 +27,9 @@ class CAExpansion(plugin: ConditionalActions) : PAPIExpansion(plugin, "condition
 
             "data" -> if (player == null) null else plugin.dataManager.getData(player, params)
             "global-data" -> plugin.dataManager.getGlobalData(params)
+
             "output" -> plugin.conditionManager.getConditionalOutput(params)?.getOutput(player) ?: ""
+            "condition" -> plugin.conditionManager.getCondition(params.replace("[{(prc)}]", "%")).isMet(player)
             else -> null
         }
     }
