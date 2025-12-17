@@ -24,8 +24,12 @@ class ConditionManager(plugin: ConditionalActions) {
         put("<=") { NumericCondition(it.split(" *<= *".toRegex(), limit = 2)) { left: Double, right: Double -> left <= right } }
         put("<") { NumericCondition(it.split(" *> *".toRegex(), limit = 2)) { left: Double, right: Double -> left < right } }
 
+        put("!==") { StringCondition(it.split(" *!== *".toRegex(), limit = 2)) { left: String, right: String -> left != right } }
+        put("!=") { StringCondition(it.split(" *!= *".toRegex(), limit = 2)) { left: String, right: String -> !left.equals(right, ignoreCase = true) } }
+
         put("==") { StringCondition(it.split(" *== *".toRegex(), limit = 2)) { left: String, right: String -> left == right } }
         put("=") { StringCondition(it.split(" *= *".toRegex(), limit = 2)) { left: String, right: String -> left.equals(right, ignoreCase = true) } }
+
 
         put("permission:") { object : ConditionType(it.split("permission: *".toRegex(), limit = 2)) {
                 override fun isMet(player: OfflinePlayer?): Boolean {
@@ -73,7 +77,7 @@ class ConditionManager(plugin: ConditionalActions) {
     fun find(condition: String): ConditionType? {
         val inverted = condition.startsWith("!")
         val condition0 = condition.substring(if (inverted) 1 else 0)
-        if (conditions.containsKey(condition0)) return GroupCondition(conditions[condition]!!, condition)
+        if (condition0 in conditions) return GroupCondition(conditions[condition0]!!, condition)
 
         for (separator in types.keys) if (condition.contains(separator)) return types[separator]!!(condition)
         return null

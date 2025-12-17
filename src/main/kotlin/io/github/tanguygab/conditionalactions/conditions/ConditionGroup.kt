@@ -10,7 +10,7 @@ class ConditionGroup(private val manager: ConditionManager, args: String) {
         for (arg in args.split(" *\\|\\| *".toRegex())) {
             val list = mutableListOf<ConditionType>()
 
-            if (arg.contains("&&")) for (condition in args.split(" +&& +".toRegex()))
+            if (arg.contains("&&")) for (condition in args.split(" *&& *".toRegex()))
                 add(list, condition)
             else add(list, arg)
 
