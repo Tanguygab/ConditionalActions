@@ -11,7 +11,7 @@ data class ActionCondition(
 
     override fun execute(player: OfflinePlayer?): Boolean {
         if (condition.isMet(player))
-            return success?.execute(player) == true
-        return deny?.execute(player) == true
+            return success?.execute(player) ?: true
+        return deny?.execute(player) ?: true
     }
 }
