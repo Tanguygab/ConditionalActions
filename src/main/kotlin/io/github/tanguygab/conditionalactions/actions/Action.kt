@@ -24,9 +24,7 @@ abstract class Action @JvmOverloads constructor(@Language("RegExp") regex: Strin
                 .map { TAB.getInstance().placeholderManager.getPlaceholder(it) }
 
             for (placeholder in placeholders) string = placeholder.set(string, tabPlayer)
-            return string
-        }
-        string = PlaceholderAPI.setPlaceholders(player, string)
+        } else string = PlaceholderAPI.setPlaceholders(player, string)
         return if (colors) Utils.colors(string) else string
     }
 
