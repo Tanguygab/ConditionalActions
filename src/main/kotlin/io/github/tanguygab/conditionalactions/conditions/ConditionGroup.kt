@@ -6,10 +6,12 @@ import me.neznamy.tab.shared.TAB
 import org.bukkit.OfflinePlayer
 import java.util.UUID
 
-class ConditionGroup(private val manager: ConditionManager, args: String, name: String? = null) {
+class ConditionGroup(private val manager: ConditionManager, args: String, var name: String? = null) {
     private val conditions = mutableListOf<MutableList<ConditionType>>()
 
     init {
+        if (name == null) name = UUID.randomUUID().toString()
+
         for (arg in args.split(" *\\|\\| *".toRegex())) {
             val list = mutableListOf<ConditionType>()
 
@@ -21,7 +23,7 @@ class ConditionGroup(private val manager: ConditionManager, args: String, name: 
         }
 
         if (ConditionalActions.INSTANCE.server.pluginManager.isPluginEnabled("TAB")) {
-            val placeholder = TAB.getInstance().placeholderManager.registerPlayerPlaceholder("%ca-condition:${name ?: UUID.randomUUID()}%", 1000) { p ->
+            val placeholder = TAB.getInstance().placeholderManager.registerPlayerPlaceholder("%ca-condition:$name%", 1000) { p ->
                 "" + isMet(p.player as OfflinePlayer)
             }
             conditions.flatten()
