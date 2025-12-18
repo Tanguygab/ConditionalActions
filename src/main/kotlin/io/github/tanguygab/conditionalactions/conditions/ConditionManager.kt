@@ -6,6 +6,8 @@ import io.github.tanguygab.conditionalactions.conditions.types.ConditionType
 import io.github.tanguygab.conditionalactions.conditions.types.GroupCondition
 import io.github.tanguygab.conditionalactions.conditions.types.NumericCondition
 import io.github.tanguygab.conditionalactions.conditions.types.StringCondition
+import me.neznamy.tab.api.event.plugin.TabLoadEvent
+import me.neznamy.tab.shared.TAB
 import org.bukkit.OfflinePlayer
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
@@ -66,6 +68,12 @@ class ConditionManager(plugin: ConditionalActions) {
                 value.getValues(false).forEach { (name: String, cfg: Any) ->
                     if (cfg is ConfigurationSection) conditionalOutputs[name] = ConditionalOutput(this, cfg)
                 }
+            }
+        }
+
+        if (plugin.server.pluginManager.isPluginEnabled("TAB")) {
+            TAB.getInstance().eventBus?.register(TabLoadEvent::class.java) {
+                conditions.values.forEach { it.registerTABPlaceholder() }
             }
         }
     }

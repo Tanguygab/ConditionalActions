@@ -1,6 +1,8 @@
 package io.github.tanguygab.conditionalactions.conditions.types
 
+import io.github.tanguygab.conditionalactions.ConditionalActions
 import me.clip.placeholderapi.PlaceholderAPI
+import me.neznamy.tab.shared.TAB
 import me.neznamy.tab.shared.features.PlaceholderManagerImpl
 import org.bukkit.OfflinePlayer
 
@@ -10,6 +12,15 @@ abstract class ConditionType(input: List<String>) {
     protected val rightSide = if (input.size > 1) input[1] else ""
 
     protected fun parse(player: OfflinePlayer?, string: String): String {
+        var string = string
+        if (ConditionalActions.INSTANCE.server.pluginManager.isPluginEnabled("TAB") && player?.player != null) {
+            val tabPlayer = TAB.getInstance().getPlayer(player.uniqueId)
+            val placeholders = PlaceholderManagerImpl.detectPlaceholders(string)
+                .map { TAB.getInstance().placeholderManager.getPlaceholder(it) }
+
+            for (placeholder in placeholders) string = placeholder.set(string, tabPlayer)
+            return string
+        }
         return PlaceholderAPI.setPlaceholders(player, string)
     }
 

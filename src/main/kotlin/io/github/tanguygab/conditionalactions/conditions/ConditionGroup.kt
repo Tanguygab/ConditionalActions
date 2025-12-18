@@ -23,12 +23,7 @@ class ConditionGroup(private val manager: ConditionManager, args: String, var na
         }
 
         if (ConditionalActions.INSTANCE.server.pluginManager.isPluginEnabled("TAB")) {
-            val placeholder = TAB.getInstance().placeholderManager.registerPlayerPlaceholder("%ca-condition:$name%", 1000) { p ->
-                "" + isMet(p.player as OfflinePlayer)
-            }
-            conditions.flatten()
-                .flatMap { it.getUsedPlaceholders() }
-                .forEach { placeholder.addParent(it) }
+            registerTABPlaceholder()
         }
     }
 
@@ -46,5 +41,18 @@ class ConditionGroup(private val manager: ConditionManager, args: String, var na
             if (met) return true // if all AND conditions are met, return true
         }
         return false
+    }
+
+    fun registerTABPlaceholder() {
+        val used = conditions.flatten()
+            .flatMap { it.getUsedPlaceholders() }
+            .map { TAB.getInstance().placeholderManager.getPlaceholder(it)}
+        val refresh = used.minOfOrNull { it.refresh } ?: -1
+
+        val identifier = "%ca-condition:$name%"
+        TAB.getInstance().placeholderManager.registerPlayerPlaceholder(identifier, refresh) {
+            p -> "" + isMet(p.player as OfflinePlayer)
+        }
+        used.forEach { it.addParent(identifier) }
     }
 }
