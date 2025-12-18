@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender
 
 class ReloadCommand(plugin: ConditionalActions) : CACommand(plugin) {
     override fun onCommand(sender: CommandSender, args: List<String>) {
-        if (!sender.hasPermission("conditionalactions")) {
+        if (!sender.hasPermission("conditionalactions.reload")) {
             sendMessage(sender, "&cYou don't have the permission to do this!")
             return
         }
