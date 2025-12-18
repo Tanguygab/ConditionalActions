@@ -4,7 +4,7 @@ main: io.github.tanguygab.conditionalactions.ConditionalActions
 api-version: 1.20
 author: Tanguygab
 depend: [PlaceholderAPI]
-softdepend: [LuckPerms]
+softdepend: [LuckPerms, TAB]
 folia-supported: true
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}

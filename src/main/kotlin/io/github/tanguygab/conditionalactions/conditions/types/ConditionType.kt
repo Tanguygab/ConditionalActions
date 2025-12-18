@@ -1,6 +1,7 @@
 package io.github.tanguygab.conditionalactions.conditions.types
 
 import me.clip.placeholderapi.PlaceholderAPI
+import me.neznamy.tab.shared.features.PlaceholderManagerImpl
 import org.bukkit.OfflinePlayer
 
 abstract class ConditionType(input: List<String>) {
@@ -17,4 +18,6 @@ abstract class ConditionType(input: List<String>) {
     protected fun parseRight(player: OfflinePlayer?) = parse(player, rightSide)
 
     abstract fun isMet(player: OfflinePlayer?): Boolean
+
+    fun getUsedPlaceholders() = PlaceholderManagerImpl.detectPlaceholders(leftSide) + PlaceholderManagerImpl.detectPlaceholders(rightSide)
 }

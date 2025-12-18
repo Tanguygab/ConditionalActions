@@ -58,7 +58,7 @@ class ConditionManager(plugin: ConditionalActions) {
                     } else builder.append(cfg)
                     if (builder.length >= 2 && builder.substring(builder.length - 2) == "||")
                         builder.delete(builder.length - 2, builder.length)
-                    conditions[name] = ConditionGroup(this, builder.toString())
+                    conditions[name] = ConditionGroup(this, builder.toString(), name)
                 }
                 return@loadFiles
             }

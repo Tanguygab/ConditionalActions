@@ -1,9 +1,12 @@
 package io.github.tanguygab.conditionalactions.conditions
 
+import io.github.tanguygab.conditionalactions.ConditionalActions
 import io.github.tanguygab.conditionalactions.conditions.types.ConditionType
+import me.neznamy.tab.shared.TAB
 import org.bukkit.OfflinePlayer
+import java.util.UUID
 
-class ConditionGroup(private val manager: ConditionManager, args: String) {
+class ConditionGroup(private val manager: ConditionManager, args: String, name: String? = null) {
     private val conditions = mutableListOf<MutableList<ConditionType>>()
 
     init {
@@ -15,6 +18,15 @@ class ConditionGroup(private val manager: ConditionManager, args: String) {
             else add(list, arg)
 
             conditions.add(list)
+        }
+
+        if (ConditionalActions.INSTANCE.server.pluginManager.isPluginEnabled("TAB")) {
+            val placeholder = TAB.getInstance().placeholderManager.registerPlayerPlaceholder("%ca-condition:${name ?: UUID.randomUUID()}%", 1000) { p ->
+                "" + isMet(p.player as OfflinePlayer)
+            }
+            conditions.flatten()
+                .flatMap { it.getUsedPlaceholders() }
+                .forEach { placeholder.addParent(it) }
         }
     }
 

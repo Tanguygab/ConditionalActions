@@ -3,6 +3,8 @@ package io.github.tanguygab.conditionalactions.actions
 import io.github.tanguygab.conditionalactions.ConditionalActions
 import io.github.tanguygab.conditionalactions.Utils
 import me.clip.placeholderapi.PlaceholderAPI
+import me.neznamy.tab.shared.TAB
+import me.neznamy.tab.shared.features.PlaceholderManagerImpl
 import org.bukkit.OfflinePlayer
 import org.intellij.lang.annotations.Language
 import java.util.regex.Pattern
@@ -15,7 +17,16 @@ abstract class Action @JvmOverloads constructor(@Language("RegExp") regex: Strin
     abstract fun execute(player: OfflinePlayer?, match: String)
 
     protected fun parsePlaceholders(player: OfflinePlayer?, string: String, colors: Boolean = false): String {
-        val string = PlaceholderAPI.setPlaceholders(player, string)
+        var string = string
+        if (plugin.server.pluginManager.isPluginEnabled("TAB") && player?.player != null) {
+            val tabPlayer = TAB.getInstance().getPlayer(player.uniqueId)
+            val placeholders = PlaceholderManagerImpl.detectPlaceholders(string)
+                .map { TAB.getInstance().placeholderManager.getPlaceholder(it) }
+
+            for (placeholder in placeholders) string = placeholder.set(string, tabPlayer)
+            return string
+        }
+        string = PlaceholderAPI.setPlaceholders(player, string)
         return if (colors) Utils.colors(string) else string
     }
 

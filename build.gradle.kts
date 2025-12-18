@@ -16,6 +16,7 @@ dependencies {
     compileOnly(libs.paper)
     compileOnly(libs.papi)
     compileOnly(libs.luckperms)
+    compileOnly(files("../../dependencies/TAB.jar"))
 }
 
 tasks {
