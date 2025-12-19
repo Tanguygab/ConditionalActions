@@ -1,12 +1,16 @@
 package io.github.tanguygab.conditionalactions.actions.types.items
 
 import io.github.tanguygab.conditionalactions.actions.Action
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 class TakeItemAction : Action("^(i?)take-item:( )?") {
+    private val mmLegacy get() = LegacyComponentSerializer.legacyAmpersand()
+
     override fun getSuggestion() = "take-item: <material> <amount> <name> <lore>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
@@ -25,10 +29,10 @@ class TakeItemAction : Action("^(i?)take-item:( )?") {
 
         if (args.size > 2) {
             args = args.subList(2, args.size).joinToString(" ").split("\\n")
-            name = parsePlaceholders(player, args[0], true)
+            name = parsePlaceholders(player, args[0])
 
             if (args.size > 1) for (line in args.subList(1, args.size))
-                lore.add(parsePlaceholders(player, line, true))
+                lore.add(parsePlaceholders(player, line))
         }
 
         val inv = player.inventory
@@ -50,19 +54,18 @@ class TakeItemAction : Action("^(i?)take-item:( )?") {
         }
     }
 
-    @Suppress("DEPRECATION")
     fun check(item: ItemStack, mat: Material, name: String?, lore: List<String>): Boolean {
         if (item.type !== mat) return false
         val meta = item.itemMeta
-        if (name != null && meta != null && meta.displayName != name) return false
+        if (name != null && meta != null && mmLegacy.serialize(meta.displayName() ?: Component.empty()) != name) return false
         if (lore.isNotEmpty() && meta != null) {
             if (!meta.hasLore()) return false
-            val itemLore = meta.lore ?: return false
+            val itemLore = meta.lore() ?: return false
             if (lore.size != itemLore.size) return false
 
             for (line in itemLore) {
                 val pos = itemLore.indexOf(line)
-                if (lore[pos] != line) return false
+                if (lore[pos] != mmLegacy.serialize(line)) return false
             }
         }
 

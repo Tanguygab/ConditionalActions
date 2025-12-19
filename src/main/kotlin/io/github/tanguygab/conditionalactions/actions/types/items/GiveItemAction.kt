@@ -1,6 +1,7 @@
 package io.github.tanguygab.conditionalactions.actions.types.items
 
 import io.github.tanguygab.conditionalactions.actions.Action
+import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
@@ -10,7 +11,6 @@ import org.bukkit.inventory.ItemStack
 class GiveItemAction : Action("^(i?)give-item:( )?") {
     override fun getSuggestion() = "give-item: <material> <amount> <name\\nlore>"
 
-    @Suppress("DEPRECATION")
     override fun execute(player: OfflinePlayer?, match: String) {
         if (player !is Player) return
         var args = match.split(" ")
@@ -25,13 +25,13 @@ class GiveItemAction : Action("^(i?)give-item:( )?") {
         if (args.size > 2 && meta != null) {
             args = args.subList(2, args.size)
             args = args.joinToString(" ").split("\\n")
-            meta.setDisplayName(parsePlaceholders(player, args[0], true))
+            meta.displayName(mm.deserialize(parsePlaceholders(player, args[0])))
 
             if (args.size > 1) {
-                val lore = mutableListOf<String>()
+                val lore = mutableListOf<Component>()
                 for (line in args.subList(1, args.size))
-                    lore.add(parsePlaceholders(player,line,true))
-                meta.lore = lore
+                    lore.add(mm.deserialize(parsePlaceholders(player,line)))
+                meta.lore(lore)
                 item.itemMeta = meta
             }
         }

@@ -8,7 +8,7 @@ class MessageAction : Action("^(?i)(message|msg|tell):( )?") {
     override fun getSuggestion() = "message: <message>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
-        val match = parsePlaceholders(player, match, true)
+        val match = mm.deserialize(parsePlaceholders(player, match))
         if (player is Player) player.sendMessage(match)
         else plugin.server.consoleSender.sendMessage(match)
     }

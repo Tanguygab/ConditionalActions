@@ -15,9 +15,7 @@ import io.github.tanguygab.conditionalactions.actions.types.messages.*
 import io.github.tanguygab.conditionalactions.actions.types.other.DelayAction
 import io.github.tanguygab.conditionalactions.events.ActionsRegisterEvent
 
-import net.kyori.adventure.text.Component
 import org.bukkit.OfflinePlayer
-import org.bukkit.entity.Player
 
 class ActionManager(private val plugin: ConditionalActions, val argumentSeparator: String) {
     private val actions = mutableListOf<Action>()
@@ -49,7 +47,6 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
             BroadcastTitleAction(),
             ChatAction(),
             MessageAction(),
-            MiniMessageAction(),
             TitleAction(),
 
             DelayAction()

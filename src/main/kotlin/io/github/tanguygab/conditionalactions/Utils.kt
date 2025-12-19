@@ -1,7 +1,6 @@
 package io.github.tanguygab.conditionalactions
 
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.OfflinePlayer
 import org.bukkit.configuration.file.YamlConfiguration
 
@@ -13,8 +12,6 @@ object Utils {
         return p ?: Bukkit.getServer().getOfflinePlayerIfCached(name)
 
     }
-
-    fun colors(string: String) = ChatColor.translateAlternateColorCodes('&', string)
 
     fun updateFiles(plugin: ConditionalActions, oldPath: String, newPath: String) {
         val file = File(plugin.dataFolder, newPath)
