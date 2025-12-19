@@ -54,7 +54,11 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
 
             DelayAction()
         )
-        if (plugin.server.pluginManager.isPluginEnabled("LuckPerms")) register(PermissionAction())
+        if (plugin.server.pluginManager.isPluginEnabled("LuckPerms")) register(
+            PermissionAction(),
+            GiveTakePermissionAction("give"),
+            GiveTakePermissionAction("take")
+        )
 
         plugin.sync(null) { load() }
     }
