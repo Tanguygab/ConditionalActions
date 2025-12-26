@@ -2,6 +2,9 @@ package io.github.tanguygab.conditionalactions.customcommands
 
 import io.github.tanguygab.conditionalactions.ConditionalActions
 import io.github.tanguygab.conditionalactions.Utils
+import io.github.tanguygab.conditionalactions.hook.tab.ArgPlaceholders
+import io.github.tanguygab.conditionalactions.hook.tab.ThreadPlaceholder
+import me.neznamy.tab.shared.platform.TabPlayer
 import org.bukkit.configuration.ConfigurationSection
 import java.util.concurrent.ConcurrentHashMap
 
@@ -10,6 +13,7 @@ class CustomCommandManager(plugin: ConditionalActions) {
     val aliases = mutableMapOf<String, String>()
 
     internal val runningCommandsArguments = ConcurrentHashMap<Thread, Array<String>>()
+    internal val tabPlaceholders: ArgPlaceholders<ThreadPlaceholder>?
 
     init {
         Utils.updateFiles(plugin, "commands.yml", "commands/default-commands.yml")
@@ -32,6 +36,12 @@ class CustomCommandManager(plugin: ConditionalActions) {
             map[name] = command
             command.aliases.forEach { map[it] = command }
         }
+        tabPlaceholders = if (plugin.server.pluginManager.isPluginEnabled("TAB")) {
+            object : ArgPlaceholders<ThreadPlaceholder>("conditionalactions_") {
+                override fun new(identifier: String, default: String) = ThreadPlaceholder(identifier)
+                override fun update(placeholder: ThreadPlaceholder, player: TabPlayer?, value: String) = placeholder.updateValue(value)
+            }
+        } else null
 
         plugin.server.pluginManager.registerEvents(CommandListener(this), plugin)
     }

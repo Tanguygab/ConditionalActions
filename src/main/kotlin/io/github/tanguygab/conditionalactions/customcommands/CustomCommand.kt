@@ -26,9 +26,13 @@ class CustomCommand(
 
     override fun execute(sender: CommandSender, commandLabel: String, args: Array<String>): Boolean {
         ConditionalActions.INSTANCE.async {
-            ConditionalActions.INSTANCE.customCommandManager.runningCommandsArguments[Thread.currentThread()] = args
-            actions.execute(sender as? OfflinePlayer)
-            ConditionalActions.INSTANCE.customCommandManager.runningCommandsArguments.remove(Thread.currentThread())
+            ConditionalActions.INSTANCE.customCommandManager.apply {
+                runningCommandsArguments[Thread.currentThread()] = args
+                tabPlaceholders?.update(null, args.toList())
+                actions.execute(sender as? OfflinePlayer)
+                tabPlaceholders?.update(null)
+                runningCommandsArguments.remove(Thread.currentThread())
+            }
         }
         return true
     }

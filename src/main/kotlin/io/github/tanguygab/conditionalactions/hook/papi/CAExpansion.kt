@@ -23,7 +23,7 @@ class CAExpansion(plugin: ConditionalActions) : PAPIExpansion(plugin, "condition
 
         return when (arg) {
             "args" -> if (player == null) null else plugin.customCommandManager.getCurrentArgs()?.joinToString(" ")
-            "args-length" -> if (player == null) null else plugin.customCommandManager.getCurrentArgs()?.size
+            "args-size" -> if (player == null) null else plugin.customCommandManager.getCurrentArgs()?.size
 
             "data" -> if (player == null) null else plugin.dataManager.getData(player, params)
             "global-data" -> plugin.dataManager.getGlobalData(params)
