@@ -6,7 +6,7 @@ import net.luckperms.api.node.Node
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
-class GiveTakePermissionAction(val type: String) : Action("^(?i)$type-(permission|perm):( )?") {
+class GiveTakePermissionAction(val type: String) : Action("^(?i)$type-(permission|perm):( )?".toRegex()) {
     override fun getSuggestion() = "$type-permission: <permission>"
 
     override fun execute(player: OfflinePlayer?, match: String) {

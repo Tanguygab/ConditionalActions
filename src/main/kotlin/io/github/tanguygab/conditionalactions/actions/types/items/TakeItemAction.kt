@@ -8,7 +8,7 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
-class TakeItemAction : Action("^(i?)take-item:( )?") {
+class TakeItemAction : Action("^(i?)take-item:( )?".toRegex()) {
     private val mmLegacy get() = LegacyComponentSerializer.legacyAmpersand()
 
     override fun getSuggestion() = "take-item: <material> <amount> <name> <lore>"

@@ -4,7 +4,7 @@ import io.github.tanguygab.conditionalactions.actions.Action
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
-class ActionBarAction : Action("^(?i)(actionbar):( )?") {
+class ActionBarAction : Action("^(?i)(actionbar):( )?".toRegex()) {
     override fun getSuggestion() = "actionbar: <message>"
 
     override fun execute(player: OfflinePlayer?, match: String) {

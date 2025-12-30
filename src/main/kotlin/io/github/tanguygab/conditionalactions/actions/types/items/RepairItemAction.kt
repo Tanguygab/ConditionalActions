@@ -5,7 +5,7 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.Damageable
 
-class RepairItemAction : Action("^(i?)repair-item:( )?") {
+class RepairItemAction : Action("^(i?)repair-item:( )?".toRegex()) {
     override fun getSuggestion() = "repair-item: <slot>"
 
     override fun execute(player: OfflinePlayer?, match: String) {

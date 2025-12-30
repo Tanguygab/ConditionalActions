@@ -5,7 +5,7 @@ import io.github.tanguygab.conditionalactions.actions.Action
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
-class ServerAction : Action("^(?i)server:( )?") {
+class ServerAction : Action("^(?i)server:( )?".toRegex()) {
     override fun getSuggestion() = "server: <server>"
 
     override fun execute(player: OfflinePlayer?, match: String) {

@@ -4,7 +4,7 @@ import io.github.tanguygab.conditionalactions.Utils
 import io.github.tanguygab.conditionalactions.actions.Action
 import org.bukkit.OfflinePlayer
 
-class SetDataAction : Action("^(?i)set-data: ") {
+class SetDataAction : Action("^(?i)set-data: ".toRegex()) {
     override fun getSuggestion() = "set-data: <player|--global> <data> <value>"
 
     override fun execute(player: OfflinePlayer?, match: String) {

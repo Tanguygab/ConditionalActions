@@ -4,7 +4,7 @@ import io.github.tanguygab.conditionalactions.Utils
 import io.github.tanguygab.conditionalactions.actions.Action
 import org.bukkit.OfflinePlayer
 
-class RemoveDataAction : Action("^(?i)remove-data: ") {
+class RemoveDataAction : Action("^(?i)remove-data: ".toRegex()) {
     override fun getSuggestion() = "remove-data: <player|--global> <data>"
 
     override fun execute(player: OfflinePlayer?, match: String) {

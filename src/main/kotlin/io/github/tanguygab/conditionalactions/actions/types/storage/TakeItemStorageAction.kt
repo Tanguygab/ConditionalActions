@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
-class TakeItemStorageAction : Action("^(i?)take-item-storage:( )?") {
+class TakeItemStorageAction : Action("^(i?)take-item-storage:( )?".toRegex()) {
     override fun getSuggestion() = "take-item-storage: <name>"
 
     override fun execute(player: OfflinePlayer?, match: String) {

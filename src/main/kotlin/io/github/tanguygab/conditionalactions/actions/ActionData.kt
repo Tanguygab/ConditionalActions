@@ -10,7 +10,7 @@ data class ActionData(
     override fun execute(player: OfflinePlayer?): Boolean {
         var args = arguments
 
-        if (action.replaceMatch) args = args.replace(action.pattern.pattern().toRegex(), "")
+        if (action.replaceMatch) args = args.replace(action.pattern, "")
 
         action.execute(player, args)
         return true

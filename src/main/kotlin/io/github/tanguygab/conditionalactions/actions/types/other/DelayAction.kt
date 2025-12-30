@@ -3,7 +3,7 @@ package io.github.tanguygab.conditionalactions.actions.types.other
 import io.github.tanguygab.conditionalactions.actions.Action
 import org.bukkit.OfflinePlayer
 
-class DelayAction : Action("^(?i)delay:( )?") {
+class DelayAction : Action("^(?i)delay:( )?".toRegex()) {
     override fun getSuggestion() = "delay: <ms>"
 
     override fun execute(player: OfflinePlayer?, match: String) {

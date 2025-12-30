@@ -4,7 +4,7 @@ import io.github.tanguygab.conditionalactions.actions.Action
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
-class ChatAction : Action("^(?i)chat:( )?") {
+class ChatAction : Action("^(?i)chat:( )?".toRegex()) {
     override fun getSuggestion() = "chat: <message>"
 
     override fun execute(player: OfflinePlayer?, match: String) {

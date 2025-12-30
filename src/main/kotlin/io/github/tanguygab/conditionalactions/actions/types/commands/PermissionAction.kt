@@ -9,16 +9,15 @@ import org.bukkit.entity.Player
 
 import java.util.concurrent.CompletableFuture
 
-class PermissionAction : Action("^(?i)(permission|perm):(?<permission>[a-zA-Z0-9.*_\\- \",]+):( )?", false) {
+class PermissionAction : Action("^(?i)(permission|perm):(?<permission>[a-zA-Z0-9.*_\\- \",]+):( )?".toRegex(), false) {
     override fun getSuggestion() = "permission:<permission>: <command>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         if (player !is Player) return
 
-        val matcher = pattern.matcher(match)
-        if (!matcher.find()) return
-        val permission = matcher.group("permission").split(",")
-        val match = match.replace(matcher.pattern().pattern().toRegex(), "")
+        val matcher = pattern.matchEntire(match) ?: return
+        val permission = matcher.groups["permission"]!!.value.split(",")
+        val match = match.replace(pattern, "")
 
         val um = LuckPermsProvider.get().userManager
         val user = um.getUser(player.uniqueId) ?: return

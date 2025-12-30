@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 
-class EnchantItemAction(private val type: String) : Action("^(i?)$type-enchant-item:( )?") {
+class EnchantItemAction(private val type: String) : Action("^(i?)$type-enchant-item:( )?".toRegex()) {
     override fun getSuggestion() =
         "$type-enchant-item: <slot> <enchant> " + (if (type == "set") "<level>" else "[level]")
 

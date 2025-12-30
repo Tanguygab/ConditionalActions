@@ -4,7 +4,7 @@ import io.github.tanguygab.conditionalactions.actions.Action
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
-class PlayerAction : Action("^(?i)(player|cmd|command):( )?") {
+class PlayerAction : Action("^(?i)(player|cmd|command):( )?".toRegex()) {
     override fun getSuggestion() = "player: <command>"
 
     override fun execute(player: OfflinePlayer?, match: String) {

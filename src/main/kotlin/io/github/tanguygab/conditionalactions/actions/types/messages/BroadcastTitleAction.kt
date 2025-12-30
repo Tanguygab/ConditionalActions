@@ -5,7 +5,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.title.Title
 import org.bukkit.OfflinePlayer
 
-class BroadcastTitleAction : Action("^(?i)(broadcast|bc)-title:( )?") {
+class BroadcastTitleAction : Action("^(?i)(broadcast|bc)-title:( )?".toRegex()) {
     override fun getSuggestion() = getSuggestionWithArgs("broadcast-title: <title>", "<subtitle>", "<fadein>", "<stay>", "<fadeout>")
 
     override fun execute(player: OfflinePlayer?, match: String) {

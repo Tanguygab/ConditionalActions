@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 
-class GiveItemAction : Action("^(i?)give-item:( )?") {
+class GiveItemAction : Action("^(i?)give-item:( )?".toRegex()) {
     override fun getSuggestion() = "give-item: <material> <amount> <name\\nlore>"
 
     override fun execute(player: OfflinePlayer?, match: String) {

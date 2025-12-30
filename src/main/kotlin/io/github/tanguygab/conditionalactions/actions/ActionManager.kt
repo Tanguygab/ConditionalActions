@@ -92,13 +92,7 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
         return true
     }
 
-    fun find(action: String): Action? {
-        for (ac in actions) {
-            val matcher = ac.pattern.matcher(action)
-            if (matcher.find()) return ac
-        }
-        return null
-    }
+    fun find(action: String) = actions.find { it.pattern.matches(action) }
 
     fun register(vararg action: Action) = actions.addAll(action)
 
