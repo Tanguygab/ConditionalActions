@@ -16,6 +16,7 @@ import io.github.tanguygab.conditionalactions.actions.types.other.DelayAction
 import io.github.tanguygab.conditionalactions.events.ActionsRegisterEvent
 
 import org.bukkit.OfflinePlayer
+import org.bukkit.configuration.file.YamlConfiguration
 
 class ActionManager(private val plugin: ConditionalActions, val argumentSeparator: String) {
     private val actions = mutableListOf<Action>()
@@ -66,8 +67,10 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
         registerAll(event.actions)
 
         Utils.updateFiles(plugin, "actiongroups.yml", "actiongroups/default-groups.yml")
-        Utils.loadFiles(plugin, "actiongroups") { name: String, obj: Any ->
-            if (obj is List<*>) actionGroups[name] = ActionGroup(this, obj)
+        Utils.loadFiles(plugin.dataFolder.resolve("actiongroups"), "") { file, _ ->
+            YamlConfiguration.loadConfiguration(file).getValues(false).forEach { (name, obj) ->
+                if (obj is List<*>) actionGroups[name] = ActionGroup(this, obj)
+            }
         }
 
         plugin.customCommandManager.commands.values.forEach { it.loadActions(this) }

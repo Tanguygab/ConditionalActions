@@ -6,7 +6,11 @@ import io.github.tanguygab.conditionalactions.hook.tab.ArgPlaceholders
 import io.github.tanguygab.conditionalactions.hook.tab.ThreadPlaceholder
 import me.neznamy.tab.shared.platform.TabPlayer
 import org.bukkit.configuration.ConfigurationSection
+import org.bukkit.configuration.file.YamlConfiguration
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.set
 
 class CustomCommandManager(plugin: ConditionalActions) {
     val commands = mutableMapOf<String, CustomCommand>()
@@ -18,15 +22,18 @@ class CustomCommandManager(plugin: ConditionalActions) {
     init {
         Utils.updateFiles(plugin, "commands.yml", "commands/default-commands.yml")
 
-        Utils.loadFiles(plugin, "commands") { name: String, obj: Any ->
-            if (obj !is ConfigurationSection) return@loadFiles
-            val register = obj.getBoolean("register", true)
-            val force = obj.getBoolean("force", true)
-            val aliases = obj.getStringList("aliases")
-            val actions = obj.getList("actions") as List<*>
 
-            commands[name] = CustomCommand(name, register, force, aliases, actions)
-            aliases.forEach { this.aliases[it] = name }
+        Utils.loadFiles(plugin.dataFolder.resolve("commands"), "") { file, _ ->
+            YamlConfiguration.loadConfiguration(file).getValues(false).forEach { (name, obj) ->
+                if (obj !is ConfigurationSection) return@loadFiles
+                val register = obj.getBoolean("register", true)
+                val force = obj.getBoolean("force", true)
+                val aliases = obj.getStringList("aliases")
+                val actions = obj.getList("actions") as List<*>
+
+                commands[name] = CustomCommand(name, register, force, aliases, actions)
+                aliases.forEach { this.aliases[it] = name }
+            }
         }
 
         val map = plugin.server.commandMap.knownCommands

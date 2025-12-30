@@ -2,7 +2,6 @@ package io.github.tanguygab.conditionalactions
 
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
-import org.bukkit.configuration.file.YamlConfiguration
 
 import java.io.File
 
@@ -24,22 +23,12 @@ object Utils {
         }
     }
 
-    fun loadFiles(
-        plugin: ConditionalActions,
-        path: String,
-        callable: (String, Any) -> Unit
-    ) {
-        val folder = File(plugin.dataFolder, path)
-
-        for (file in folder.listFiles()) {
-            if (file.isDirectory) {
-                loadFiles(plugin, path + "/" + file.getName(), callable)
-                continue
-            }
-            if (!file.name.endsWith(".yml")) return
-
-            val config = YamlConfiguration.loadConfiguration(file)
-            config.getValues(false).forEach(callable)
+    fun loadFiles(file: File, path: String, callable: (File, String) -> Unit) {
+        if (file.isDirectory) {
+            file.listFiles().forEach { loadFiles(it, "$path${file.name}/", callable) }
+            return
         }
+        if (!file.name.endsWith(".yml")) return
+        callable(file, path)
     }
 }

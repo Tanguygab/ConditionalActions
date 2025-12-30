@@ -10,6 +10,7 @@ import me.neznamy.tab.api.event.plugin.TabLoadEvent
 import me.neznamy.tab.shared.TAB
 import org.bukkit.OfflinePlayer
 import org.bukkit.configuration.ConfigurationSection
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 
 class ConditionManager(plugin: ConditionalActions) {
@@ -45,28 +46,30 @@ class ConditionManager(plugin: ConditionalActions) {
     init {
         Utils.updateFiles(plugin, "conditions.yml", "conditions/default-conditions.yml")
 
-        Utils.loadFiles(plugin, "conditions") { key: String, value: Any ->
-            if (value !is ConfigurationSection) return@loadFiles
+        Utils.loadFiles(plugin.dataFolder.resolve("commands"), "") { file, _ ->
+            YamlConfiguration.loadConfiguration(file).getValues(false).forEach { (key, value) ->
+                if (value !is ConfigurationSection) return@forEach
 
-            if (key.equals("conditions", ignoreCase = true)) {
-                value.getValues(false).forEach { (name: String, cfg: Any) ->
-                    val builder = StringBuilder()
-                    if (cfg is MutableList<*>) {
-                        cfg.forEach { obj ->
-                            @Suppress("UNCHECKED_CAST")
-                            builder.append(if (obj is MutableList<*>) (obj as MutableList<String>).joinToString("&&") else obj)
-                            builder.append("||")
-                        }
-                    } else builder.append(cfg)
-                    if (builder.length >= 2 && builder.substring(builder.length - 2) == "||")
-                        builder.delete(builder.length - 2, builder.length)
-                    conditions[name] = ConditionGroup(this, builder.toString(), name)
+                if (key.equals("conditions", ignoreCase = true)) {
+                    value.getValues(false).forEach { (name: String, cfg: Any) ->
+                        val builder = StringBuilder()
+                        if (cfg is MutableList<*>) {
+                            cfg.forEach { obj ->
+                                @Suppress("UNCHECKED_CAST")
+                                builder.append(if (obj is MutableList<*>) (obj as MutableList<String>).joinToString("&&") else obj)
+                                builder.append("||")
+                            }
+                        } else builder.append(cfg)
+                        if (builder.length >= 2 && builder.substring(builder.length - 2) == "||")
+                            builder.delete(builder.length - 2, builder.length)
+                        conditions[name] = ConditionGroup(this, builder.toString(), name)
+                    }
+                    return@forEach
                 }
-                return@loadFiles
-            }
-            if (key.equals("conditional-outputs", ignoreCase = true)) {
-                value.getValues(false).forEach { (name: String, cfg: Any) ->
-                    if (cfg is ConfigurationSection) conditionalOutputs[name] = ConditionalOutput(this, cfg)
+                if (key.equals("conditional-outputs", ignoreCase = true)) {
+                    value.getValues(false).forEach { (name: String, cfg: Any) ->
+                        if (cfg is ConfigurationSection) conditionalOutputs[name] = ConditionalOutput(this, cfg)
+                    }
                 }
             }
         }
