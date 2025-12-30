@@ -16,7 +16,7 @@ class CustomCommandManager(plugin: ConditionalActions) {
     val commands = mutableMapOf<String, CustomCommand>()
     val aliases = mutableMapOf<String, String>()
 
-    internal val runningCommandsArguments = ConcurrentHashMap<Thread, Array<String>>()
+    internal val runningCommandsArguments = ConcurrentHashMap<Thread, List<String>>()
     internal val tabPlaceholders: ArgPlaceholders<ThreadPlaceholder>?
 
     init {
