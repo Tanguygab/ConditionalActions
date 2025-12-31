@@ -4,7 +4,7 @@ import me.neznamy.tab.shared.TAB
 import me.neznamy.tab.shared.placeholders.types.TabPlaceholder
 import me.neznamy.tab.shared.platform.TabPlayer
 
-abstract class ArgPlaceholders<T: TabPlaceholder>(prefix: String) {
+abstract class ArgPlaceholders<T: TabPlaceholder>(val prefix: String) {
 
     val argsPlaceholder: T
     val argsSizePlaceholder: T
@@ -25,7 +25,7 @@ abstract class ArgPlaceholders<T: TabPlaceholder>(prefix: String) {
         update(argsSizePlaceholder, player, args.size.toString())
         args.forEachIndexed { index, arg ->
             val placeholder = if (index < argPlaceholders.size) argPlaceholders[index]
-            else register(new("%menu-arg-$index%")).also { argPlaceholders.add(it) }
+            else register(new("%${prefix}arg-$index%")).also { argPlaceholders.add(it) }
             update(placeholder, player, arg)
         }
         if (args.size < argPlaceholders.size) argPlaceholders.forEachIndexed { index, placeholder ->

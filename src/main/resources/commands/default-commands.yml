@@ -4,4 +4,21 @@ mycoolcommand:
     - coolcommand
     - coolcmd
   actions:
-    - "msg: &aHeya &2%player_name%&a! Cool command right?"
+    - "msg: <green>Heya <dark_green>%player_name%</dark_green>! Cool command right?"
+restart:
+  actions:
+    - "msg: %conditionalactions_args% %conditionalactions_args-size% %conditionalactions_arg-0% %conditionalactions_arg-1%"
+    - condition: "is_op"
+      deny:
+        - "msg: <red>You don't have the permission to run this command!"
+        - return
+    - condition: "%conditionalactions_args%!=="
+      success:
+        - condition: "%conditionalactions_arg-0% >= 1"
+          success:
+            - "msg: <gray>Restarting the server in <dark_red>%conditionalactions_arg-0%</dark_red> seconds!"
+            - "delay: %math_0_{conditionalactions_arg-0}*1000%"
+          deny:
+            - "msg: <red>\"%conditionalactions_arg-0%\" is not a valid number!"
+            - return
+    - "group: restart"

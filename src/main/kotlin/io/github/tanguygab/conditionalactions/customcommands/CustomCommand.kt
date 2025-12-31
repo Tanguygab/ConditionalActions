@@ -26,7 +26,7 @@ class CustomCommand(
 
     override fun execute(sender: CommandSender, commandLabel: String, args: Array<String>): Boolean {
         ConditionalActions.INSTANCE.async {
-            val args = args.map { it.replace("%", "%%") }
+            val args = args.map { it.replace("%", "") }
             ConditionalActions.INSTANCE.customCommandManager.apply {
                 runningCommandsArguments[Thread.currentThread()] = args
                 tabPlaceholders?.update(null, args)
