@@ -2,6 +2,8 @@ package io.github.tanguygab.conditionalactions.actions
 
 import io.github.tanguygab.conditionalactions.ConditionalActions
 import io.github.tanguygab.conditionalactions.Utils
+import io.github.tanguygab.conditionalactions.actions.types.bungee.BungeeConsoleAction
+import io.github.tanguygab.conditionalactions.actions.types.bungee.BungeePlayerAction
 import io.github.tanguygab.conditionalactions.actions.types.items.EnchantItemAction
 import io.github.tanguygab.conditionalactions.actions.types.items.GiveItemAction
 import io.github.tanguygab.conditionalactions.actions.types.items.RepairItemAction
@@ -28,6 +30,8 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
             ConsoleAction(),
             GroupAction(),
 
+            BungeePlayerAction(),
+            BungeeConsoleAction(),
             ServerAction(),
 
             RemoveDataAction(),
@@ -92,7 +96,7 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
         return true
     }
 
-    fun find(action: String) = actions.find { it.pattern.matches(action) }
+    fun find(action: String) = actions.find { it.pattern.containsMatchIn(action) }
 
     fun register(vararg action: Action) = actions.addAll(action)
 

@@ -8,10 +8,6 @@ import me.neznamy.tab.shared.platform.TabPlayer
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
 import java.util.concurrent.ConcurrentHashMap
-import kotlin.collections.component1
-import kotlin.collections.component2
-import kotlin.collections.set
-
 class CustomCommandManager(plugin: ConditionalActions) {
     val commands = mutableMapOf<String, CustomCommand>()
     val aliases = mutableMapOf<String, String>()

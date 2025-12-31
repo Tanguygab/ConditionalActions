@@ -11,19 +11,13 @@ class CAExpansion(plugin: ConditionalActions) : PAPIExpansion(plugin, "condition
         val arg = args[0]
         val params = params.substringAfter("${arg}_")
 
-        if (arg.startsWith("arg-")) {
-            if (player == null) return null
-
-            val i = arg.substringAfter("args-").toIntOrNull()
-            val args = plugin.customCommandManager.getCurrentArgs()
-
-            return if (i == null || args == null || i >= args.size) null
-            else args[i]
-        }
-
         return when (arg) {
             "args" -> if (player == null) null else plugin.customCommandManager.getCurrentArgs()?.joinToString(" ")
             "args-size" -> if (player == null) null else plugin.customCommandManager.getCurrentArgs()?.size
+            "arg" -> params.toIntOrNull()?.let { plugin.customCommandManager.getCurrentArgs()?.getOrNull(it) }
+
+            "server-online" -> params in plugin.servers
+            "server-players" -> plugin.servers[params] ?: 0
 
             "data" -> if (player == null) null else plugin.dataManager.getData(player, params)
             "global-data" -> plugin.dataManager.getGlobalData(params)

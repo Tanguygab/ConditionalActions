@@ -14,6 +14,7 @@ repositories {
 
 dependencies {
     compileOnly(libs.paper)
+    compileOnly(libs.bungee)
     compileOnly(libs.papi)
     compileOnly(libs.luckperms)
     compileOnly(files("../../dependencies/TAB.jar"))
@@ -21,7 +22,7 @@ dependencies {
 
 tasks {
     processResources {
-        filesMatching("plugin.yml") {
+        filesMatching(listOf("plugin.yml", "bungee.yml")) {
             expand(
                 "version" to rootProject.version,
                 "kotlinVersion" to libs.versions.kotlin.get()

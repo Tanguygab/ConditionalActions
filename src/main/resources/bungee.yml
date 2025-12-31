@@ -1,0 +1,6 @@
+name: CA-Bridge
+version: '${version}'
+main: io.github.tanguygab.cabridge.CABridge
+author: Tanguygab
+libraries:
+  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}

@@ -4,7 +4,6 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
-import kotlin.collections.get
 
 class CommandListener(private val manager: CustomCommandManager) : Listener {
     @EventHandler(priority = EventPriority.HIGHEST)

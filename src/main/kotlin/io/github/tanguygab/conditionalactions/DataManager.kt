@@ -1,7 +1,6 @@
 package io.github.tanguygab.conditionalactions
 
 import org.bukkit.OfflinePlayer
-import kotlin.collections.get
 
 class DataManager {
     private val data = mutableMapOf<OfflinePlayer, MutableMap<String, String>>()

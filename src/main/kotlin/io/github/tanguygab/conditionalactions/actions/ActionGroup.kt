@@ -2,7 +2,6 @@ package io.github.tanguygab.conditionalactions.actions
 
 import io.github.tanguygab.conditionalactions.ConditionalActions
 import org.bukkit.OfflinePlayer
-import kotlin.collections.get
 
 class ActionGroup(
     private val manager: ActionManager,
