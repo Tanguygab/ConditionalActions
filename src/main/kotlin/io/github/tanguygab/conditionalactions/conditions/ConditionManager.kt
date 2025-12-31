@@ -46,7 +46,7 @@ class ConditionManager(plugin: ConditionalActions) {
     init {
         Utils.updateFiles(plugin, "conditions.yml", "conditions/default-conditions.yml")
 
-        Utils.loadFiles(plugin.dataFolder.resolve("commands"), "") { file, _ ->
+        Utils.loadFiles(plugin.dataFolder.resolve("conditions"), "") { file, _ ->
             YamlConfiguration.loadConfiguration(file).getValues(false).forEach { (key, value) ->
                 if (value !is ConfigurationSection) return@forEach
 
