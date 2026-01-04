@@ -14,7 +14,7 @@ import io.github.tanguygab.conditionalactions.actions.types.bungee.ServerAction
 import io.github.tanguygab.conditionalactions.actions.types.commands.*
 import io.github.tanguygab.conditionalactions.actions.types.data.*
 import io.github.tanguygab.conditionalactions.actions.types.messages.*
-import io.github.tanguygab.conditionalactions.actions.types.other.DelayAction
+import io.github.tanguygab.conditionalactions.actions.types.other.*
 import io.github.tanguygab.conditionalactions.events.ActionsRegisterEvent
 
 import org.bukkit.OfflinePlayer
@@ -54,6 +54,8 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
             MessageAction(),
             TitleAction(),
 
+            PlaceholderAction(),
+            LogAction(),
             DelayAction()
         )
         if (plugin.server.pluginManager.isPluginEnabled("LuckPerms")) register(

@@ -15,7 +15,7 @@ class PermissionAction : Action("^(?i)(permission|perm):(?<permission>[a-zA-Z0-9
     override fun execute(player: OfflinePlayer?, match: String) {
         if (player !is Player) return
 
-        val matcher = pattern.matchEntire(match) ?: return
+        val matcher = pattern.find(match) ?: return
         val permission = matcher.groups["permission"]!!.value.split(",")
         val match = match.replace(pattern, "")
 
