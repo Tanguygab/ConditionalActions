@@ -8,10 +8,12 @@ import io.github.tanguygab.conditionalactions.conditions.types.NumericCondition
 import io.github.tanguygab.conditionalactions.conditions.types.StringCondition
 import me.neznamy.tab.api.event.plugin.TabLoadEvent
 import me.neznamy.tab.shared.TAB
+import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
+import java.util.UUID
 
 class ConditionManager(plugin: ConditionalActions) {
     private val conditions = mutableMapOf<String, ConditionGroup>()
@@ -34,6 +36,26 @@ class ConditionManager(plugin: ConditionalActions) {
         put("=r=") { StringCondition(it.split(" *=r= *".toRegex(), limit = 2)) { left, right -> left.toRegex().containsMatchIn(right) } }
         put("==") { StringCondition(it.split(" *== *".toRegex(), limit = 2)) { left, right -> left == right } }
         put("=") { StringCondition(it.split(" *= *".toRegex(), limit = 2)) { left, right -> left.equals(right, ignoreCase = true) } }
+
+
+        fun isObject(input: String, type: String) = when (type.lowercase()) {
+            "int", "integer" -> input.toIntOrNull()
+            "double" -> input.toDoubleOrNull()
+            "uuid", "player", "onlineplayer", "offlineplayer" -> {
+                val uuid = try { UUID.fromString(input) } catch (_: IllegalArgumentException) { null }
+                if (type == "uuid") uuid
+                else {
+                    val player = if (uuid == null)
+                        Bukkit.getOfflinePlayerIfCached(input)
+                    else Bukkit.getOfflinePlayer(uuid)
+                    if (type == "player") player
+                    else player?.isOnline == (type == "onlineplayer")
+                }
+            }
+            else -> null
+        } !in listOf(null, false)
+        put("!is") { StringCondition(it.split(" *!is *".toRegex(), limit = 2)) { left, right -> !isObject(left, right) } }
+        put("is") { StringCondition(it.split(" *is *".toRegex(), limit = 2)) { left, right -> isObject(left, right) } }
 
         put("permission:") { object : ConditionType(it.split("permission: *".toRegex(), limit = 2)) {
             override fun isMet(player: OfflinePlayer?) = player is Player && player.hasPermission(parseRight(player))
