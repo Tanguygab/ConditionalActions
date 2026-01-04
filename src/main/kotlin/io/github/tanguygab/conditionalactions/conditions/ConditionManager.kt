@@ -18,29 +18,26 @@ class ConditionManager(plugin: ConditionalActions) {
     private val conditionalOutputs = mutableMapOf<String, ConditionalOutput>()
 
     private val types = mutableMapOf<String, (String) -> ConditionType>().apply {
-        put("<-") { StringCondition(it.split(" *<- *".toRegex(), limit = 2)) { left: String, right: String -> left.contains(right) } }
-        put("-|") { StringCondition(it.split(" *-\\| *".toRegex(), limit = 2)) { left: String, right: String -> left.endsWith(right) } }
-        put("|-") { StringCondition(it.split(" *\\|- *".toRegex(), limit = 2)) { left: String, right: String -> left.startsWith(right) } }
+        put("<-") { StringCondition(it.split(" *<- *".toRegex(), limit = 2)) { left, right -> right in left } }
+        put("-|") { StringCondition(it.split(" *-\\| *".toRegex(), limit = 2)) { left, right -> left.endsWith(right) } }
+        put("|-") { StringCondition(it.split(" *\\|- *".toRegex(), limit = 2)) { left, right -> left.startsWith(right) } }
 
-        put(">=") { NumericCondition(it.split(" *>= *".toRegex(), limit = 2)) { left: Double, right: Double -> left >= right } }
-        put(">") { NumericCondition(it.split(" *> *".toRegex(), limit = 2)) { left: Double, right: Double -> left > right } }
-        put("<=") { NumericCondition(it.split(" *<= *".toRegex(), limit = 2)) { left: Double, right: Double -> left <= right } }
-        put("<") { NumericCondition(it.split(" *> *".toRegex(), limit = 2)) { left: Double, right: Double -> left < right } }
+        put(">=") { NumericCondition(it.split(" *>= *".toRegex(), limit = 2)) { left, right -> left >= right } }
+        put(">") { NumericCondition(it.split(" *> *".toRegex(), limit = 2)) { left, right -> left > right } }
+        put("<=") { NumericCondition(it.split(" *<= *".toRegex(), limit = 2)) { left, right -> left <= right } }
+        put("<") { NumericCondition(it.split(" *> *".toRegex(), limit = 2)) { left, right -> left < right } }
 
-        put("!==") { StringCondition(it.split(" *!== *".toRegex(), limit = 2)) { left: String, right: String -> left != right } }
-        put("!=") { StringCondition(it.split(" *!= *".toRegex(), limit = 2)) { left: String, right: String -> !left.equals(right, ignoreCase = true) } }
+        put("=r=") { StringCondition(it.split(" *!=r= *".toRegex(), limit = 2)) { left, right -> !left.toRegex().containsMatchIn(right) } }
+        put("!==") { StringCondition(it.split(" *!== *".toRegex(), limit = 2)) { left, right -> left != right } }
+        put("!=") { StringCondition(it.split(" *!= *".toRegex(), limit = 2)) { left, right -> !left.equals(right, ignoreCase = true) } }
 
-        put("==") { StringCondition(it.split(" *== *".toRegex(), limit = 2)) { left: String, right: String -> left == right } }
-        put("=") { StringCondition(it.split(" *= *".toRegex(), limit = 2)) { left: String, right: String -> left.equals(right, ignoreCase = true) } }
-
+        put("=r=") { StringCondition(it.split(" *=r= *".toRegex(), limit = 2)) { left, right -> left.toRegex().containsMatchIn(right) } }
+        put("==") { StringCondition(it.split(" *== *".toRegex(), limit = 2)) { left, right -> left == right } }
+        put("=") { StringCondition(it.split(" *= *".toRegex(), limit = 2)) { left, right -> left.equals(right, ignoreCase = true) } }
 
         put("permission:") { object : ConditionType(it.split("permission: *".toRegex(), limit = 2)) {
-                override fun isMet(player: OfflinePlayer?): Boolean {
-                    val permission = rightSide
-                    return player is Player && player.hasPermission(permission)
-                }
-            }
-        }
+            override fun isMet(player: OfflinePlayer?) = player is Player && player.hasPermission(parseRight(player))
+        } }
     }
 
     init {
