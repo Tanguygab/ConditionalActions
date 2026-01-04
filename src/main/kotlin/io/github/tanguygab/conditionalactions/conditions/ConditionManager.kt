@@ -37,6 +37,9 @@ class ConditionManager(plugin: ConditionalActions) {
         put("==") { StringCondition(it.split(" *== *".toRegex(), limit = 2)) { left, right -> left == right } }
         put("=") { StringCondition(it.split(" *= *".toRegex(), limit = 2)) { left, right -> left.equals(right, ignoreCase = true) } }
 
+        put("permission:") { object : ConditionType(it.split("permission: *".toRegex(), limit = 2)) {
+            override fun isMet(player: OfflinePlayer?) = player is Player && player.hasPermission(parseRight(player))
+        } }
 
         fun isObject(input: String, type: String) = when (type.lowercase()) {
             "int", "integer" -> input.toIntOrNull()
@@ -57,9 +60,6 @@ class ConditionManager(plugin: ConditionalActions) {
         put("!is") { StringCondition(it.split(" *!is *".toRegex(), limit = 2)) { left, right -> !isObject(left, right) } }
         put("is") { StringCondition(it.split(" *is *".toRegex(), limit = 2)) { left, right -> isObject(left, right) } }
 
-        put("permission:") { object : ConditionType(it.split("permission: *".toRegex(), limit = 2)) {
-            override fun isMet(player: OfflinePlayer?) = player is Player && player.hasPermission(parseRight(player))
-        } }
     }
 
     init {
