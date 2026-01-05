@@ -58,7 +58,7 @@ class ConditionalActions : JavaPlugin(), PluginMessageListener {
         server.messenger.unregisterIncomingPluginChannel(this)
 
         subcommands.clear()
-
+        servers.clear()
         expansion.unregister()
     }
 

@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version libs.versions.kotlin
     id("maven-publish")
+    alias(libs.plugins.blossom)
 }
 
 group = "io.github.tanguygab"
@@ -15,6 +16,8 @@ repositories {
 dependencies {
     compileOnly(libs.paper)
     compileOnly(libs.bungee)
+    compileOnly(libs.velocity)
+    annotationProcessor(libs.velocity)
     compileOnly(libs.papi)
     compileOnly(libs.luckperms)
     compileOnly(files("../../dependencies/TAB.jar"))
@@ -40,4 +43,14 @@ publishing {
 }
 kotlin {
     jvmToolchain(21)
+}
+
+sourceSets {
+    main {
+        blossom {
+            kotlinSources {
+                property("version", version.toString())
+            }
+        }
+    }
 }

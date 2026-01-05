@@ -1,4 +1,4 @@
-package io.github.tanguygab.cabridge
+package io.github.tanguygab.cabridge.bungee
 
 import com.google.common.io.ByteStreams
 import net.md_5.bungee.api.connection.ProxiedPlayer
@@ -6,21 +6,17 @@ import net.md_5.bungee.api.event.PluginMessageEvent
 import net.md_5.bungee.api.plugin.Listener
 import net.md_5.bungee.event.EventHandler
 
-class CAListener(val plugin: CABridge) : Listener {
+class CAListener(val plugin: CABridgeBungee) : Listener {
 
     @EventHandler
     fun onMessageReceived(e: PluginMessageEvent) {
-        if (e.tag != CABridge.CHANNEL) return
+        if (e.tag != CABridgeBungee.CHANNEL) return
         e.isCancelled = true
         if (e.receiver !is ProxiedPlayer) return
 
         val `in` = ByteStreams.newDataInput(e.data)
         when (`in`.readUTF()) {
-            "start" -> plugin.sendData {
-                writeUTF("update")
-                writeInt(plugin.onlineServers.size)
-                plugin.onlineServers.forEach { (name, info) -> writeUTF("$name|true|${info.players.online}") }
-            }
+            "start" -> plugin.sendUpdate(plugin.onlineServers)
             "command" -> {
                 val playerName = `in`.readUTF()
                 val command = `in`.readUTF()
