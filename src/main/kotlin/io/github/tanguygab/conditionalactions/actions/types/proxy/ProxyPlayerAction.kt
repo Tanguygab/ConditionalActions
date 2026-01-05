@@ -1,9 +1,9 @@
-package io.github.tanguygab.conditionalactions.actions.types.bungee
+package io.github.tanguygab.conditionalactions.actions.types.proxy
 
 import org.bukkit.OfflinePlayer
 
-class BungeePlayerAction : BungeeAction("^(?i)bungee(player|cmd|command):( )?".toRegex()) {
-    override fun getSuggestion() = "bungeeplayer: <command>"
+class ProxyPlayerAction : ProxyAction("^(?i)(proxy|bungee|velocity)(player|cmd|command):( )?".toRegex()) {
+    override fun getSuggestion() = "proxyplayer: <command>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
         val command = parsePlaceholders(player, match)

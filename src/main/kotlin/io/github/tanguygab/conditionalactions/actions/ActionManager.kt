@@ -2,15 +2,15 @@ package io.github.tanguygab.conditionalactions.actions
 
 import io.github.tanguygab.conditionalactions.ConditionalActions
 import io.github.tanguygab.conditionalactions.Utils
-import io.github.tanguygab.conditionalactions.actions.types.bungee.BungeeConsoleAction
-import io.github.tanguygab.conditionalactions.actions.types.bungee.BungeePlayerAction
+import io.github.tanguygab.conditionalactions.actions.types.proxy.ProxyConsoleAction
+import io.github.tanguygab.conditionalactions.actions.types.proxy.ProxyPlayerAction
 import io.github.tanguygab.conditionalactions.actions.types.items.EnchantItemAction
 import io.github.tanguygab.conditionalactions.actions.types.items.GiveItemAction
 import io.github.tanguygab.conditionalactions.actions.types.items.RepairItemAction
 import io.github.tanguygab.conditionalactions.actions.types.items.TakeItemAction
 import io.github.tanguygab.conditionalactions.actions.types.storage.GiveItemStorageAction
 import io.github.tanguygab.conditionalactions.actions.types.storage.TakeItemStorageAction
-import io.github.tanguygab.conditionalactions.actions.types.bungee.ServerAction
+import io.github.tanguygab.conditionalactions.actions.types.proxy.ServerAction
 import io.github.tanguygab.conditionalactions.actions.types.commands.*
 import io.github.tanguygab.conditionalactions.actions.types.data.*
 import io.github.tanguygab.conditionalactions.actions.types.messages.*
@@ -30,8 +30,8 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
             ConsoleAction(),
             GroupAction(),
 
-            BungeePlayerAction(),
-            BungeeConsoleAction(),
+            ProxyPlayerAction(),
+            ProxyConsoleAction(),
             ServerAction(),
 
             RemoveDataAction(),

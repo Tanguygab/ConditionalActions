@@ -1,4 +1,4 @@
-package io.github.tanguygab.conditionalactions.actions.types.bungee
+package io.github.tanguygab.conditionalactions.actions.types.proxy
 
 import com.google.common.io.ByteStreams
 import io.github.tanguygab.conditionalactions.actions.Action
