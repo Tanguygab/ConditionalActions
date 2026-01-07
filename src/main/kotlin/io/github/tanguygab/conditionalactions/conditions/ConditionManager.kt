@@ -94,6 +94,7 @@ class ConditionManager(plugin: ConditionalActions) {
         }
 
         if (plugin.server.pluginManager.isPluginEnabled("TAB")) {
+            conditions.values.forEach { it.registerTABPlaceholder() }
             TAB.getInstance().eventBus?.register(TabLoadEvent::class.java) {
                 conditions.values.forEach { it.registerTABPlaceholder() }
             }

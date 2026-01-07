@@ -4,16 +4,19 @@ import io.github.tanguygab.conditionalactions.ConditionalActions
 import io.github.tanguygab.conditionalactions.Utils
 import io.github.tanguygab.conditionalactions.hook.tab.ArgPlaceholders
 import io.github.tanguygab.conditionalactions.hook.tab.ThreadPlaceholder
+import me.neznamy.tab.api.event.plugin.TabLoadEvent
+import me.neznamy.tab.shared.TAB
 import me.neznamy.tab.shared.platform.TabPlayer
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
 import java.util.concurrent.ConcurrentHashMap
+
 class CustomCommandManager(plugin: ConditionalActions) {
     val commands = mutableMapOf<String, CustomCommand>()
     val aliases = mutableMapOf<String, String>()
 
     internal val runningCommandsArguments = ConcurrentHashMap<Thread, List<String>>()
-    internal val tabPlaceholders: ArgPlaceholders<ThreadPlaceholder>?
+    internal var tabPlaceholders: ArgPlaceholders<ThreadPlaceholder>? = null
 
     init {
         Utils.updateFiles(plugin, "commands.yml", "commands/default-commands.yml")
@@ -39,14 +42,19 @@ class CustomCommandManager(plugin: ConditionalActions) {
             map[name] = command
             command.aliases.forEach { map[it] = command }
         }
-        tabPlaceholders = if (plugin.server.pluginManager.isPluginEnabled("TAB")) {
-            object : ArgPlaceholders<ThreadPlaceholder>("conditionalactions_") {
-                override fun new(identifier: String, default: String) = ThreadPlaceholder(identifier)
-                override fun update(placeholder: ThreadPlaceholder, player: TabPlayer?, value: String) = placeholder.updateValue(value)
-            }
-        } else null
+        if (plugin.server.pluginManager.isPluginEnabled("TAB")) {
+            loadTABPlaceholders()
+            TAB.getInstance().eventBus?.register(TabLoadEvent::class.java) { loadTABPlaceholders() }
+        }
 
         plugin.server.pluginManager.registerEvents(CommandListener(this), plugin)
+    }
+
+    private fun loadTABPlaceholders() {
+        tabPlaceholders = object : ArgPlaceholders<ThreadPlaceholder>("conditionalactions_") {
+            override fun new(identifier: String, default: String) = ThreadPlaceholder(identifier)
+            override fun update(placeholder: ThreadPlaceholder, player: TabPlayer?, value: String) = placeholder.updateValue(value)
+        }
     }
 
     fun getCurrentArgs() = runningCommandsArguments[Thread.currentThread()]
