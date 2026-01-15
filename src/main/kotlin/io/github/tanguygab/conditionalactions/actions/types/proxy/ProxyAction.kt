@@ -10,6 +10,6 @@ abstract class ProxyAction(pattern: Regex) : Action(pattern) {
     protected fun sendData(call: ByteArrayDataOutput.() -> Unit) {
         val data = ByteStreams.newDataOutput()
         data.call()
-        plugin.server.sendPluginMessage(plugin, ConditionalActions.CHANNEL, data.toByteArray())
+        plugin.server.onlinePlayers.firstOrNull()?.sendPluginMessage(plugin, ConditionalActions.CHANNEL, data.toByteArray())
     }
 }
