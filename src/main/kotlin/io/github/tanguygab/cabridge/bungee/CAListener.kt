@@ -2,6 +2,7 @@ package io.github.tanguygab.cabridge.bungee
 
 import com.google.common.io.ByteStreams
 import net.md_5.bungee.api.connection.ProxiedPlayer
+import net.md_5.bungee.api.connection.Server
 import net.md_5.bungee.api.event.PluginMessageEvent
 import net.md_5.bungee.api.plugin.Listener
 import net.md_5.bungee.event.EventHandler
@@ -16,7 +17,13 @@ class CAListener(val plugin: CABridgeBungee) : Listener {
 
         val `in` = ByteStreams.newDataInput(e.data)
         when (`in`.readUTF()) {
-            "start" -> plugin.sendUpdate(plugin.onlineServers)
+            "start" -> {
+                plugin.sendData {
+                    writeUTF("name")
+                    writeUTF((e.sender as Server).info.name)
+                }
+                plugin.sendUpdate(plugin.onlineServers)
+            }
             "command" -> {
                 val playerName = `in`.readUTF()
                 val command = `in`.readUTF()

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.tanguygab"
-version = "1.6.1"
+version = "1.6.2"
 
 repositories {
     mavenCentral()
@@ -20,7 +20,7 @@ dependencies {
     annotationProcessor(libs.velocity)
     compileOnly(libs.papi)
     compileOnly(libs.luckperms)
-    compileOnly(files("../../dependencies/TAB.jar"))
+    compileOnly(files("../../dependencies/TAB-5.4.0.jar"))
 }
 
 tasks {

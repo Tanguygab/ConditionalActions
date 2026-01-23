@@ -100,11 +100,17 @@ public class CABridgeVelocity {
     public void onPluginMessageFromPlayer(PluginMessageEvent event) {
         if (!CHANNEL.equals(event.getIdentifier())) return;
         event.setResult(PluginMessageEvent.ForwardResult.handled());
-        if (!(event.getSource() instanceof ServerConnection)) return;
+        if (!(event.getSource() instanceof ServerConnection source)) return;
 
         ByteArrayDataInput in = ByteStreams.newDataInput(event.getData());
         switch (in.readUTF()) {
-            case "start" -> sendUpdate(onlineServers);
+            case "start" -> {
+                sendData(data -> {
+                    data.writeUTF("name");
+                    data.writeUTF(source.getServerInfo().getName());
+                });
+                sendUpdate(onlineServers);
+            }
             case "command" -> {
                 String playerName = in.readUTF();
                 String command = in.readUTF();

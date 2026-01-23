@@ -19,6 +19,7 @@ class CAExpansion(plugin: ConditionalActions) : PAPIExpansion(plugin, "condition
             "args" -> if (player == null) null else plugin.customCommandManager.getCurrentArgs()?.joinToString(" ")
             "args-size" -> if (player == null) null else plugin.customCommandManager.getCurrentArgs()?.size
 
+            "server-name" -> plugin.serverName
             "server-online" -> params in plugin.servers
             "server-players" -> plugin.servers[params] ?: 0
 

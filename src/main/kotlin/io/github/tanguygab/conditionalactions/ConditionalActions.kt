@@ -19,6 +19,7 @@ class ConditionalActions : JavaPlugin(), PluginMessageListener {
     private val subcommands = mutableMapOf<String, CACommand>()
     lateinit var expansion: PAPIExpansion
     val servers = mutableMapOf<String, Int>()
+    var serverName = "Loading..."
 
     lateinit var dataManager: DataManager
     lateinit var actionManager: ActionManager
@@ -86,14 +87,19 @@ class ConditionalActions : JavaPlugin(), PluginMessageListener {
     override fun onPluginMessageReceived(channel: String, player: Player, message: ByteArray) {
         if (channel != CHANNEL) return
         ByteStreams.newDataInput(message).apply {
-            if (readUTF() != "update") return
-            val size = readInt()
-            (0..<size).forEach { _ ->
-                val info = readUTF().split("|")
-                val server = info[0]
-                if (info[1] == "false")
-                    servers.remove(server)
-                else servers[server] = info[2].toInt()
+            when (readUTF()) {
+                "name" -> serverName = readUTF()
+                "update" -> {
+                    if (readUTF() != "update") return
+                    val size = readInt()
+                    (0..<size).forEach { _ ->
+                        val info = readUTF().split("|")
+                        val server = info[0]
+                        if (info[1] == "false")
+                            servers.remove(server)
+                        else servers[server] = info[2].toInt()
+                    }
+                }
             }
         }
     }
