@@ -1,0 +1,14 @@
+commands:
+  reload:
+    success: "<green>Plugin reloaded!</green>"
+  group:
+    list:
+      header: "Groups (<total>):"
+      line: "\n<gray> - <white><name>"
+  condition:
+    list:
+      header: "Conditions (<total>):"
+      line: "\n<gray> - <white><name>"
+    check:
+      success: "<green><player> meets the condition!"
+      fail: "<red><player>does not meet the condition!"

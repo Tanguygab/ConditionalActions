@@ -20,7 +20,7 @@ dependencies {
     annotationProcessor(libs.velocity)
     compileOnly(libs.papi)
     compileOnly(libs.luckperms)
-    compileOnly(files("../../dependencies/TAB-5.4.0.jar"))
+    compileOnly(files("../../dependencies/TAB-5.5.0.jar"))
 }
 
 tasks {

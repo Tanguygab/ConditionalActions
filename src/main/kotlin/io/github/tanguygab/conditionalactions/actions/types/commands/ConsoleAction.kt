@@ -4,6 +4,7 @@ import io.github.tanguygab.conditionalactions.actions.Action
 import org.bukkit.OfflinePlayer
 
 class ConsoleAction : Action("^(?i)console:( )?".toRegex()) {
+    override val description = mm.deserialize("Run commands through console")
     override fun getSuggestion() = "console: <command>"
 
     override fun execute(player: OfflinePlayer?, match: String) {

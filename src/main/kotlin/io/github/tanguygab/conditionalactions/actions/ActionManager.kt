@@ -82,29 +82,33 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
         plugin.customCommandManager.commands.values.forEach { it.loadActions(this) }
     }
 
-    fun findAndExecute(player: OfflinePlayer?, action: String, group: Boolean): Boolean {
-        val executable: CAExecutable?
-
-        if (!group) {
+    fun findAndExecute(players: List<OfflinePlayer?>, action: String, group: Boolean): Boolean {
+        val executable = if (group) actionGroups[action]
+        else {
             val ac = find(action)
-            executable = if (ac == null) null else ActionData(ac, action)
-        } else executable = actionGroups[action]
+            if (ac == null) null else ActionData(ac, action)
+        }
 
         if (executable == null) return false
 
-        if (plugin.server.isPrimaryThread) ConditionalActions.INSTANCE.async { executable.execute(player) }
-        else executable.execute(player)
-
+        execute(players, executable)
         return true
     }
 
     fun find(action: String) = actions.find { it.pattern.containsMatchIn(action) }
+    fun execute(players: List<OfflinePlayer?>, executable: CAExecutable) {
+        players.forEach { player ->
+            if (plugin.server.isPrimaryThread) ConditionalActions.INSTANCE.async { executable.execute(player) }
+            else executable.execute(player)
+        }
+    }
 
     fun register(vararg action: Action) = actions.addAll(action)
 
     fun registerAll(action: List<Action>) = actions.addAll(action)
 
-    fun getSuggestions() = actions.map { it.getSuggestion() }
+    fun getActions() = actions.toList()
 
     fun getGroups() = actionGroups.keys
+    fun getGroup(name: String) = actionGroups[name]
 }

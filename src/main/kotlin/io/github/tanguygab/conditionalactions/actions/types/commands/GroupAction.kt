@@ -7,7 +7,7 @@ class GroupAction : Action("^(?i)group:( )?".toRegex()) {
     override fun getSuggestion() = "group: <action group>"
 
     override fun execute(player: OfflinePlayer?, match: String) {
-        var match = parsePlaceholders(player, match)
-        plugin.actionManager.findAndExecute(player, match, true)
+        val match = parsePlaceholders(player, match)
+        plugin.actionManager.findAndExecute(listOf(player), match, true)
     }
 }

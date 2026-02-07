@@ -8,8 +8,3 @@ softdepend: [LuckPerms, TAB]
 folia-supported: true
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}
-
-commands:
-  conditionalactions:
-    aliases: [ca]
-    permission: conditionalactions.admin
