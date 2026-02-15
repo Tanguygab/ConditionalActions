@@ -3,6 +3,7 @@ package io.github.tanguygab.cabridge.velocity;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.google.inject.Inject;
 import com.velocitypowered.api.command.CommandSource;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.connection.PluginMessageEvent;
@@ -19,7 +20,6 @@ import com.velocitypowered.api.scheduler.ScheduledTask;
 import io.github.tanguygab.conditionalactions.ProjectVariables;
 import org.slf4j.Logger;
 
-import javax.inject.Inject;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
