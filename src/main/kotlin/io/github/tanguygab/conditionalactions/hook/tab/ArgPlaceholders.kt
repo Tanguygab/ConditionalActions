@@ -7,13 +7,13 @@ import me.neznamy.tab.shared.platform.TabPlayer
 
 abstract class ArgPlaceholders<T: TabPlaceholder>(val prefix: String) {
 
-    val argsPlaceholder: PlaceholderReference
-    val argsSizePlaceholder: PlaceholderReference
-    val argPlaceholders = mutableListOf<PlaceholderReference>()
+    val argsPlaceholder = new("%${prefix}args%")
+    val argsSizePlaceholder = new("%${prefix}args-size%", "0")
+    val argPlaceholders = mutableListOf<T>()
 
     init {
-        argsPlaceholder = register(new("%${prefix}args%"))
-        argsSizePlaceholder = register(new("%${prefix}args-size%", "0"))
+        register(argsPlaceholder)
+        register(argsSizePlaceholder)
     }
 
     private fun register(placeholder: T) = TAB.getInstance().placeholderManager.registerPlaceholder(placeholder)!!
@@ -23,15 +23,18 @@ abstract class ArgPlaceholders<T: TabPlaceholder>(val prefix: String) {
 
     @Suppress("CAST_NEVER_SUCCEEDS")
     fun update(player: TabPlayer?, args: List<String> = emptyList()) {
-        update(argsPlaceholder as T, player, args.joinToString(" "))
-        update(argsSizePlaceholder as T, player, args.size.toString())
+        update(argsPlaceholder, player, args.joinToString(" "))
+        update(argsSizePlaceholder, player, args.size.toString())
         args.forEachIndexed { index, arg ->
             val placeholder = if (index < argPlaceholders.size) argPlaceholders[index]
-            else register(new("%${prefix}arg-$index%")).also { argPlaceholders.add(it) }
-            update(placeholder as T, player, arg)
+            else new("%${prefix}arg-$index%").also {
+                argPlaceholders.add(it)
+                register(it)
+            }
+            update(placeholder, player, arg)
         }
         if (args.size < argPlaceholders.size) argPlaceholders.forEachIndexed { index, placeholder ->
-            if (index >= args.size) update(placeholder as T, player, "")
+            if (index >= args.size) update(placeholder, player, "")
         }
     }
 
