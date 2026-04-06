@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.tanguygab"
-version = "1.6.3"
+version = "1.6.4"
 
 repositories {
     mavenCentral()
@@ -20,16 +20,18 @@ dependencies {
     annotationProcessor(libs.velocity)
     compileOnly(libs.papi)
     compileOnly(libs.luckperms)
-    compileOnly(files("../../dependencies/TAB-5.5.0.jar"))
+    compileOnly(files("../../dependencies/TAB.jar"))
 }
 
 tasks {
     processResources {
+        val props = mapOf(
+            "version" to rootProject.version,
+            "kotlinVersion" to libs.versions.kotlin.get()
+        )
+        inputs.properties(props)
         filesMatching(listOf("plugin.yml", "bungee.yml")) {
-            expand(
-                "version" to rootProject.version,
-                "kotlinVersion" to libs.versions.kotlin.get()
-            )
+            expand(props)
         }
     }
 }

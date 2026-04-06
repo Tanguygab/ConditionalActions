@@ -24,7 +24,7 @@ abstract class Action(val pattern: Regex, val replaceMatch: Boolean = true) {
                 .map { TAB.getInstance().placeholderManager.getPlaceholder(it) }
 
             var string = string
-            for (placeholder in placeholders) string = placeholder.set(string, tabPlayer)
+            for (placeholder in placeholders) string = string.replace(placeholder.identifier, placeholder.parse(tabPlayer))
             return string
         }
         return PlaceholderAPI.setPlaceholders(player, string)

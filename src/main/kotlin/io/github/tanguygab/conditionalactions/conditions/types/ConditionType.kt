@@ -18,7 +18,7 @@ abstract class ConditionType(input: List<String>) {
             val placeholders = PlaceholderManagerImpl.detectPlaceholders(string)
                 .map { TAB.getInstance().placeholderManager.getPlaceholder(it) }
 
-            for (placeholder in placeholders) string = placeholder.set(string, tabPlayer)
+            for (placeholder in placeholders) string = string.replace(placeholder.identifier, placeholder.parse(tabPlayer))
             return string
         }
         return PlaceholderAPI.setPlaceholders(player, string)

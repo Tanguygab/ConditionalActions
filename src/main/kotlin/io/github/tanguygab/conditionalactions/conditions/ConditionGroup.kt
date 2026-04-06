@@ -49,10 +49,9 @@ class ConditionGroup(private val manager: ConditionManager, args: String, var na
             .map { TAB.getInstance().placeholderManager.getPlaceholder(it)}
         val refresh = used.minOfOrNull { it.refresh } ?: -1
 
-        val identifier = "%ca-condition:$name%"
-        TAB.getInstance().placeholderManager.registerPlayerPlaceholder(identifier, refresh) {
+        val placeholder = TAB.getInstance().placeholderManager.registerPlayerPlaceholder("%ca-condition:$name%", refresh) {
             p -> "" + isMet(p.player as OfflinePlayer)
         }
-        used.forEach { it.addParent(identifier) }
+        used.forEach { it.addParent(placeholder) }
     }
 }
