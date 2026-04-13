@@ -10,6 +10,6 @@ class ChatAction : Action("^(?i)chat:( )?".toRegex()) {
     override fun execute(player: OfflinePlayer?, match: String) {
         if (player !is Player) return
         val message = parsePlaceholders(player, match)
-        plugin.sync(player) { player.chat(message) }
+        sync(player) { player.chat(message) }
     }
 }

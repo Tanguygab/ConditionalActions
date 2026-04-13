@@ -11,9 +11,9 @@ class PlayerAction : Action("^(?i)(player|cmd|command):( )?".toRegex()) {
         val command = parsePlaceholders(player, match)
 
         if (player is Player) {
-            plugin.sync(player) { player.performCommand(command) }
+            sync(player) { player.performCommand(command) }
             return
         }
-        plugin.sync(null) { plugin.server.dispatchCommand(plugin.server.consoleSender, command) }
+        sync(null) { plugin.server.dispatchCommand(plugin.server.consoleSender, command) }
     }
 }

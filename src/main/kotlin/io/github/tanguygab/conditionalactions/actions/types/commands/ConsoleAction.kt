@@ -9,6 +9,6 @@ class ConsoleAction : Action("^(?i)console:( )?".toRegex()) {
 
     override fun execute(player: OfflinePlayer?, match: String) {
         val command = parsePlaceholders(player, match)
-        plugin.sync(null) { plugin.server.dispatchCommand(plugin.server.consoleSender, command) }
+        sync(null) { plugin.server.dispatchCommand(plugin.server.consoleSender, command) }
     }
 }

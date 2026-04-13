@@ -1,12 +1,15 @@
 package io.github.tanguygab.conditionalactions.actions
 
 import io.github.tanguygab.conditionalactions.ConditionalActions
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import me.clip.placeholderapi.PlaceholderAPI
 import me.neznamy.tab.shared.TAB
 import me.neznamy.tab.shared.features.PlaceholderManagerImpl
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.OfflinePlayer
+import org.bukkit.entity.Player
+import java.util.concurrent.CompletableFuture
 
 abstract class Action(val pattern: Regex, val replaceMatch: Boolean = true) {
     protected val plugin = ConditionalActions.INSTANCE
@@ -28,6 +31,17 @@ abstract class Action(val pattern: Regex, val replaceMatch: Boolean = true) {
             return string
         }
         return PlaceholderAPI.setPlaceholders(player, string)
+    }
+
+    protected fun sync(player: Player?, run: Runnable) {
+        val future = CompletableFuture<Void>()
+        val task: (ScheduledTask) -> Unit = {
+            run.run()
+            future.complete(null)
+        }
+        if (player == null) plugin.server.globalRegionScheduler.run(plugin, task)
+        else player.scheduler.run(plugin, task, null)
+        future.get()
     }
 
     protected fun parseInt(str: String, def: Int) = str.toIntOrNull() ?: def

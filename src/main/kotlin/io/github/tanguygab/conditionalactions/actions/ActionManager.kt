@@ -64,7 +64,7 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
             GiveTakePermissionAction("take")
         )
 
-        plugin.sync(null) { load() }
+        plugin.server.globalRegionScheduler.run(plugin) { load() }
     }
 
     fun load() {
@@ -98,7 +98,7 @@ class ActionManager(private val plugin: ConditionalActions, val argumentSeparato
     fun find(action: String) = actions.find { it.pattern.containsMatchIn(action) }
     fun execute(players: List<OfflinePlayer?>, executable: CAExecutable) {
         players.forEach { player ->
-            if (plugin.server.isPrimaryThread) ConditionalActions.INSTANCE.async { executable.execute(player) }
+            if (plugin.server.isPrimaryThread) plugin.server.asyncScheduler.runNow(plugin) { executable.execute(player) }
             else executable.execute(player)
         }
     }

@@ -9,12 +9,14 @@ import io.github.tanguygab.conditionalactions.hook.papi.CAExpansion
 import io.github.tanguygab.conditionalactions.hook.papi.PAPIExpansion
 import io.github.tanguygab.conditionalactions.listener.PlayerJoinListener
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
+import io.papermc.paper.threadedregions.scheduler.ScheduledTask
 import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import org.bukkit.plugin.messaging.PluginMessageListener
 import java.io.File
+import java.util.concurrent.CompletableFuture
 
 class ConditionalActions : JavaPlugin(), PluginMessageListener {
     lateinit var expansion: PAPIExpansion
@@ -67,15 +69,6 @@ class ConditionalActions : JavaPlugin(), PluginMessageListener {
 
         servers.clear()
         expansion.unregister()
-    }
-
-    fun async(run: Runnable) {
-        server.asyncScheduler.runNow(this) { run.run() }
-    }
-
-    fun sync(player: Player?, run: Runnable) {
-        if (player == null) server.globalRegionScheduler.run(this) { run.run() }
-        else player.scheduler.run(this, { run.run() }, null)
     }
 
     override fun onPluginMessageReceived(channel: String, player: Player, message: ByteArray) {

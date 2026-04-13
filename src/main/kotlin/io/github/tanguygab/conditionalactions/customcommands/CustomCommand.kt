@@ -15,6 +15,7 @@ class CustomCommand(
     private val actionList: List<*>
 ) : BukkitCommand(name) {
     private lateinit var actions: ActionGroup
+    private val plugin = ConditionalActions.INSTANCE
 
     init {
         setAliases(aliases)
@@ -25,9 +26,9 @@ class CustomCommand(
     }
 
     override fun execute(sender: CommandSender, commandLabel: String, args: Array<String>): Boolean {
-        ConditionalActions.INSTANCE.async {
+        plugin.server.asyncScheduler.runNow(plugin) {
             val args = args.map { it.replace("%", "") }
-            ConditionalActions.INSTANCE.customCommandManager.apply {
+            plugin.customCommandManager.apply {
                 runningCommandsArguments[Thread.currentThread()] = args
                 tabPlaceholders?.update(null, args)
                 actions.execute(sender as? OfflinePlayer)
