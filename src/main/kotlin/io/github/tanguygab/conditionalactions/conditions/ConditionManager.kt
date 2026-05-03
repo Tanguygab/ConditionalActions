@@ -38,7 +38,7 @@ class ConditionManager(plugin: ConditionalActions) {
         put("=") { StringCondition(it.split(" *= *".toRegex(), limit = 2)) { left, right -> left.equals(right, ignoreCase = true) } }
 
         put("permission:") { object : ConditionType(it.split("permission: *".toRegex(), limit = 2)) {
-            override fun isMet(player: OfflinePlayer?) = player is Player && player.hasPermission(parseRight(player))
+            override fun isMet(player: OfflinePlayer?) = player == null || player is Player && player.hasPermission(parseRight(player))
         } }
 
         fun isObject(input: String, type: String) = when (type.lowercase()) {
