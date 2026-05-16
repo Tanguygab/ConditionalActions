@@ -11,22 +11,9 @@ abstract class ConditionType(input: List<String>) {
     protected val leftSide = if (inverted) input[0].substring(1) else input[0]
     protected val rightSide = if (input.size > 1) input[1] else ""
 
-    protected fun parse(player: OfflinePlayer?, string: String): String {
-        var string = string
-        if (ConditionalActions.INSTANCE.server.pluginManager.isPluginEnabled("TAB") && player?.player != null) {
-            val tabPlayer = TAB.getInstance().getPlayer(player.uniqueId)
-            val placeholders = PlaceholderManagerImpl.detectPlaceholders(string)
-                .map { TAB.getInstance().placeholderManager.getPlaceholder(it) }
+    protected fun parseLeft(player: OfflinePlayer?) = ConditionalActions.parse(player, leftSide)
 
-            for (placeholder in placeholders) string = string.replace(placeholder.identifier, placeholder.parse(tabPlayer))
-            return string
-        }
-        return PlaceholderAPI.setPlaceholders(player, string)
-    }
-
-    protected fun parseLeft(player: OfflinePlayer?) = parse(player, leftSide)
-
-    protected fun parseRight(player: OfflinePlayer?) = parse(player, rightSide)
+    protected fun parseRight(player: OfflinePlayer?) = ConditionalActions.parse(player, rightSide)
 
     abstract fun isMet(player: OfflinePlayer?): Boolean
 

@@ -20,18 +20,7 @@ abstract class Action(val pattern: Regex, val replaceMatch: Boolean = true) {
 
     abstract fun execute(player: OfflinePlayer?, match: String)
 
-    protected fun parsePlaceholders(player: OfflinePlayer?, string: String): String {
-        if (plugin.server.pluginManager.isPluginEnabled("TAB") && player?.player != null) {
-            val tabPlayer = TAB.getInstance().getPlayer(player.uniqueId)
-            val placeholders = PlaceholderManagerImpl.detectPlaceholders(string)
-                .map { TAB.getInstance().placeholderManager.getPlaceholder(it) }
-
-            var string = string
-            for (placeholder in placeholders) string = string.replace(placeholder.identifier, placeholder.parse(tabPlayer))
-            return string
-        }
-        return PlaceholderAPI.setPlaceholders(player, string)
-    }
+    protected fun parsePlaceholders(player: OfflinePlayer?, string: String) = ConditionalActions.parse(player, string)
 
     protected fun sync(player: Player?, run: Runnable) {
         val future = CompletableFuture<Void>()

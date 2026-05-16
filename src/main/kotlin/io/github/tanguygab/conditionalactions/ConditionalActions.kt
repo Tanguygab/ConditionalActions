@@ -10,7 +10,11 @@ import io.github.tanguygab.conditionalactions.hook.papi.PAPIExpansion
 import io.github.tanguygab.conditionalactions.listener.PlayerJoinListener
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents
 import io.papermc.paper.threadedregions.scheduler.ScheduledTask
+import me.clip.placeholderapi.PlaceholderAPI
+import me.neznamy.tab.shared.TAB
+import me.neznamy.tab.shared.features.PlaceholderManagerImpl
 import net.kyori.adventure.text.minimessage.MiniMessage
+import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
@@ -94,5 +98,14 @@ class ConditionalActions : JavaPlugin(), PluginMessageListener {
     companion object {
         lateinit var INSTANCE: ConditionalActions
         const val CHANNEL = "conditionalactions:channel"
+
+        fun parse(player: OfflinePlayer?, string: String): String {
+            val string = PlaceholderAPI.setPlaceholders(player, string)
+            if (INSTANCE.server.pluginManager.isPluginEnabled("TAB") && player?.player != null) {
+                val tabPlayer = TAB.getInstance().getPlayer(player.uniqueId)
+                if (tabPlayer != null) return TAB.getInstance().placeholderManager.parsePlaceholders(string, tabPlayer)
+            }
+            return string
+        }
     }
 }
