@@ -6,7 +6,7 @@ import me.neznamy.tab.shared.TAB
 import org.bukkit.OfflinePlayer
 import java.util.UUID
 
-class ConditionGroup(private val manager: ConditionManager, args: String, var name: String? = null) {
+class ConditionGroup(private val manager: ConditionManager, private val args: String, var name: String? = null) {
     private val conditions = mutableListOf<MutableList<ConditionType>>()
 
     init {
@@ -44,12 +44,15 @@ class ConditionGroup(private val manager: ConditionManager, args: String, var na
     }
 
     fun registerTABPlaceholder() {
+        val tab = TAB.getInstance()
         val used = conditions.flatten()
             .flatMap { it.getUsedPlaceholders() }
-            .map { TAB.getInstance().placeholderManager.getPlaceholder(it)}
-        val refresh = used.minOfOrNull { it.refresh } ?: -1
+            .map { tab.placeholderManager.getPlaceholder(it)}
+        val refresh = used.minOfOrNull { it.refresh } ?: if ("permission:" in args)
+            tab.configuration.config.permissionRefreshInterval
+        else -1
 
-        val placeholder = TAB.getInstance().placeholderManager.registerPlayerPlaceholder("%ca-condition:$name%", refresh) {
+        val placeholder = tab.placeholderManager.registerPlayerPlaceholder("%ca-condition:$name%", refresh) {
             p -> "" + isMet(p.player as OfflinePlayer)
         }
         used.forEach { it.addParent(placeholder) }
